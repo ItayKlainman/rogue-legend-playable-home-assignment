@@ -1,0 +1,43 @@
+{
+  "name": "pocketroll-playables",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "audit:components": "node scripts/audit-components.js",
+    "prebuild": "npm run check:textures",
+    "build": "node scripts/variant-build.js demo build",
+    "build:all": "node scripts/build-all.js",
+    "build:variant": "node scripts/variant-build.js",
+    "codegen": "node src/playables/board-fight/scripts/codegen.js",
+    "dev": "node scripts/variant-build.js demo dev",
+    "dev:variant": "node scripts/variant-build.js",
+    "test:dice-blackjack": "node src/playables/dice-blackjack/__tests__/run.mjs",
+    "test:clash-royal": "node src/playables/clash-royal/__tests__/run.mjs",
+    "test:board-fight": "node src/playables/board-fight/__tests__/run.mjs",
+    "test:end-card": "node src/playables/end_card/__tests__/run.mjs",
+    "test:shared": "node src/shared/__tests__/run.mjs",
+    "sim:blackjack": "node --import tsx --import src/playables/dice-blackjack/__tests__/setup.ts scripts/sim-blackjack.mjs",
+    "verify:builds": "node scripts/verify-builds.js",
+    "verify": "npm run check:textures && npm run test:shared && npm run test:board-fight && npm run test:clash-royal && npm run test:dice-blackjack && npm run test:end-card && npm run test:components",
+    "check:textures": "node scripts/check-texture-loading.js",
+    "build:dice-blackjack:all": "for v in winRigged loseRigged fair; do for n in applovin unity google; do node scripts/variant-build.js --type dice-blackjack $v build $n; done; done && node scripts/verify-builds.js",
+    "rename:components": "node scripts/rename-components.js",
+    "test:components": "node --test scripts/components/*.test.js"
+  },
+  "dependencies": {
+    "@esotericsoftware/spine-pixi-v8": "~4.2",
+    "@smoud/playable-sdk": "1.0.24",
+    "canvas-confetti": "^1.9.4",
+    "pixi-filters": "^6.1.5",
+    "pixi.js": "^8.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@smoud/playable-scripts": "1.2.1",
+    "@types/node": "^25.9.1",
+    "js-yaml": "^4.1.0",
+    "sharp": "^0.34.5",
+    "tsx": "^4.22.1",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "app": "sidescroller",
+  "name": "IdleShowcase",
+  "version": "v1",
+  "language": "en",
+  "filename": "{app}_{name}_{version}_{date}_{language}_{network}",
+  "googlePlayUrl": "https://play.google.com/store/apps/details?id=com.pockethaven.roguelegend",
+  "appStoreUrl": "https://apps.apple.com/us/app/id6754965520",
+  "defines": {
+    "PLAYABLE_TYPE": "\"sidescroller\"",
+    "PLAYABLE_VARIANT": "\"demo\""
+  }
+}

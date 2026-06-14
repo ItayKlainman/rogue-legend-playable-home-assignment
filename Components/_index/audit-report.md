@@ -1,0 +1,1628 @@
+# Components Audit Report
+
+Generated 2026-05-24T13:52:30.281Z
+
+## Blocking (0)
+
+## Advisory (1612)
+
+### naming (1302)
+- Button_01_Mian_l_Bg_Blue — bad subtype "01"
+- Button_01_Mian_l_Bg_Border — bad subtype "01"
+- Button_01_Mian_l_Bg_Brown — bad subtype "01"
+- Button_01_Mian_l_Bg_Dark — bad subtype "01"
+- Button_01_Mian_l_Bg_Gary — bad subtype "01"
+- Button_01_Mian_l_Bg_Green — bad subtype "01"
+- Button_01_Mian_l_Bg_Mint — bad subtype "01"
+- Button_01_Mian_l_Bg_Navy — bad subtype "01"
+- Button_01_Mian_l_Bg_Orange — bad subtype "01"
+- Button_01_Mian_l_Bg_Pink — bad subtype "01"
+- Button_01_Mian_l_Bg_Plum — bad subtype "01"
+- Button_01_Mian_l_Bg_Purple — bad subtype "01"
+- Button_01_Mian_l_Bg_Red — bad subtype "01"
+- Button_01_Mian_l_Bg_Sky — bad subtype "01"
+- Button_01_Mian_l_Bg_White — bad subtype "01"
+- Button_01_Mian_l_Bg_White_Half — bad subtype "01"
+- Button_01_Mian_l_Bg_Yellow — bad subtype "01"
+- Button_01_Mian_l_Deco — bad subtype "01"
+- Button_01_Mian_s_Bg_Blue — bad subtype "01"
+- Button_01_Mian_s_Bg_Brown — bad subtype "01"
+- Button_01_Mian_s_Bg_Dark — bad subtype "01"
+- Button_01_Mian_s_Bg_Gray — bad subtype "01"
+- Button_01_Mian_s_Bg_Green — bad subtype "01"
+- Button_01_Mian_s_Bg_Mint — bad subtype "01"
+- Button_01_Mian_s_Bg_Navy — bad subtype "01"
+- Button_01_Mian_s_Bg_Orange — bad subtype "01"
+- Button_01_Mian_s_Bg_Pink — bad subtype "01"
+- Button_01_Mian_s_Bg_Plum — bad subtype "01"
+- Button_01_Mian_s_Bg_Purple — bad subtype "01"
+- Button_01_Mian_s_Bg_Red — bad subtype "01"
+- Button_01_Mian_s_Bg_Sky — bad subtype "01"
+- Button_01_Mian_s_Bg_White — bad subtype "01"
+- Button_01_Mian_s_Bg_White_Half — bad subtype "01"
+- Button_01_Mian_s_Bg_Yellow — bad subtype "01"
+- Button_01_Mian_s_Deco — bad subtype "01"
+- Button_01_Mian_s_Dim — bad subtype "01"
+- Button_Basic_Rectangle_H46_White — token "Rectangle" fits no remaining slot
+- Button_Border_Circle_H53_White_Bg — subtype "Border" collides with a vocabulary value
+- Button_Border_Circle_H53_White_Border — subtype "Border" collides with a vocabulary value
+- Button_Border_Circle_H53_White_InnerBorder1 — subtype "Border" collides with a vocabulary value
+- Button_Border_Circle_H53_White_InnerBorder2 — subtype "Border" collides with a vocabulary value
+- Button_Border_Circle_H67_White_Bg — subtype "Border" collides with a vocabulary value
+- Button_Border_Circle_H67_White_Border — subtype "Border" collides with a vocabulary value
+- Button_Border_Circle_H67_White_InnerBorder — subtype "Border" collides with a vocabulary value
+- Button_Border_Rectangle_H35_White_Bg — subtype "Border" collides with a vocabulary value
+- Button_Border_Rectangle_H35_White_Border — subtype "Border" collides with a vocabulary value
+- Button_Border_Rectangle_H35_White_Border_Thick — subtype "Border" collides with a vocabulary value
+- Button_Border_Rectangle_W182_Bg — subtype "Border" collides with a vocabulary value
+- Button_Border_Rectangle_W182_InnerBg — subtype "Border" collides with a vocabulary value
+- Button_Border_Rectangle_W182_InnerBgBorder — subtype "Border" collides with a vocabulary value
+- Button_Convex_Circle_01_Red — token "Circle" fits no remaining slot
+- Button_Convex_Circle_02_Red — token "Circle" fits no remaining slot
+- Button_Convex_LeftFlush_01_Gray — token "LeftFlush" fits no remaining slot
+- Button_Convex_Rectangle_01_Arrow — token "Rectangle" fits no remaining slot
+- Button_Convex_Rectangle_01_Blue — token "Rectangle" fits no remaining slot
+- Button_Convex_Rectangle_01_Gray — token "Rectangle" fits no remaining slot
+- Button_Convex_Rectangle_01_Green — token "Rectangle" fits no remaining slot
+- Button_Convex_Rectangle_01_H58_Gray — token "Rectangle" fits no remaining slot
+- Button_Convex_Rectangle_01_Yellow — token "Rectangle" fits no remaining slot
+- Button_Convex_Rectangle_02_Gray — token "Rectangle" fits no remaining slot
+- Button_Hex — missing required slot Part
+- Button_Hex_GlowBorder — token "GlowBorder" fits no remaining slot
+- Tab_BottomFlush_01_Single_Disable — unknown category "Tab"
+- Tab_BottomFlush_01_Single_Nomal — unknown category "Tab"
+- Tab_BottomFlush_01_Single_Select — unknown category "Tab"
+- Tab_BottomFlush_01_White_Bg — unknown category "Tab"
+- Tab_BottomFlush_01_White_Border — unknown category "Tab"
+- Tab_BottomFlush_01_White_InnerShadow — unknown category "Tab"
+- Tab_BottomFlush_01_White_Light — unknown category "Tab"
+- Tab_BottomFlush_02_White_Bg — unknown category "Tab"
+- Tab_BottomFlush_02_White_Border — unknown category "Tab"
+- Tab_BottomFlush_02_White_Deco — unknown category "Tab"
+- Tab_BottomFlush_02_White_Glow — unknown category "Tab"
+- Tab_BottomFlush_02_White_InnerBorder — unknown category "Tab"
+- Tab_Middle_01_White_Bg — unknown category "Tab"
+- Tab_Middle_01_White_Border — unknown category "Tab"
+- Tab_Middle_01_White_Deco — unknown category "Tab"
+- Tab_Middle_01_White_Glow — unknown category "Tab"
+- Tab_Middle_01_White_InnerBorder — unknown category "Tab"
+- Tab_Middle_02_Bg — unknown category "Tab"
+- Tab_Middle_02_Border — unknown category "Tab"
+- Tab_Middle_02_Focus — unknown category "Tab"
+- Tab_Middle_02_FocusGlow — unknown category "Tab"
+- Tab_Middle_02_Glow — unknown category "Tab"
+- Banner — fewer than 2 tokens
+- Banner_Pattern — unknown category "Banner"
+- BaseFrame_Basic_Circle_H58 — unknown category "BaseFrame"
+- BaseFrame_Basic_Circle_H98 — unknown category "BaseFrame"
+- BaseFrame_Basic_Gradient_01 — unknown category "BaseFrame"
+- BaseFrame_Basic_Gradient_02 — unknown category "BaseFrame"
+- BaseFrame_Basic_Rectangle_H40_Bg — unknown category "BaseFrame"
+- BaseFrame_Basic_Rectangle_H40_InnerBg — unknown category "BaseFrame"
+- BaseFrame_Basic_Rectangle_H40_InnerBorder — unknown category "BaseFrame"
+- BaseFrame_Basic_Rectangle_H50 — unknown category "BaseFrame"
+- BaseFrame_Border_Circle_H106 — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H40_Bg ---- — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H40_Border --- — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H40_InnerBorder --- — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H50_Bg — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H50_Border — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H60_Bg — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H60_Border — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H60_DecoLine — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H60_InnerGlow — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H80_Bg — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H80_Border — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H80_Gradient — unknown category "BaseFrame"
+- BaseFrame_Border_Rectangle_H80_InnerBorder — unknown category "BaseFrame"
+- BaseFrame_Convex_Circle_01_Gray — unknown category "BaseFrame"
+- BaseFrame_Convex_Circle_01_Green — unknown category "BaseFrame"
+- BaseFrame_Convex_Crimped_01_Single_Blue — unknown category "BaseFrame"
+- BaseFrame_Convex_Crimped_01_White_Bg — unknown category "BaseFrame"
+- BaseFrame_Convex_Crimped_01_White_Border — unknown category "BaseFrame"
+- BaseFrame_Convex_Crimped_01_White_Light — unknown category "BaseFrame"
+- BaseFrame_Convex_Crimped_01_White_Shadow — unknown category "BaseFrame"
+- BaseFrame_Convex_Diamond_01_Gray — unknown category "BaseFrame"
+- BaseFrame_Convex_Diamond_01_Yellow — unknown category "BaseFrame"
+- BaseFrame_Convex_Tapered_01_Gray — unknown category "BaseFrame"
+- BaseFrame_Convex_Tapered_01_White — unknown category "BaseFrame"
+- BaseFrame_Convex_Tapered_01_Yellow — unknown category "BaseFrame"
+- BubbleFrame_01_ArrowBg — unknown category "BubbleFrame"
+- BubbleFrame_01_ArrowShadow — unknown category "BubbleFrame"
+- BubbleFrame_01_Bg — unknown category "BubbleFrame"
+- BubbleFrame_01_BgShadow — unknown category "BubbleFrame"
+- BubbleFrame_02_Bg — unknown category "BubbleFrame"
+- BubbleFrame_02_InnerBorder — unknown category "BubbleFrame"
+- BubbleFrame_02_Shadow — unknown category "BubbleFrame"
+- BubbleFrame_03_Bg — unknown category "BubbleFrame"
+- BubbleFrame_03_Shadow — unknown category "BubbleFrame"
+- CardFrame_Hexagon_01_Blue_Bg — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Blue_Border — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Green_Bg — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Green_Border — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Purple_Bg — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Purple_Border — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Red_Bg — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Red_Border — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Yellow_Bg — unknown category "CardFrame"
+- CardFrame_Hexagon_01_Yellow_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Blue_Bg — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Blue_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Blue_BorderGem — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Green_Bg — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Green_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Green_BorderGem — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Purple_Bg — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Purple_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Purple_BorderGem — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Red_Bg — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Red_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Red_BorderGem — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Yellow_Bg — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Yellow_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Yellow_BorderGem — unknown category "CardFrame"
+- CardFrame_Rectangle_01_Yellow_BorderGem_Gem — unknown category "CardFrame"
+- CardFrame_Rectangle_02_Bg — unknown category "CardFrame"
+- CardFrame_Rectangle_02_BgDeco — unknown category "CardFrame"
+- CardFrame_Rectangle_02_BgGradient — unknown category "CardFrame"
+- CardFrame_Rectangle_02_Border — unknown category "CardFrame"
+- CardFrame_Rectangle_02_FrontGradient — unknown category "CardFrame"
+- CardFrame_Rectangle_02_InnerBorder — unknown category "CardFrame"
+- Chapter_Lower — unknown category "Chapter"
+- Chapter_Part1 — unknown category "Chapter"
+- Chapter_Part2 — unknown category "Chapter"
+- Chapter_Upper — unknown category "Chapter"
+- FlagFrame_01_Bg_Blue — unknown category "FlagFrame"
+- FlagFrame_01_Bg_Green 1 — unknown category "FlagFrame"
+- FlagFrame_01_Bg_Green — unknown category "FlagFrame"
+- FlagFrame_01_Bg_Purple — unknown category "FlagFrame"
+- FlagFrame_01_Bg_Red — unknown category "FlagFrame"
+- FlagFrame_01_Bg_White — unknown category "FlagFrame"
+- FlagFrame_01_Bg_Yellow — unknown category "FlagFrame"
+- FlagFrame_01_Focus — unknown category "FlagFrame"
+- FlagFrame_01_InnerDeco — unknown category "FlagFrame"
+- FlushFrame_Flag_Flush_Blue — unknown category "FlushFrame"
+- FlushFrame_Flag_Flush_Red — unknown category "FlushFrame"
+- ItemFrame_Square_01_Blue — unknown category "ItemFrame"
+- ItemFrame_Square_01_Dim — unknown category "ItemFrame"
+- ItemFrame_Square_01_Gray — unknown category "ItemFrame"
+- ItemFrame_Square_01_Green — unknown category "ItemFrame"
+- ItemFrame_Square_01_Navy — unknown category "ItemFrame"
+- ItemFrame_Square_01_Purple — unknown category "ItemFrame"
+- ItemFrame_Square_01_Red — unknown category "ItemFrame"
+- ItemFrame_Square_01_Yellow — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Blue — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Gray — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Green — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Navy — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Purple — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Red — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Bg_Yellow — unknown category "ItemFrame"
+- ItemFrame_Square_02_Single_Focus — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_Bg — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_Border — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_Border_Thick — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_FocusBorder — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_FocusGlow — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_Glow — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_Gradient — unknown category "ItemFrame"
+- ItemFrame_Square_02_White_InnerDeco — unknown category "ItemFrame"
+- ItemFrame_Square_03_Bg — unknown category "ItemFrame"
+- ItemFrame_Square_03_Border — unknown category "ItemFrame"
+- ItemFrame_Square_03_InnerBorder1 — unknown category "ItemFrame"
+- ItemFrame_Square_03_InnerBorder2 — unknown category "ItemFrame"
+- Item_Mythic_Frame — unknown category "Item"
+- LineFrame_DecoLine_01 — unknown category "LineFrame"
+- LineFrame_DecoLine_02 — unknown category "LineFrame"
+- LineFrame_TopDeco_01 — unknown category "LineFrame"
+- ListFrame_01_Bg — unknown category "ListFrame"
+- ListFrame_01_Border — unknown category "ListFrame"
+- ListFrame_01_Deco1 — unknown category "ListFrame"
+- ListFrame_01_Deco2 — unknown category "ListFrame"
+- ListFrame_01_InnerBorder — unknown category "ListFrame"
+- ListFrame_01_InnerGlow — unknown category "ListFrame"
+- PanelFrame_BottomDeco_01 — unknown category "PanelFrame"
+- PanelFrame_BottomDeco_02 — unknown category "PanelFrame"
+- PanelFrame_BottomDeco_03 — unknown category "PanelFrame"
+- PanelFrame_BottomStone_01_Bg — unknown category "PanelFrame"
+- PanelFrame_BottomStone_01_Stone — unknown category "PanelFrame"
+- PassFrame_Divided_01_Bg — unknown category "PassFrame"
+- PassFrame_Divided_01_Bg_InnerBorder — unknown category "PassFrame"
+- PassFrame_Divided_01_Bg_LightDeco — unknown category "PassFrame"
+- PassFrame_Divided_01_Center — unknown category "PassFrame"
+- PassFrame_Divided_01_Center_InnerBorder — unknown category "PassFrame"
+- PassFrame_Rectangle_01_Gray — unknown category "PassFrame"
+- PassFrame_Rectangle_02_Gold — unknown category "PassFrame"
+- PassFrame_Rectangle_02_Gold_BackGlow — unknown category "PassFrame"
+- Pattern_Shape_1 — unknown category "Pattern"
+- Platform — fewer than 2 tokens
+- Popup02~09_Topber_White_BgTop — unknown category "Popup02~09"
+- ProfileFrame_01_Bg — unknown category "ProfileFrame"
+- ProfileFrame_01_Border — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Christmas — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Gold — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_GoldCrown — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Gold_BlackBorder — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Green — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Halloween — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Mint — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Purple — unknown category "ProfileFrame"
+- ProfileFrame_01_BorderDeco_Red — unknown category "ProfileFrame"
+- ProfileFrame_01_Deco — unknown category "ProfileFrame"
+- ProfileFrame_01_Focus_Single_Purple — unknown category "ProfileFrame"
+- ProfileFrame_01_Focus_White_Border — unknown category "ProfileFrame"
+- ProfileFrame_01_Focus_White_BorderGlow — unknown category "ProfileFrame"
+- ProfileFrame_01_Focus_White_Light — unknown category "ProfileFrame"
+- ProfileFrame_01_InnerBorder — unknown category "ProfileFrame"
+- RankingFrame_1st — unknown category "RankingFrame"
+- RankingFrame_2nd — unknown category "RankingFrame"
+- RankingFrame_3rd — unknown category "RankingFrame"
+- RewardFrame_01_Advanced_Border — unknown category "RewardFrame"
+- RewardFrame_01_Advanced_BorderDeco — unknown category "RewardFrame"
+- RewardFrame_01_Bg — unknown category "RewardFrame"
+- RewardFrame_01_Default_Border — unknown category "RewardFrame"
+- RewardFrame_01_Default_BorderDeco — unknown category "RewardFrame"
+- RewardFrame_01_Dim — unknown category "RewardFrame"
+- RewardFrame_01_Focus_Border — unknown category "RewardFrame"
+- RewardFrame_01_Focus_BorderDeco — unknown category "RewardFrame"
+- RewardFrame_01_InnerBg — unknown category "RewardFrame"
+- RewardFrame_01_InnerBg_half — unknown category "RewardFrame"
+- RewardFrame_01_InnerBorder — unknown category "RewardFrame"
+- RewardFrame_01_InnerBorder_Thicker — unknown category "RewardFrame"
+- RewardFrame_01_InnerDeco_l — unknown category "RewardFrame"
+- RewardFrame_01_InnerDeco_s — unknown category "RewardFrame"
+- RewardFrame_01_TextBox — unknown category "RewardFrame"
+- SkillFrame_01_Bg — unknown category "SkillFrame"
+- SkillFrame_01_Border_Blue — unknown category "SkillFrame"
+- SkillFrame_01_Border_Green — unknown category "SkillFrame"
+- SkillFrame_01_Border_Purple — unknown category "SkillFrame"
+- SkillFrame_01_Border_Red — unknown category "SkillFrame"
+- SkillFrame_01_Border_Yellow — unknown category "SkillFrame"
+- StageFrame_01_Bg — unknown category "StageFrame"
+- StageFrame_01_Border — unknown category "StageFrame"
+- StageFrame_01_BorderGlow — unknown category "StageFrame"
+- StageFrame_01_DecoBg — unknown category "StageFrame"
+- StageFrame_01_DecoBorder — unknown category "StageFrame"
+- StageFrame_01_Focus — unknown category "StageFrame"
+- StageFrame_01_Focus_DarkBorder — unknown category "StageFrame"
+- StageFrame_01_Focus_Glow — unknown category "StageFrame"
+- StageFrame_01_Gradient — unknown category "StageFrame"
+- StageFrame_01_InnerBorder — unknown category "StageFrame"
+- StageFrame_02_BackBg — unknown category "StageFrame"
+- StageFrame_02_Bg — unknown category "StageFrame"
+- StageFrame_02_Border — unknown category "StageFrame"
+- StageFrame_02_Focus_BorderGlow — unknown category "StageFrame"
+- StageFrame_02_Focus_InnerBorder — unknown category "StageFrame"
+- StageFrame_02_Focus_Light — unknown category "StageFrame"
+- Chest_Gold — unknown category "Chest"
+- Chest_Gold_Effect — unknown category "Chest"
+- Chest_Gold_Open — unknown category "Chest"
+- Chest_Premium — unknown category "Chest"
+- Chest_Premium_Open — unknown category "Chest"
+- Chest_Premium_OpenEffect — unknown category "Chest"
+- Chest_Silver — unknown category "Chest"
+- Chest_Silver_Open — unknown category "Chest"
+- Chest_Silver_OpenEffect — unknown category "Chest"
+- Chest_Special — unknown category "Chest"
+- Chest_Special_Open — unknown category "Chest"
+- Chest_Special_OpenEffect — unknown category "Chest"
+- Chest_Wood — unknown category "Chest"
+- Chest_Wood_Open — unknown category "Chest"
+- Chest_Wood_OpenEffect — unknown category "Chest"
+- Chest_Gold — unknown category "Chest"
+- Chest_Gold_Effect — unknown category "Chest"
+- Chest_Gold_Open — unknown category "Chest"
+- Chest_Premium — unknown category "Chest"
+- Chest_Premium_Open — unknown category "Chest"
+- Chest_Premium_OpenEffect — unknown category "Chest"
+- Chest_Silver — unknown category "Chest"
+- Chest_Silver_Open — unknown category "Chest"
+- Chest_Silver_OpenEffect — unknown category "Chest"
+- Chest_Special — unknown category "Chest"
+- Chest_Special_Open — unknown category "Chest"
+- Chest_Special_OpenEffect — unknown category "Chest"
+- Chest_Wood — unknown category "Chest"
+- Chest_Wood_Open — unknown category "Chest"
+- Chest_Wood_OpenEffect — unknown category "Chest"
+- Chest_Gold — unknown category "Chest"
+- Chest_Gold_Effect — unknown category "Chest"
+- Chest_Gold_Open — unknown category "Chest"
+- Chest_Premium — unknown category "Chest"
+- Chest_Premium_Open — unknown category "Chest"
+- Chest_Premium_OpenEffect — unknown category "Chest"
+- Chest_Premium_OpenFrame — unknown category "Chest"
+- Chest_Silver — unknown category "Chest"
+- Chest_Silver_Open — unknown category "Chest"
+- Chest_Silver_OpenEffect — unknown category "Chest"
+- Chest_Special — unknown category "Chest"
+- Chest_Special_Open — unknown category "Chest"
+- Chest_Special_OpenEffect — unknown category "Chest"
+- Chest_Wood — unknown category "Chest"
+- Chest_Wood_Open — unknown category "Chest"
+- Chest_Wood_OpenEffect — unknown category "Chest"
+- Chest_Wood_OpenEffect_Gray — unknown category "Chest"
+- ChromaticChest_GlowMask — unknown category "ChromaticChest"
+- S_Grade — unknown category "S"
+- S_GradeMask — unknown category "S"
+- S_Grade_GreenArrow — unknown category "S"
+- Chest_Gold — unknown category "Chest"
+- Chest_Gold_Effect — unknown category "Chest"
+- Chest_Gold_Open — unknown category "Chest"
+- Chest_Premium — unknown category "Chest"
+- Chest_Premium_Open — unknown category "Chest"
+- Chest_Premium_OpenEffect — unknown category "Chest"
+- Chest_Silver — unknown category "Chest"
+- Chest_Silver_Open — unknown category "Chest"
+- Chest_Silver_OpenEffect — unknown category "Chest"
+- Chest_Special — unknown category "Chest"
+- Chest_Special_Open — unknown category "Chest"
+- Chest_Special_OpenEffect — unknown category "Chest"
+- Chest_Wood — unknown category "Chest"
+- Chest_Wood_Open — unknown category "Chest"
+- Chest_Wood_OpenEffect — unknown category "Chest"
+- ItemIcon_Ad — unknown category "ItemIcon"
+- ItemIcon_Badge_Clan_Sword — unknown category "ItemIcon"
+- ItemIcon_Badge_Token_Crown — unknown category "ItemIcon"
+- ItemIcon_Bag — unknown category "ItemIcon"
+- ItemIcon_Battery — unknown category "ItemIcon"
+- ItemIcon_Battle — unknown category "ItemIcon"
+- ItemIcon_Bomb — unknown category "ItemIcon"
+- ItemIcon_Book_1_Green — unknown category "ItemIcon"
+- ItemIcon_Book_1_Purple — unknown category "ItemIcon"
+- ItemIcon_Book_2_Brown — unknown category "ItemIcon"
+- ItemIcon_Calendar — unknown category "ItemIcon"
+- ItemIcon_Card_1 — unknown category "ItemIcon"
+- ItemIcon_Card_2_Blue — unknown category "ItemIcon"
+- ItemIcon_Card_2_Green — unknown category "ItemIcon"
+- ItemIcon_Card_2_Purple — unknown category "ItemIcon"
+- ItemIcon_Card_2_Yellow — unknown category "ItemIcon"
+- ItemIcon_Chat — unknown category "ItemIcon"
+- ItemIcon_Chest_Gold — unknown category "ItemIcon"
+- ItemIcon_Chest_Premium — unknown category "ItemIcon"
+- ItemIcon_Chest_Silver — unknown category "ItemIcon"
+- ItemIcon_Chest_Special — unknown category "ItemIcon"
+- ItemIcon_Chest_Wood — unknown category "ItemIcon"
+- ItemIcon_Clover — unknown category "ItemIcon"
+- ItemIcon_Coin_Gold — unknown category "ItemIcon"
+- ItemIcon_Coin_Silver — unknown category "ItemIcon"
+- ItemIcon_Compass — unknown category "ItemIcon"
+- ItemIcon_Crown_1 — unknown category "ItemIcon"
+- ItemIcon_Crown_2 — unknown category "ItemIcon"
+- ItemIcon_Drop — unknown category "ItemIcon"
+- ItemIcon_Dungeon — unknown category "ItemIcon"
+- ItemIcon_Energy_Blue — unknown category "ItemIcon"
+- ItemIcon_Energy_Purple — unknown category "ItemIcon"
+- ItemIcon_File — unknown category "ItemIcon"
+- ItemIcon_Friend — unknown category "ItemIcon"
+- ItemIcon_GearWheel — unknown category "ItemIcon"
+- ItemIcon_Gear_Armor — unknown category "ItemIcon"
+- ItemIcon_Gear_Bow — unknown category "ItemIcon"
+- ItemIcon_Gear_Hammer — unknown category "ItemIcon"
+- ItemIcon_Gear_Helmet — unknown category "ItemIcon"
+- ItemIcon_Gear_Ring — unknown category "ItemIcon"
+- ItemIcon_Gear_Shield_Metal — unknown category "ItemIcon"
+- ItemIcon_Gear_Sword — unknown category "ItemIcon"
+- ItemIcon_GemStone_Red — unknown category "ItemIcon"
+- ItemIcon_Gem_Diamond_Blue — unknown category "ItemIcon"
+- ItemIcon_Gem_Triangle_Green — unknown category "ItemIcon"
+- ItemIcon_Gift_Purple — unknown category "ItemIcon"
+- ItemIcon_Gift_Yellow — unknown category "ItemIcon"
+- ItemIcon_Heart — unknown category "ItemIcon"
+- ItemIcon_Key_Bronze — unknown category "ItemIcon"
+- ItemIcon_Key_Gold — unknown category "ItemIcon"
+- ItemIcon_Key_Silver — unknown category "ItemIcon"
+- ItemIcon_Mail — unknown category "ItemIcon"
+- ItemIcon_Map — unknown category "ItemIcon"
+- ItemIcon_Meat — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_2 — unknown category "ItemIcon"
+- ItemIcon_Potion_Green — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple — unknown category "ItemIcon"
+- ItemIcon_Ranking — unknown category "ItemIcon"
+- ItemIcon_Ranking_Gold — unknown category "ItemIcon"
+- ItemIcon_Scroll — unknown category "ItemIcon"
+- ItemIcon_Scroll_Feather — unknown category "ItemIcon"
+- ItemIcon_Shop — unknown category "ItemIcon"
+- ItemIcon_Skill_Attack — unknown category "ItemIcon"
+- ItemIcon_Skill_Critical — unknown category "ItemIcon"
+- ItemIcon_Skill_Damage — unknown category "ItemIcon"
+- ItemIcon_Skill_DamageEnemy — unknown category "ItemIcon"
+- ItemIcon_Skill_Defense — unknown category "ItemIcon"
+- ItemIcon_Skill_Health — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss_Red — unknown category "ItemIcon"
+- ItemIcon_Spin — unknown category "ItemIcon"
+- ItemIcon_Star — unknown category "ItemIcon"
+- ItemIcon_Star_Disable — unknown category "ItemIcon"
+- ItemIcon_Star_Rate — unknown category "ItemIcon"
+- ItemIcon_Ticket_Gold — unknown category "ItemIcon"
+- ItemIcon_Timer_Gold — unknown category "ItemIcon"
+- ItemIcon_Timer_blue — unknown category "ItemIcon"
+- ItemIcon_Trophy — unknown category "ItemIcon"
+- ItemIcon_Ad — unknown category "ItemIcon"
+- ItemIcon_Badge_Clan_Sword — unknown category "ItemIcon"
+- ItemIcon_Badge_Token_Crown — unknown category "ItemIcon"
+- ItemIcon_Bag — unknown category "ItemIcon"
+- ItemIcon_Battery — unknown category "ItemIcon"
+- ItemIcon_Battle — unknown category "ItemIcon"
+- ItemIcon_Bomb — unknown category "ItemIcon"
+- ItemIcon_Book_1_Green — unknown category "ItemIcon"
+- ItemIcon_Book_1_Purple — unknown category "ItemIcon"
+- ItemIcon_Book_2_Brown — unknown category "ItemIcon"
+- ItemIcon_Calendar — unknown category "ItemIcon"
+- ItemIcon_Card_1 — unknown category "ItemIcon"
+- ItemIcon_Card_2_Blue — unknown category "ItemIcon"
+- ItemIcon_Card_2_Green — unknown category "ItemIcon"
+- ItemIcon_Card_2_Purple — unknown category "ItemIcon"
+- ItemIcon_Card_2_Yellow — unknown category "ItemIcon"
+- ItemIcon_Chat — unknown category "ItemIcon"
+- ItemIcon_Chest_Gold — unknown category "ItemIcon"
+- ItemIcon_Chest_Premium — unknown category "ItemIcon"
+- ItemIcon_Chest_Silver — unknown category "ItemIcon"
+- ItemIcon_Chest_Special — unknown category "ItemIcon"
+- ItemIcon_Chest_Wood — unknown category "ItemIcon"
+- ItemIcon_Clover — unknown category "ItemIcon"
+- ItemIcon_Coin_Gold — unknown category "ItemIcon"
+- ItemIcon_Coin_Silver — unknown category "ItemIcon"
+- ItemIcon_Compass — unknown category "ItemIcon"
+- ItemIcon_Crown_1 — unknown category "ItemIcon"
+- ItemIcon_Crown_2 — unknown category "ItemIcon"
+- ItemIcon_Drop — unknown category "ItemIcon"
+- ItemIcon_Dungeon — unknown category "ItemIcon"
+- ItemIcon_Energy_Blue — unknown category "ItemIcon"
+- ItemIcon_Energy_Purple — unknown category "ItemIcon"
+- ItemIcon_File — unknown category "ItemIcon"
+- ItemIcon_Friend — unknown category "ItemIcon"
+- ItemIcon_GearWheel — unknown category "ItemIcon"
+- ItemIcon_Gear_Armor — unknown category "ItemIcon"
+- ItemIcon_Gear_Bow — unknown category "ItemIcon"
+- ItemIcon_Gear_Hammer — unknown category "ItemIcon"
+- ItemIcon_Gear_Helmet — unknown category "ItemIcon"
+- ItemIcon_Gear_Ring — unknown category "ItemIcon"
+- ItemIcon_Gear_Shield_Metal — unknown category "ItemIcon"
+- ItemIcon_Gear_Sword — unknown category "ItemIcon"
+- ItemIcon_GemStone_Red — unknown category "ItemIcon"
+- ItemIcon_Gem_Diamond_Blue — unknown category "ItemIcon"
+- ItemIcon_Gem_Triangle_Green — unknown category "ItemIcon"
+- ItemIcon_Gift_Purple — unknown category "ItemIcon"
+- ItemIcon_Gift_Yellow — unknown category "ItemIcon"
+- ItemIcon_Heart — unknown category "ItemIcon"
+- ItemIcon_Key_Bronze — unknown category "ItemIcon"
+- ItemIcon_Key_Gold — unknown category "ItemIcon"
+- ItemIcon_Key_Silver — unknown category "ItemIcon"
+- ItemIcon_Mail — unknown category "ItemIcon"
+- ItemIcon_Map — unknown category "ItemIcon"
+- ItemIcon_Meat — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_2 — unknown category "ItemIcon"
+- ItemIcon_Potion_Green — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple_ATK — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple_DEF — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple_HP — unknown category "ItemIcon"
+- ItemIcon_Ranking — unknown category "ItemIcon"
+- ItemIcon_Ranking_Gold — unknown category "ItemIcon"
+- ItemIcon_Scroll — unknown category "ItemIcon"
+- ItemIcon_Scroll_Feather — unknown category "ItemIcon"
+- ItemIcon_Shop — unknown category "ItemIcon"
+- ItemIcon_Skill_Attack — unknown category "ItemIcon"
+- ItemIcon_Skill_Critical — unknown category "ItemIcon"
+- ItemIcon_Skill_Damage — unknown category "ItemIcon"
+- ItemIcon_Skill_DamageEnemy — unknown category "ItemIcon"
+- ItemIcon_Skill_Defense — unknown category "ItemIcon"
+- ItemIcon_Skill_Health — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss_Red — unknown category "ItemIcon"
+- ItemIcon_Spin — unknown category "ItemIcon"
+- ItemIcon_Star — unknown category "ItemIcon"
+- ItemIcon_Star_Disable — unknown category "ItemIcon"
+- ItemIcon_Star_Rate — unknown category "ItemIcon"
+- ItemIcon_Ticket_Gold — unknown category "ItemIcon"
+- ItemIcon_Timer_Blue — unknown category "ItemIcon"
+- ItemIcon_Timer_Gold — unknown category "ItemIcon"
+- ItemIcon_Timer_Gold_gray — unknown category "ItemIcon"
+- ItemIcon_Trophy — unknown category "ItemIcon"
+- ChapterReward — fewer than 2 tokens
+- ChapterReward_Black — unknown category "ChapterReward"
+- ChapterReward_Black_Open — unknown category "ChapterReward"
+- ChapterReward_Blue — unknown category "ChapterReward"
+- ChapterReward_Blue_Open — unknown category "ChapterReward"
+- ChapterReward_Green — unknown category "ChapterReward"
+- ChapterReward_Green_Open — unknown category "ChapterReward"
+- ChapterReward_HardMode — unknown category "ChapterReward"
+- ChapterReward_Open — unknown category "ChapterReward"
+- ChapterReward_Pink — unknown category "ChapterReward"
+- ChapterReward_Pink_Open — unknown category "ChapterReward"
+- ChapterReward_Red — unknown category "ChapterReward"
+- ChapterReward_Red_Open — unknown category "ChapterReward"
+- DiamondStar — fewer than 2 tokens
+- ItemIcon_Ad — unknown category "ItemIcon"
+- ItemIcon_Badge_Clan_Sword — unknown category "ItemIcon"
+- ItemIcon_Badge_Token_Crown — unknown category "ItemIcon"
+- ItemIcon_Bag — unknown category "ItemIcon"
+- ItemIcon_Battery — unknown category "ItemIcon"
+- ItemIcon_Battle — unknown category "ItemIcon"
+- ItemIcon_Bomb — unknown category "ItemIcon"
+- ItemIcon_Book_1_Green — unknown category "ItemIcon"
+- ItemIcon_Book_1_Purple — unknown category "ItemIcon"
+- ItemIcon_Book_2_Brown — unknown category "ItemIcon"
+- ItemIcon_Calendar — unknown category "ItemIcon"
+- ItemIcon_Calendar_Gray — unknown category "ItemIcon"
+- ItemIcon_Card_1 — unknown category "ItemIcon"
+- ItemIcon_Card_2_Blue — unknown category "ItemIcon"
+- ItemIcon_Card_2_Green — unknown category "ItemIcon"
+- ItemIcon_Card_2_Purple — unknown category "ItemIcon"
+- ItemIcon_Card_2_Yellow — unknown category "ItemIcon"
+- ItemIcon_Chat — unknown category "ItemIcon"
+- ItemIcon_Chest_Gold — unknown category "ItemIcon"
+- ItemIcon_Chest_Premium — unknown category "ItemIcon"
+- ItemIcon_Chest_Silver — unknown category "ItemIcon"
+- ItemIcon_Chest_Special — unknown category "ItemIcon"
+- ItemIcon_Chest_Wood — unknown category "ItemIcon"
+- ItemIcon_Clover — unknown category "ItemIcon"
+- ItemIcon_Coin_Silver — unknown category "ItemIcon"
+- ItemIcon_Compass — unknown category "ItemIcon"
+- ItemIcon_Crown_1 — unknown category "ItemIcon"
+- ItemIcon_Crown_2 — unknown category "ItemIcon"
+- ItemIcon_Drop — unknown category "ItemIcon"
+- ItemIcon_Dungeon — unknown category "ItemIcon"
+- ItemIcon_Energy_Blue — unknown category "ItemIcon"
+- ItemIcon_Energy_Purple — unknown category "ItemIcon"
+- ItemIcon_File — unknown category "ItemIcon"
+- ItemIcon_Friend — unknown category "ItemIcon"
+- ItemIcon_GearWheel — unknown category "ItemIcon"
+- ItemIcon_Gear_Armor — unknown category "ItemIcon"
+- ItemIcon_Gear_Bow — unknown category "ItemIcon"
+- ItemIcon_Gear_Hammer — unknown category "ItemIcon"
+- ItemIcon_Gear_Helmet — unknown category "ItemIcon"
+- ItemIcon_Gear_Ring — unknown category "ItemIcon"
+- ItemIcon_Gear_Shield_Metal — unknown category "ItemIcon"
+- ItemIcon_Gear_Sword — unknown category "ItemIcon"
+- ItemIcon_Gem_Diamond_Blue — unknown category "ItemIcon"
+- ItemIcon_Gem_Triangle_Green — unknown category "ItemIcon"
+- ItemIcon_Gift_Purple — unknown category "ItemIcon"
+- ItemIcon_Gift_Yellow — unknown category "ItemIcon"
+- ItemIcon_Heart — unknown category "ItemIcon"
+- ItemIcon_Key_Bronze — unknown category "ItemIcon"
+- ItemIcon_Key_Gold — unknown category "ItemIcon"
+- ItemIcon_Key_Silver — unknown category "ItemIcon"
+- ItemIcon_Mail — unknown category "ItemIcon"
+- ItemIcon_Map — unknown category "ItemIcon"
+- ItemIcon_Meat — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_2 — unknown category "ItemIcon"
+- ItemIcon_Potion_Green — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple — unknown category "ItemIcon"
+- ItemIcon_Ranking — unknown category "ItemIcon"
+- ItemIcon_Ranking_Gold — unknown category "ItemIcon"
+- ItemIcon_Scroll — unknown category "ItemIcon"
+- ItemIcon_Scroll_Feather — unknown category "ItemIcon"
+- ItemIcon_Shop — unknown category "ItemIcon"
+- ItemIcon_Skill_Attack — unknown category "ItemIcon"
+- ItemIcon_Skill_Critical — unknown category "ItemIcon"
+- ItemIcon_Skill_Damage — unknown category "ItemIcon"
+- ItemIcon_Skill_DamageEnemy — unknown category "ItemIcon"
+- ItemIcon_Skill_Defense — unknown category "ItemIcon"
+- ItemIcon_Skill_Health — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss_Red — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss_White — unknown category "ItemIcon"
+- ItemIcon_Spin — unknown category "ItemIcon"
+- ItemIcon_Star — unknown category "ItemIcon"
+- ItemIcon_Star_2 — unknown category "ItemIcon"
+- ItemIcon_Star_Disable — unknown category "ItemIcon"
+- ItemIcon_Star_Disable_2 — unknown category "ItemIcon"
+- ItemIcon_Star_Purple — unknown category "ItemIcon"
+- ItemIcon_Star_Rate — unknown category "ItemIcon"
+- ItemIcon_Star_Rate_Disabled — unknown category "ItemIcon"
+- ItemIcon_Ticket_Gold — unknown category "ItemIcon"
+- ItemIcon_Ticket_Gold_Empty — unknown category "ItemIcon"
+- ItemIcon_Ticket_Purple_Empty — unknown category "ItemIcon"
+- ItemIcon_Ticket_Silver_Empty — unknown category "ItemIcon"
+- ItemIcon_Timer_Blue — unknown category "ItemIcon"
+- ItemIcon_Timer_Gold — unknown category "ItemIcon"
+- ItemIcon_Trophy — unknown category "ItemIcon"
+- ItemIcon_Ad — unknown category "ItemIcon"
+- ItemIcon_Badge_Clan_Sword — unknown category "ItemIcon"
+- ItemIcon_Badge_Token_Crown — unknown category "ItemIcon"
+- ItemIcon_Bag — unknown category "ItemIcon"
+- ItemIcon_Battery — unknown category "ItemIcon"
+- ItemIcon_Battle — unknown category "ItemIcon"
+- ItemIcon_Bomb — unknown category "ItemIcon"
+- ItemIcon_Book_1_Green — unknown category "ItemIcon"
+- ItemIcon_Book_1_Purple — unknown category "ItemIcon"
+- ItemIcon_Book_2_Brown — unknown category "ItemIcon"
+- ItemIcon_Calendar — unknown category "ItemIcon"
+- ItemIcon_Card_1 — unknown category "ItemIcon"
+- ItemIcon_Card_2_Blue — unknown category "ItemIcon"
+- ItemIcon_Card_2_Green — unknown category "ItemIcon"
+- ItemIcon_Card_2_Purple — unknown category "ItemIcon"
+- ItemIcon_Card_2_Yellow — unknown category "ItemIcon"
+- ItemIcon_Chat — unknown category "ItemIcon"
+- ItemIcon_Chest_Gold — unknown category "ItemIcon"
+- ItemIcon_Chest_Premium — unknown category "ItemIcon"
+- ItemIcon_Chest_Silver — unknown category "ItemIcon"
+- ItemIcon_Chest_Special — unknown category "ItemIcon"
+- ItemIcon_Chest_Wood — unknown category "ItemIcon"
+- ItemIcon_Clover — unknown category "ItemIcon"
+- ItemIcon_Coin_Gold — unknown category "ItemIcon"
+- ItemIcon_Coin_Silver — unknown category "ItemIcon"
+- ItemIcon_Compass — unknown category "ItemIcon"
+- ItemIcon_Crown_1 — unknown category "ItemIcon"
+- ItemIcon_Crown_2 — unknown category "ItemIcon"
+- ItemIcon_Drop — unknown category "ItemIcon"
+- ItemIcon_Dungeon — unknown category "ItemIcon"
+- ItemIcon_Energy_Blue — unknown category "ItemIcon"
+- ItemIcon_Energy_Purple — unknown category "ItemIcon"
+- ItemIcon_File — unknown category "ItemIcon"
+- ItemIcon_Friend — unknown category "ItemIcon"
+- ItemIcon_GearWheel — unknown category "ItemIcon"
+- ItemIcon_Gear_Armor — unknown category "ItemIcon"
+- ItemIcon_Gear_Bow — unknown category "ItemIcon"
+- ItemIcon_Gear_Hammer — unknown category "ItemIcon"
+- ItemIcon_Gear_Helmet — unknown category "ItemIcon"
+- ItemIcon_Gear_Ring — unknown category "ItemIcon"
+- ItemIcon_Gear_Shield_Metal — unknown category "ItemIcon"
+- ItemIcon_Gear_Sword — unknown category "ItemIcon"
+- ItemIcon_GemStone_Red — unknown category "ItemIcon"
+- ItemIcon_Gem_Diamond_Blue — unknown category "ItemIcon"
+- ItemIcon_Gem_Triangle_Green — unknown category "ItemIcon"
+- ItemIcon_Gift_Purple — unknown category "ItemIcon"
+- ItemIcon_Gift_Yellow — unknown category "ItemIcon"
+- ItemIcon_Heart — unknown category "ItemIcon"
+- ItemIcon_Key_Bronze — unknown category "ItemIcon"
+- ItemIcon_Key_Gold — unknown category "ItemIcon"
+- ItemIcon_Key_Silver — unknown category "ItemIcon"
+- ItemIcon_Mail — unknown category "ItemIcon"
+- ItemIcon_Map — unknown category "ItemIcon"
+- ItemIcon_Meat — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Bronze_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Gold_2 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_1 — unknown category "ItemIcon"
+- ItemIcon_Medal_Silver_2 — unknown category "ItemIcon"
+- ItemIcon_Potion_Green — unknown category "ItemIcon"
+- ItemIcon_Potion_Purple — unknown category "ItemIcon"
+- ItemIcon_Ranking — unknown category "ItemIcon"
+- ItemIcon_Ranking_Gold — unknown category "ItemIcon"
+- ItemIcon_Scroll — unknown category "ItemIcon"
+- ItemIcon_Scroll_Feather — unknown category "ItemIcon"
+- ItemIcon_Shop — unknown category "ItemIcon"
+- ItemIcon_Skill_Attack — unknown category "ItemIcon"
+- ItemIcon_Skill_Critical — unknown category "ItemIcon"
+- ItemIcon_Skill_Damage — unknown category "ItemIcon"
+- ItemIcon_Skill_DamageEnemy — unknown category "ItemIcon"
+- ItemIcon_Skill_Defense — unknown category "ItemIcon"
+- ItemIcon_Skill_Health — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss — unknown category "ItemIcon"
+- ItemIcon_Skull_Boss_Red — unknown category "ItemIcon"
+- ItemIcon_Spin — unknown category "ItemIcon"
+- ItemIcon_Star — unknown category "ItemIcon"
+- ItemIcon_Star_Disable — unknown category "ItemIcon"
+- ItemIcon_Star_Rate — unknown category "ItemIcon"
+- ItemIcon_Ticket_Gold — unknown category "ItemIcon"
+- ItemIcon_Timer_Blue — unknown category "ItemIcon"
+- ItemIcon_Timer_Gold — unknown category "ItemIcon"
+- ItemIcon_Trophy — unknown category "ItemIcon"
+- PictoIcon_Align — unknown category "PictoIcon"
+- PictoIcon_Armor — unknown category "PictoIcon"
+- PictoIcon_Arrow_Next — unknown category "PictoIcon"
+- PictoIcon_Arrow_Prev — unknown category "PictoIcon"
+- PictoIcon_Attack — unknown category "PictoIcon"
+- PictoIcon_Attack_Power — unknown category "PictoIcon"
+- PictoIcon_Back — unknown category "PictoIcon"
+- PictoIcon_Battle — unknown category "PictoIcon"
+- PictoIcon_Bell — unknown category "PictoIcon"
+- PictoIcon_Bell_Mute — unknown category "PictoIcon"
+- PictoIcon_Book — unknown category "PictoIcon"
+- PictoIcon_Boots — unknown category "PictoIcon"
+- PictoIcon_Boss — unknown category "PictoIcon"
+- PictoIcon_Bow — unknown category "PictoIcon"
+- PictoIcon_Buff — unknown category "PictoIcon"
+- PictoIcon_Card — unknown category "PictoIcon"
+- PictoIcon_Chat — unknown category "PictoIcon"
+- PictoIcon_Check — unknown category "PictoIcon"
+- PictoIcon_Critical — unknown category "PictoIcon"
+- PictoIcon_Crown — unknown category "PictoIcon"
+- PictoIcon_Defense — unknown category "PictoIcon"
+- PictoIcon_Delete — unknown category "PictoIcon"
+- PictoIcon_Earth — unknown category "PictoIcon"
+- PictoIcon_Feather — unknown category "PictoIcon"
+- PictoIcon_Fire — unknown category "PictoIcon"
+- PictoIcon_Hat — unknown category "PictoIcon"
+- PictoIcon_Health — unknown category "PictoIcon"
+- PictoIcon_Helmet_1 — unknown category "PictoIcon"
+- PictoIcon_Helmet_2 — unknown category "PictoIcon"
+- PictoIcon_Help — unknown category "PictoIcon"
+- PictoIcon_Home — unknown category "PictoIcon"
+- PictoIcon_Info — unknown category "PictoIcon"
+- PictoIcon_Key — unknown category "PictoIcon"
+- PictoIcon_Like — unknown category "PictoIcon"
+- PictoIcon_Location — unknown category "PictoIcon"
+- PictoIcon_Lock — unknown category "PictoIcon"
+- PictoIcon_Menu — unknown category "PictoIcon"
+- PictoIcon_Music — unknown category "PictoIcon"
+- PictoIcon_Music_Mute — unknown category "PictoIcon"
+- PictoIcon_Pick — unknown category "PictoIcon"
+- PictoIcon_Power — unknown category "PictoIcon"
+- PictoIcon_Ranking — unknown category "PictoIcon"
+- PictoIcon_Ring — unknown category "PictoIcon"
+- PictoIcon_Setting — unknown category "PictoIcon"
+- PictoIcon_Shield — unknown category "PictoIcon"
+- PictoIcon_Skin — unknown category "PictoIcon"
+- PictoIcon_Skull — unknown category "PictoIcon"
+- PictoIcon_Snowflake — unknown category "PictoIcon"
+- PictoIcon_Sound — unknown category "PictoIcon"
+- PictoIcon_Sound_Mute — unknown category "PictoIcon"
+- PictoIcon_Star — unknown category "PictoIcon"
+- PictoIcon_Support — unknown category "PictoIcon"
+- PictoIcon_Temple — unknown category "PictoIcon"
+- PictoIcon_Thunder — unknown category "PictoIcon"
+- PictoIcon_Timer — unknown category "PictoIcon"
+- PictoIcon_Trophy — unknown category "PictoIcon"
+- PictoIcon_Upgrade — unknown category "PictoIcon"
+- PictoIcon_Vibration — unknown category "PictoIcon"
+- PictoIcon_Warning — unknown category "PictoIcon"
+- PictoIcon_Waterdrop — unknown category "PictoIcon"
+- PictoIcon_Align — unknown category "PictoIcon"
+- PictoIcon_Armor — unknown category "PictoIcon"
+- PictoIcon_Arrow_Next — unknown category "PictoIcon"
+- PictoIcon_Arrow_Prev — unknown category "PictoIcon"
+- PictoIcon_Attack — unknown category "PictoIcon"
+- PictoIcon_Attack_Power — unknown category "PictoIcon"
+- PictoIcon_Back — unknown category "PictoIcon"
+- PictoIcon_Battle — unknown category "PictoIcon"
+- PictoIcon_Bell — unknown category "PictoIcon"
+- PictoIcon_Bell_Mute — unknown category "PictoIcon"
+- PictoIcon_Book — unknown category "PictoIcon"
+- PictoIcon_Boots — unknown category "PictoIcon"
+- PictoIcon_Boss — unknown category "PictoIcon"
+- PictoIcon_Bow — unknown category "PictoIcon"
+- PictoIcon_Buff — unknown category "PictoIcon"
+- PictoIcon_Card — unknown category "PictoIcon"
+- PictoIcon_Chat — unknown category "PictoIcon"
+- PictoIcon_Check — unknown category "PictoIcon"
+- PictoIcon_Critical — unknown category "PictoIcon"
+- PictoIcon_Crown — unknown category "PictoIcon"
+- PictoIcon_Defense — unknown category "PictoIcon"
+- PictoIcon_Delete — unknown category "PictoIcon"
+- PictoIcon_Earth — unknown category "PictoIcon"
+- PictoIcon_Feather — unknown category "PictoIcon"
+- PictoIcon_Fire — unknown category "PictoIcon"
+- PictoIcon_Hat — unknown category "PictoIcon"
+- PictoIcon_Health — unknown category "PictoIcon"
+- PictoIcon_Helmet_1 — unknown category "PictoIcon"
+- PictoIcon_Helmet_2 — unknown category "PictoIcon"
+- PictoIcon_Help — unknown category "PictoIcon"
+- PictoIcon_Home — unknown category "PictoIcon"
+- PictoIcon_Info — unknown category "PictoIcon"
+- PictoIcon_Key — unknown category "PictoIcon"
+- PictoIcon_Like — unknown category "PictoIcon"
+- PictoIcon_Location — unknown category "PictoIcon"
+- PictoIcon_Lock — unknown category "PictoIcon"
+- PictoIcon_Menu — unknown category "PictoIcon"
+- PictoIcon_Music — unknown category "PictoIcon"
+- PictoIcon_Music_Mute — unknown category "PictoIcon"
+- PictoIcon_Pick — unknown category "PictoIcon"
+- PictoIcon_Power — unknown category "PictoIcon"
+- PictoIcon_Ranking — unknown category "PictoIcon"
+- PictoIcon_Ring — unknown category "PictoIcon"
+- PictoIcon_Setting — unknown category "PictoIcon"
+- PictoIcon_Shield — unknown category "PictoIcon"
+- PictoIcon_Skin — unknown category "PictoIcon"
+- PictoIcon_Skull — unknown category "PictoIcon"
+- PictoIcon_Snowflake — unknown category "PictoIcon"
+- PictoIcon_Sound — unknown category "PictoIcon"
+- PictoIcon_Sound_Mute — unknown category "PictoIcon"
+- PictoIcon_Star — unknown category "PictoIcon"
+- PictoIcon_Support — unknown category "PictoIcon"
+- PictoIcon_Temple — unknown category "PictoIcon"
+- PictoIcon_Thunder — unknown category "PictoIcon"
+- PictoIcon_Timer — unknown category "PictoIcon"
+- PictoIcon_Trophy — unknown category "PictoIcon"
+- PictoIcon_Upgrade — unknown category "PictoIcon"
+- PictoIcon_Vibration — unknown category "PictoIcon"
+- PictoIcon_Warning — unknown category "PictoIcon"
+- PictoIcon_Waterdrop — unknown category "PictoIcon"
+- PictoIcon_Align — unknown category "PictoIcon"
+- PictoIcon_Armor — unknown category "PictoIcon"
+- PictoIcon_Arrow_Next — unknown category "PictoIcon"
+- PictoIcon_Arrow_Prev — unknown category "PictoIcon"
+- PictoIcon_Attack — unknown category "PictoIcon"
+- PictoIcon_Attack_Power — unknown category "PictoIcon"
+- PictoIcon_Back — unknown category "PictoIcon"
+- PictoIcon_Battle — unknown category "PictoIcon"
+- PictoIcon_Bell — unknown category "PictoIcon"
+- PictoIcon_Bell_Mute — unknown category "PictoIcon"
+- PictoIcon_Book — unknown category "PictoIcon"
+- PictoIcon_Boots — unknown category "PictoIcon"
+- PictoIcon_Boss — unknown category "PictoIcon"
+- PictoIcon_Bow — unknown category "PictoIcon"
+- PictoIcon_Buff — unknown category "PictoIcon"
+- PictoIcon_Card — unknown category "PictoIcon"
+- PictoIcon_Chat — unknown category "PictoIcon"
+- PictoIcon_Check — unknown category "PictoIcon"
+- PictoIcon_Critical — unknown category "PictoIcon"
+- PictoIcon_Crown — unknown category "PictoIcon"
+- PictoIcon_Defense — unknown category "PictoIcon"
+- PictoIcon_Delete — unknown category "PictoIcon"
+- PictoIcon_Earth — unknown category "PictoIcon"
+- PictoIcon_Feather — unknown category "PictoIcon"
+- PictoIcon_Fire — unknown category "PictoIcon"
+- PictoIcon_Hat — unknown category "PictoIcon"
+- PictoIcon_Health — unknown category "PictoIcon"
+- PictoIcon_Helmet_1 — unknown category "PictoIcon"
+- PictoIcon_Helmet_2 — unknown category "PictoIcon"
+- PictoIcon_Help — unknown category "PictoIcon"
+- PictoIcon_Home — unknown category "PictoIcon"
+- PictoIcon_Info — unknown category "PictoIcon"
+- PictoIcon_Key — unknown category "PictoIcon"
+- PictoIcon_Like — unknown category "PictoIcon"
+- PictoIcon_Location — unknown category "PictoIcon"
+- PictoIcon_Lock — unknown category "PictoIcon"
+- PictoIcon_Menu — unknown category "PictoIcon"
+- PictoIcon_Music — unknown category "PictoIcon"
+- PictoIcon_Music_Mute — unknown category "PictoIcon"
+- PictoIcon_Pick — unknown category "PictoIcon"
+- PictoIcon_Power — unknown category "PictoIcon"
+- PictoIcon_Ranking — unknown category "PictoIcon"
+- PictoIcon_Ring — unknown category "PictoIcon"
+- PictoIcon_Setting — unknown category "PictoIcon"
+- PictoIcon_Shield — unknown category "PictoIcon"
+- PictoIcon_Skin — unknown category "PictoIcon"
+- PictoIcon_Skull — unknown category "PictoIcon"
+- PictoIcon_Snowflake — unknown category "PictoIcon"
+- PictoIcon_Sound — unknown category "PictoIcon"
+- PictoIcon_Sound_Mute — unknown category "PictoIcon"
+- PictoIcon_Star — unknown category "PictoIcon"
+- PictoIcon_Support — unknown category "PictoIcon"
+- PictoIcon_Temple — unknown category "PictoIcon"
+- PictoIcon_Thunder — unknown category "PictoIcon"
+- PictoIcon_Timer — unknown category "PictoIcon"
+- PictoIcon_Trophy — unknown category "PictoIcon"
+- PictoIcon_Upgrade — unknown category "PictoIcon"
+- PictoIcon_Vibration — unknown category "PictoIcon"
+- PictoIcon_Warning — unknown category "PictoIcon"
+- PictoIcon_Waterdrop — unknown category "PictoIcon"
+- PictoIcon_Align — unknown category "PictoIcon"
+- PictoIcon_Armor — unknown category "PictoIcon"
+- PictoIcon_Arrow_Next — unknown category "PictoIcon"
+- PictoIcon_Arrow_Prev — unknown category "PictoIcon"
+- PictoIcon_Attack — unknown category "PictoIcon"
+- PictoIcon_Attack_Power — unknown category "PictoIcon"
+- PictoIcon_Back — unknown category "PictoIcon"
+- PictoIcon_Battle — unknown category "PictoIcon"
+- PictoIcon_Bell — unknown category "PictoIcon"
+- PictoIcon_Bell_Mute — unknown category "PictoIcon"
+- PictoIcon_Book — unknown category "PictoIcon"
+- PictoIcon_Boots — unknown category "PictoIcon"
+- PictoIcon_Boss — unknown category "PictoIcon"
+- PictoIcon_Bow — unknown category "PictoIcon"
+- PictoIcon_Buff — unknown category "PictoIcon"
+- PictoIcon_Card — unknown category "PictoIcon"
+- PictoIcon_Chat — unknown category "PictoIcon"
+- PictoIcon_Check — unknown category "PictoIcon"
+- PictoIcon_Critical — unknown category "PictoIcon"
+- PictoIcon_Crown — unknown category "PictoIcon"
+- PictoIcon_Defense — unknown category "PictoIcon"
+- PictoIcon_Delete — unknown category "PictoIcon"
+- PictoIcon_Earth — unknown category "PictoIcon"
+- PictoIcon_Feather — unknown category "PictoIcon"
+- PictoIcon_Fire — unknown category "PictoIcon"
+- PictoIcon_Hat — unknown category "PictoIcon"
+- PictoIcon_Health — unknown category "PictoIcon"
+- PictoIcon_Helmet_1 — unknown category "PictoIcon"
+- PictoIcon_Helmet_2 — unknown category "PictoIcon"
+- PictoIcon_Help — unknown category "PictoIcon"
+- PictoIcon_Home — unknown category "PictoIcon"
+- PictoIcon_Info — unknown category "PictoIcon"
+- PictoIcon_Key — unknown category "PictoIcon"
+- PictoIcon_Like — unknown category "PictoIcon"
+- PictoIcon_Location — unknown category "PictoIcon"
+- PictoIcon_Lock — unknown category "PictoIcon"
+- PictoIcon_Menu — unknown category "PictoIcon"
+- PictoIcon_Music — unknown category "PictoIcon"
+- PictoIcon_Music_Mute — unknown category "PictoIcon"
+- PictoIcon_Pick — unknown category "PictoIcon"
+- PictoIcon_Power — unknown category "PictoIcon"
+- PictoIcon_Ranking — unknown category "PictoIcon"
+- PictoIcon_Ring — unknown category "PictoIcon"
+- PictoIcon_Setting — unknown category "PictoIcon"
+- PictoIcon_Shield — unknown category "PictoIcon"
+- PictoIcon_Skin — unknown category "PictoIcon"
+- PictoIcon_Skull — unknown category "PictoIcon"
+- PictoIcon_Snowflake — unknown category "PictoIcon"
+- PictoIcon_Sound — unknown category "PictoIcon"
+- PictoIcon_Sound_Mute — unknown category "PictoIcon"
+- PictoIcon_Star — unknown category "PictoIcon"
+- PictoIcon_Support — unknown category "PictoIcon"
+- PictoIcon_Temple — unknown category "PictoIcon"
+- PictoIcon_Thunder — unknown category "PictoIcon"
+- PictoIcon_Timer — unknown category "PictoIcon"
+- PictoIcon_Trophy — unknown category "PictoIcon"
+- PictoIcon_Upgrade — unknown category "PictoIcon"
+- PictoIcon_Vibration — unknown category "PictoIcon"
+- PictoIcon_Warning — unknown category "PictoIcon"
+- PictoIcon_Waterdrop — unknown category "PictoIcon"
+- ItemIcon_Coin_Gold — unknown category "ItemIcon"
+- ShopItem_Coin_1 — unknown category "ShopItem"
+- ShopItem_Coin_2 — unknown category "ShopItem"
+- ShopItem_Coin_3 — unknown category "ShopItem"
+- ShopItem_Gem_1 — unknown category "ShopItem"
+- ShopItem_Gem_2 — unknown category "ShopItem"
+- ShopItem_Gem_3 — unknown category "ShopItem"
+- ShopItem_Gem_4 — unknown category "ShopItem"
+- ShopItem_Gem_5 — unknown category "ShopItem"
+- ShopItem_Gem_6 — unknown category "ShopItem"
+- ShopItem_SilverCoin_0 — unknown category "ShopItem"
+- ShopItem_SilverCoin_1 — unknown category "ShopItem"
+- ShopItem_SilverCoin_2 — unknown category "ShopItem"
+- ShopItem_SilverCoin_3 — unknown category "ShopItem"
+- Label_Bubble_01_Bg — token "Bg" fits no remaining slot
+- Label_Bubble_01_Light — missing required slot Part
+- Label_Bubble_01_Shadow — token "Shadow" fits no remaining slot
+- Label_Flag_01_Bg — token "Bg" fits no remaining slot
+- Label_Flag_01_Bg_Big — token "Bg" fits no remaining slot
+- Label_Grade_Octagon_Bg — token "Octagon" fits no remaining slot
+- Label_Grade_Octagon_Border — token "Octagon" fits no remaining slot
+- Label_Grade_Octagon_InnerBorder — token "Octagon" fits no remaining slot
+- Label_Grade_Rectangle_01 — token "Rectangle" fits no remaining slot
+- Label_Grade_TaperedRight_01_Bg — token "TaperedRight" fits no remaining slot
+- Label_Grade_TaperedRight_01_Bg_Sharp — token "TaperedRight" fits no remaining slot
+- Label_Grade_TaperedRight_01_Border — token "TaperedRight" fits no remaining slot
+- Label_Grade_TaperedRight_01_Border_Open — token "TaperedRight" fits no remaining slot
+- Label_Grade_TaperedRight_01_InnerBorder — token "TaperedRight" fits no remaining slot
+- Label_Grade_Tapered_01_Bg — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_01_Border — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_01_InnerBorder — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_02_Bg — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_02_Border — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_02_InnerBorder — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_03_Bg — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_03_Border — token "Tapered" fits no remaining slot
+- Label_Grade_Tapered_03_InnerBorder — token "Tapered" fits no remaining slot
+- Popup_Box_Bg — token "Bg" fits no remaining slot
+- Popup_Box_Bg_Bottom — token "Bg" fits no remaining slot
+- Popup_Box_Bg_Top — token "Bg" fits no remaining slot
+- Popup_Box_Deco1 — token "Deco1" fits no remaining slot
+- Popup_Box_Deco2 — token "Deco2" fits no remaining slot
+- Popup_Box_DecoLine1 — token "DecoLine1" fits no remaining slot
+- Popup_Box_DecoLine2 — token "DecoLine2" fits no remaining slot
+- Popup_Box_Deco_Bg — token "Deco" fits no remaining slot
+- Popup_Box_Deco_Border — token "Deco" fits no remaining slot
+- Popup_Box_Gradient_Top — token "Top" fits no remaining slot
+- Popup_Box_InnerBorder1 — token "InnerBorder1" fits no remaining slot
+- Popup_Box_InnerBorder2 — token "InnerBorder2" fits no remaining slot
+- Popup_List_VerticalLayout_Bg — token "VerticalLayout" fits no remaining slot
+- Popup_List_VerticalLayout_Border — token "VerticalLayout" fits no remaining slot
+- Popup_List_VerticalLayout_Line — token "VerticalLayout" fits no remaining slot
+- Absolute_Zero — unknown category "Absolute"
+- BasicAttack_Increase — unknown category "BasicAttack"
+- Beefcake — fewer than 2 tokens
+- Berserk — fewer than 2 tokens
+- BetterWithFriends — fewer than 2 tokens
+- Bloodlust — fewer than 2 tokens
+- Bolt — fewer than 2 tokens
+- Bolt_Mastery — unknown category "Bolt"
+- Burn_Status — unknown category "Burn"
+- Chain_Lightning — unknown category "Chain"
+- Charged_Battery — unknown category "Charged"
+- Chill_Status — unknown category "Chill"
+- Cleave — fewer than 2 tokens
+- Cleave_Mastery — unknown category "Cleave"
+- Combo_Chance — unknown category "Combo"
+- Combo_EveryTurn — unknown category "Combo"
+- Combo_Increase — unknown category "Combo"
+- Combo_Mastery — unknown category "Combo"
+- Contagion — fewer than 2 tokens
+- Counter_Attack_Chance — unknown category "Counter"
+- Counter_Attack_EveryTurn — unknown category "Counter"
+- Counter_Attack_Increase — unknown category "Counter"
+- Counter_Icicle — unknown category "Counter"
+- Counter_Mastery — unknown category "Counter"
+- CripplingCloud — fewer than 2 tokens
+- Crit_Chance — unknown category "Crit"
+- Crit_EveryTurn — unknown category "Crit"
+- Crit_Increase — unknown category "Crit"
+- Crit_Mastery — unknown category "Crit"
+- Darkside — fewer than 2 tokens
+- Darksoul — fewer than 2 tokens
+- Deadly_Fireball — unknown category "Deadly"
+- Deadly_Flames — unknown category "Deadly"
+- Deadly_Stars — unknown category "Deadly"
+- DeathLotus — fewer than 2 tokens
+- DeepVenom — fewer than 2 tokens
+- Dispel — fewer than 2 tokens
+- Dodge_Up — unknown category "Dodge"
+- Dualcast — fewer than 2 tokens
+- ElementalStars — fewer than 2 tokens
+- Energetic_100 — unknown category "Energetic"
+- Energetic_50 — unknown category "Energetic"
+- EnergizingCurrent — fewer than 2 tokens
+- EnergizingShuriken — fewer than 2 tokens
+- EnergyShield — fewer than 2 tokens
+- Energy_Siphon — unknown category "Energy"
+- EnervatingCold — fewer than 2 tokens
+- Enhance_Ult — unknown category "Enhance"
+- Enraged_Dodge — unknown category "Enraged"
+- Enraged_Recovery — unknown category "Enraged"
+- Enraged_Shield — unknown category "Enraged"
+- Enraged_Strength — unknown category "Enraged"
+- Envenom — fewer than 2 tokens
+- Executioner — fewer than 2 tokens
+- Exoplating — fewer than 2 tokens
+- Fester — fewer than 2 tokens
+- Fire_Mastery — unknown category "Fire"
+- Fire_Wave — unknown category "Fire"
+- Fire_Weapon — unknown category "Fire"
+- Fireball — fewer than 2 tokens
+- Firestarter — fewer than 2 tokens
+- Flame_Strike — unknown category "Flame"
+- Flash_Storm — unknown category "Flash"
+- Flash_Storm_Plus — unknown category "Flash"
+- Fragile_Cold — unknown category "Fragile"
+- Freezing_Cold — unknown category "Freezing"
+- Frost_Nova — unknown category "Frost"
+- Frost_Strike — unknown category "Frost"
+- Fuma_Shuriken — unknown category "Fuma"
+- Glass_Cannon — unknown category "Glass"
+- Hardened — fewer than 2 tokens
+- Heal_Shuriken — unknown category "Heal"
+- Heroism — fewer than 2 tokens
+- High_Voltage — unknown category "High"
+- Huge_Attack — unknown category "Huge"
+- Huge_Deffence — unknown category "Huge"
+- Huge_MaxHP — unknown category "Huge"
+- IceWall — fewer than 2 tokens
+- Ice_Armor — unknown category "Ice"
+- Ice_Mastery — unknown category "Ice"
+- Ice_Orb_Counter — unknown category "Ice"
+- Ice_Spikes — unknown category "Ice"
+- Ice_Weapon — unknown category "Ice"
+- Icicle — fewer than 2 tokens
+- Ignite_Orb — unknown category "Ignite"
+- Inferno — fewer than 2 tokens
+- Infinite_Battery — unknown category "Infinite"
+- LashingOut — fewer than 2 tokens
+- Licking_Wounds — unknown category "Licking"
+- Lifesteal — fewer than 2 tokens
+- Lightning_Shot — unknown category "Lightning"
+- Lightning_Weapon — unknown category "Lightning"
+- LiveWire — fewer than 2 tokens
+- Master_Fighter — unknown category "Master"
+- Meltdown — fewer than 2 tokens
+- Meteor — fewer than 2 tokens
+- Opening_Strike — unknown category "Opening"
+- Opportunist — fewer than 2 tokens
+- Outbreak — fewer than 2 tokens
+- Poison_Cloud — unknown category "Poison"
+- Poison_Mastery — unknown category "Poison"
+- Poison_Shuriken — unknown category "Poison"
+- Poison_Status — unknown category "Poison"
+- Poison_Strike — unknown category "Poison"
+- Pyromania — fewer than 2 tokens
+- Quick_Throw — unknown category "Quick"
+- Ramping_Defense — unknown category "Ramping"
+- Ramping_Power — unknown category "Ramping"
+- Recovery — fewer than 2 tokens
+- Repeated_Bolt — unknown category "Repeated"
+- Resurrection — fewer than 2 tokens
+- Shadow_Dodge — unknown category "Shadow"
+- Shadow_Partner — unknown category "Shadow"
+- Shield_Strike — unknown category "Shield"
+- Shuriken — fewer than 2 tokens
+- Shuriken_Mastery — unknown category "Shuriken"
+- SlowButSteady — fewer than 2 tokens
+- Sneaky_Poison — unknown category "Sneaky"
+- SpecialExperiment — fewer than 2 tokens
+- Spirit_Shuriken — unknown category "Spirit"
+- Steel_Cyclone — unknown category "Steel"
+- SuperFlash — fewer than 2 tokens
+- ThrillofBattle — fewer than 2 tokens
+- ThunderGod — fewer than 2 tokens
+- Thunderstorm — fewer than 2 tokens
+- Ult_Bolt — unknown category "Ult"
+- Ult_Cleave — unknown category "Ult"
+- Ult_Fireball — unknown category "Ult"
+- Ult_Mastery — unknown category "Ult"
+- Ult_Poison — unknown category "Ult"
+- Ult_lcicle — unknown category "Ult"
+- UltimateResistance — fewer than 2 tokens
+- Ultimate_Lightning_Orb — unknown category "Ultimate"
+- Ultimate_Shield — unknown category "Ultimate"
+- Undying — fewer than 2 tokens
+- Warrior — fewer than 2 tokens
+- Wizard — fewer than 2 tokens
+- WoundMastery — fewer than 2 tokens
+- Wound_Shuriken — unknown category "Wound"
+- Wound_Status — unknown category "Wound"
+- Wound_Strike — unknown category "Wound"
+- affliction_affection — unknown category "affliction"
+- Slider_BorderDeco_Tapered_01_Border — token "Tapered" fits no remaining slot
+- Slider_BorderDeco_Tapered_01_BorderDeco — token "Tapered" fits no remaining slot
+- Slider_BorderDeco_Tapered_01_Fill — token "Tapered" fits no remaining slot
+- Slider_Border_Rectangle_01_Bg — subtype "Border" collides with a vocabulary value
+- Slider_Border_Rectangle_01_Border — subtype "Border" collides with a vocabulary value
+- Slider_Border_Rectangle_01_Fill_Blue — subtype "Border" collides with a vocabulary value
+- Slider_Border_Rectangle_01_Fill_White — subtype "Border" collides with a vocabulary value
+- Slider_Border_Rectangle_01_Fill_Yellow — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Bg — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Border — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Blue — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Brown — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Green — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Mint — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_OffWhite — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Orange — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Plum — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Purple — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Red — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Sky — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Wine — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_01_Fill_Yellow — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Bg — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Border — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Blue — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Brown — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Green — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Mint — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Orange — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Plum — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Purple — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Red — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Sky — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Wine — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_Fill_Yellow — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_OffWhite 1 — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_02_OffWhite — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_03_Border — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_03_Fill — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_03_FillArea — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_03_InnerBorder — subtype "Border" collides with a vocabulary value
+- Slider_Border_Tapered_03_Point — subtype "Border" collides with a vocabulary value
+- Slider_Handle_01_Bg — token "Bg" fits no remaining slot
+- Slider_Handle_01_Handle — token "Handle" fits no remaining slot
+- Slider_Icon_01_Bg — token "Bg" fits no remaining slot
+- Slider_Icon_01_Icon — token "Icon" fits no remaining slot
+- Slider_Level_01_Bg — subtype "Level" collides with a vocabulary value
+- Slider_Level_01_Border — subtype "Level" collides with a vocabulary value
+- Slider_Level_01_Fill_Purple — subtype "Level" collides with a vocabulary value
+- Slider_Level_01_Fill_White_Bg — subtype "Level" collides with a vocabulary value
+- Slider_Level_01_Fill_White_Light — subtype "Level" collides with a vocabulary value
+- Slider_Level_01_Level — subtype "Level" collides with a vocabulary value
+- Slider_Level_02_Bg — subtype "Level" collides with a vocabulary value
+- Slider_Level_02_Border — subtype "Level" collides with a vocabulary value
+- Slider_Level_02_FillArea — subtype "Level" collides with a vocabulary value
+- Slider_Level_02_Fill_Yellow — subtype "Level" collides with a vocabulary value
+- Slider_Level_02_Level — subtype "Level" collides with a vocabulary value
+- Slider_Level_03_Bg — subtype "Level" collides with a vocabulary value
+- Slider_Level_03_Border — subtype "Level" collides with a vocabulary value
+- Slider_Level_03_Fill_Blue — subtype "Level" collides with a vocabulary value
+- Slider_Level_03_InnerBorder — subtype "Level" collides with a vocabulary value
+- Slider_Level_03_Level — subtype "Level" collides with a vocabulary value
+- Slider_Play_01_Bg — token "Bg" fits no remaining slot
+- Slider_Play_01_FillArea — token "FillArea" fits no remaining slot
+- Slider_Play_02_Bg — token "Bg" fits no remaining slot
+- Slider_Play_02_BorderDeco — token "BorderDeco" fits no remaining slot
+- Slider_Play_03_Bg — token "Bg" fits no remaining slot
+- Slider_Play_04_Bg — token "Bg" fits no remaining slot
+- Slider_StageVertical_01_Icon_Lock — token "Icon" fits no remaining slot
+- Slider_StageVertical_01_Point_Bg — token "Point" fits no remaining slot
+- Slider_StageVertical_01_Point_Border — token "Point" fits no remaining slot
+- Slider_StageVertical_01_Point_InnerBg — token "Point" fits no remaining slot
+- Slider_StageVertical_01_Point_InnerBorder — token "Point" fits no remaining slot
+- Slider_StageVertical_02_Bg — token "Bg" fits no remaining slot
+- Slider_StageVertical_02_BgLeft — token "BgLeft" fits no remaining slot
+- Slider_StageVertical_02_BgRight — token "BgRight" fits no remaining slot
+- Slider_StageVertical_02_FillBorder — token "FillBorder" fits no remaining slot
+- Slider_StageVertical_02_PointDeco_Left — token "PointDeco" fits no remaining slot
+- Slider_StageVertical_02_PointDeco_Right — token "PointDeco" fits no remaining slot
+- Slider_Wave_01_Icon — token "Icon" fits no remaining slot
+- Slider_Wave_01_Point1_Bg — token "Point1" fits no remaining slot
+- Slider_Wave_01_Point1_Border — token "Point1" fits no remaining slot
+- Slider_Wave_01_Point2_Bg — token "Point2" fits no remaining slot
+- Slider_Wave_01_Point2_Border — token "Point2" fits no remaining slot
+- Slider_Wave_01_Point2_BorderGlow — token "Point2" fits no remaining slot
+- Slider_Wave_01_bg — token "bg" fits no remaining slot
+- Slider_Wave_01_border — token "border" fits no remaining slot
+- Alert_Diamond_Single_Green — unknown category "Alert"
+- Alert_Diamond_Single_Red — unknown category "Alert"
+- Alert_Diamond_White_Bg — unknown category "Alert"
+- Alert_Diamond_White_Border — unknown category "Alert"
+- Alert_Diamond_White_InnerBorder — unknown category "Alert"
+- Alert_Dot_Green — unknown category "Alert"
+- Alert_Dot_Red — unknown category "Alert"
+- Badge_Value_01_Blue — unknown category "Badge"
+- Badge_Value_01_Red — unknown category "Badge"
+- Badge_Value_02 — unknown category "Badge"
+- Grade_Gem_Bg — unknown category "Grade"
+- Grade_Gem_Purple — unknown category "Grade"
+- Grade_Gem_Yellow — unknown category "Grade"
+- Grade_Star — unknown category "Grade"
+- InputField_01_Bg — unknown category "InputField"
+- InputField_01_Border — unknown category "InputField"
+- InputField_02_Bg — unknown category "InputField"
+- InputField_02_Icon_Emoji — unknown category "InputField"
+- ItemIcon_Energy_Blue — unknown category "ItemIcon"
+- ItemIcon_Gem_Diamond_Purple — unknown category "ItemIcon"
+- Joystick_Direction_Bg — unknown category "Joystick"
+- Joystick_Direction_Focus — unknown category "Joystick"
+- Joystick_Direction_Handle — unknown category "Joystick"
+- Loading_Circle_1 — unknown category "Loading"
+- Loading_Circle_10 — unknown category "Loading"
+- Loading_Circle_11 — unknown category "Loading"
+- Loading_Circle_12 — unknown category "Loading"
+- Loading_Circle_2 — unknown category "Loading"
+- Loading_Circle_3 — unknown category "Loading"
+- Loading_Circle_4 — unknown category "Loading"
+- Loading_Circle_5 — unknown category "Loading"
+- Loading_Circle_6 — unknown category "Loading"
+- Loading_Circle_7 — unknown category "Loading"
+- Loading_Circle_8 — unknown category "Loading"
+- Loading_Circle_9 — unknown category "Loading"
+- ResourceBar_01_Coin — unknown category "ResourceBar"
+- ResourceBar_01_Energy — unknown category "ResourceBar"
+- ResourceBar_01_Gem_Blue — unknown category "ResourceBar"
+- ResourceBar_01_Gem_Green — unknown category "ResourceBar"
+- ResourceBar_01_Single_Add_Bg — unknown category "ResourceBar"
+- ResourceBar_01_Single_Add_Icon — unknown category "ResourceBar"
+- ResourceBar_01_White_Add_Bg — unknown category "ResourceBar"
+- ResourceBar_01_White_Add_Border — unknown category "ResourceBar"
+- ResourceBar_01_White_Add_Icon — unknown category "ResourceBar"
+- ResourceBar_01_White_Add_IconBorder — unknown category "ResourceBar"
+- ResourceBar_01_White_Add_InnerBorder — unknown category "ResourceBar"
+- ResourceBar_01_White_Bg — unknown category "ResourceBar"
+- Roulette_Bg — unknown category "Roulette"
+- Roulette_Border — unknown category "Roulette"
+- Roulette_Center_Bg — unknown category "Roulette"
+- Roulette_Center_Icon — unknown category "Roulette"
+- Roulette_Focus — unknown category "Roulette"
+- Roulette_Focus_Arrow — unknown category "Roulette"
+- Roulette_Pocket — unknown category "Roulette"
+- StatusBar_Bg_Rectangle_01 — unknown category "StatusBar"
+- StatusBar_Bg_Rectangle_02 — unknown category "StatusBar"
+- StatusBar_Bg_TaperedRight_l — unknown category "StatusBar"
+- StatusBar_Bg_TaperedRight_s — unknown category "StatusBar"
+- StatusBar_Icon_Boss — unknown category "StatusBar"
+- StatusBar_Icon_Timer — unknown category "StatusBar"
+- StatusBar_Icon_Trophy — unknown category "StatusBar"
+- Switch_01_Bg — unknown category "Switch"
+- Switch_01_Fill_Off — unknown category "Switch"
+- Switch_01_Fill_On_Green — unknown category "Switch"
+- Switch_01_Handle — unknown category "Switch"
+- ToastMessage_01_Line — unknown category "ToastMessage"
+- ToastMessage_02_CenterBg — unknown category "ToastMessage"
+- ToastMessage_02_CenterIcon — unknown category "ToastMessage"
+- ToastMessage_02_Line — unknown category "ToastMessage"
+- Tutorial_Focus — unknown category "Tutorial"
+- Tutorial_Hand — unknown category "Tutorial"
+
+### extension-case (302)
+- Button_01_Mian_s_Bg_Blue — .Png
+- Button_01_Mian_s_Bg_Brown — .Png
+- Button_01_Mian_s_Bg_Dark — .Png
+- Button_01_Mian_s_Bg_Gray — .Png
+- Button_01_Mian_s_Bg_Green — .Png
+- Button_01_Mian_s_Bg_Mint — .Png
+- Button_01_Mian_s_Bg_Navy — .Png
+- Button_01_Mian_s_Bg_Orange — .Png
+- Button_01_Mian_s_Bg_Pink — .Png
+- Button_01_Mian_s_Bg_Plum — .Png
+- Button_01_Mian_s_Bg_Purple — .Png
+- Button_01_Mian_s_Bg_Red — .Png
+- Button_01_Mian_s_Bg_Sky — .Png
+- Button_01_Mian_s_Bg_White — .Png
+- Button_01_Mian_s_Bg_White_Half — .Png
+- Button_01_Mian_s_Bg_Yellow — .Png
+- PictoIcon_Align — .Png
+- PictoIcon_Armor — .Png
+- PictoIcon_Arrow_Next — .Png
+- PictoIcon_Arrow_Prev — .Png
+- PictoIcon_Attack — .Png
+- PictoIcon_Attack_Power — .Png
+- PictoIcon_Back — .Png
+- PictoIcon_Battle — .Png
+- PictoIcon_Bell — .Png
+- PictoIcon_Bell_Mute — .Png
+- PictoIcon_Book — .Png
+- PictoIcon_Boots — .Png
+- PictoIcon_Boss — .Png
+- PictoIcon_Bow — .Png
+- PictoIcon_Buff — .Png
+- PictoIcon_Card — .Png
+- PictoIcon_Chat — .Png
+- PictoIcon_Check — .Png
+- PictoIcon_Critical — .Png
+- PictoIcon_Crown — .Png
+- PictoIcon_Defense — .Png
+- PictoIcon_Delete — .Png
+- PictoIcon_Earth — .Png
+- PictoIcon_Feather — .Png
+- PictoIcon_Fire — .Png
+- PictoIcon_Hat — .Png
+- PictoIcon_Health — .Png
+- PictoIcon_Helmet_1 — .Png
+- PictoIcon_Helmet_2 — .Png
+- PictoIcon_Help — .Png
+- PictoIcon_Home — .Png
+- PictoIcon_Info — .Png
+- PictoIcon_Key — .Png
+- PictoIcon_Like — .Png
+- PictoIcon_Location — .Png
+- PictoIcon_Lock — .Png
+- PictoIcon_Menu — .Png
+- PictoIcon_Music — .Png
+- PictoIcon_Music_Mute — .Png
+- PictoIcon_Pick — .Png
+- PictoIcon_Power — .Png
+- PictoIcon_Ranking — .Png
+- PictoIcon_Ring — .Png
+- PictoIcon_Setting — .Png
+- PictoIcon_Shield — .Png
+- PictoIcon_Skin — .Png
+- PictoIcon_Skull — .Png
+- PictoIcon_Snowflake — .Png
+- PictoIcon_Sound — .Png
+- PictoIcon_Sound_Mute — .Png
+- PictoIcon_Star — .Png
+- PictoIcon_Support — .Png
+- PictoIcon_Temple — .Png
+- PictoIcon_Thunder — .Png
+- PictoIcon_Timer — .Png
+- PictoIcon_Trophy — .Png
+- PictoIcon_Upgrade — .Png
+- PictoIcon_Vibration — .Png
+- PictoIcon_Warning — .Png
+- PictoIcon_Waterdrop — .Png
+- PictoIcon_Align — .Png
+- PictoIcon_Armor — .Png
+- PictoIcon_Arrow_Next — .Png
+- PictoIcon_Arrow_Prev — .Png
+- PictoIcon_Attack — .Png
+- PictoIcon_Attack_Power — .Png
+- PictoIcon_Back — .Png
+- PictoIcon_Battle — .Png
+- PictoIcon_Bell — .Png
+- PictoIcon_Bell_Mute — .Png
+- PictoIcon_Book — .Png
+- PictoIcon_Boots — .Png
+- PictoIcon_Boss — .Png
+- PictoIcon_Bow — .Png
+- PictoIcon_Buff — .Png
+- PictoIcon_Card — .Png
+- PictoIcon_Chat — .Png
+- PictoIcon_Check — .Png
+- PictoIcon_Critical — .Png
+- PictoIcon_Crown — .Png
+- PictoIcon_Defense — .Png
+- PictoIcon_Delete — .Png
+- PictoIcon_Earth — .Png
+- PictoIcon_Feather — .Png
+- PictoIcon_Fire — .Png
+- PictoIcon_Hat — .Png
+- PictoIcon_Health — .Png
+- PictoIcon_Helmet_1 — .Png
+- PictoIcon_Helmet_2 — .Png
+- PictoIcon_Help — .Png
+- PictoIcon_Home — .Png
+- PictoIcon_Info — .Png
+- PictoIcon_Key — .Png
+- PictoIcon_Like — .Png
+- PictoIcon_Location — .Png
+- PictoIcon_Lock — .Png
+- PictoIcon_Menu — .Png
+- PictoIcon_Music — .Png
+- PictoIcon_Music_Mute — .Png
+- PictoIcon_Pick — .Png
+- PictoIcon_Power — .Png
+- PictoIcon_Ranking — .Png
+- PictoIcon_Ring — .Png
+- PictoIcon_Setting — .Png
+- PictoIcon_Shield — .Png
+- PictoIcon_Skin — .Png
+- PictoIcon_Skull — .Png
+- PictoIcon_Snowflake — .Png
+- PictoIcon_Sound — .Png
+- PictoIcon_Sound_Mute — .Png
+- PictoIcon_Star — .Png
+- PictoIcon_Support — .Png
+- PictoIcon_Temple — .Png
+- PictoIcon_Thunder — .Png
+- PictoIcon_Timer — .Png
+- PictoIcon_Trophy — .Png
+- PictoIcon_Upgrade — .Png
+- PictoIcon_Vibration — .Png
+- PictoIcon_Warning — .Png
+- PictoIcon_Waterdrop — .Png
+- PictoIcon_Align — .Png
+- PictoIcon_Armor — .Png
+- PictoIcon_Arrow_Next — .Png
+- PictoIcon_Arrow_Prev — .Png
+- PictoIcon_Attack — .Png
+- PictoIcon_Attack_Power — .Png
+- PictoIcon_Back — .Png
+- PictoIcon_Battle — .Png
+- PictoIcon_Bell — .Png
+- PictoIcon_Bell_Mute — .Png
+- PictoIcon_Book — .Png
+- PictoIcon_Boots — .Png
+- PictoIcon_Boss — .Png
+- PictoIcon_Bow — .Png
+- PictoIcon_Buff — .Png
+- PictoIcon_Card — .Png
+- PictoIcon_Chat — .Png
+- PictoIcon_Check — .Png
+- PictoIcon_Critical — .Png
+- PictoIcon_Crown — .Png
+- PictoIcon_Defense — .Png
+- PictoIcon_Delete — .Png
+- PictoIcon_Earth — .Png
+- PictoIcon_Feather — .Png
+- PictoIcon_Fire — .Png
+- PictoIcon_Hat — .Png
+- PictoIcon_Health — .Png
+- PictoIcon_Helmet_1 — .Png
+- PictoIcon_Helmet_2 — .Png
+- PictoIcon_Help — .Png
+- PictoIcon_Home — .Png
+- PictoIcon_Info — .Png
+- PictoIcon_Key — .Png
+- PictoIcon_Like — .Png
+- PictoIcon_Location — .Png
+- PictoIcon_Lock — .Png
+- PictoIcon_Menu — .Png
+- PictoIcon_Music — .Png
+- PictoIcon_Music_Mute — .Png
+- PictoIcon_Pick — .Png
+- PictoIcon_Power — .Png
+- PictoIcon_Ranking — .Png
+- PictoIcon_Ring — .Png
+- PictoIcon_Setting — .Png
+- PictoIcon_Shield — .Png
+- PictoIcon_Skin — .Png
+- PictoIcon_Skull — .Png
+- PictoIcon_Snowflake — .Png
+- PictoIcon_Sound — .Png
+- PictoIcon_Sound_Mute — .Png
+- PictoIcon_Star — .Png
+- PictoIcon_Support — .Png
+- PictoIcon_Temple — .Png
+- PictoIcon_Thunder — .Png
+- PictoIcon_Timer — .Png
+- PictoIcon_Trophy — .Png
+- PictoIcon_Upgrade — .Png
+- PictoIcon_Vibration — .Png
+- PictoIcon_Warning — .Png
+- PictoIcon_Waterdrop — .Png
+- PictoIcon_Align — .Png
+- PictoIcon_Armor — .Png
+- PictoIcon_Arrow_Next — .Png
+- PictoIcon_Arrow_Prev — .Png
+- PictoIcon_Attack — .Png
+- PictoIcon_Attack_Power — .Png
+- PictoIcon_Back — .Png
+- PictoIcon_Battle — .Png
+- PictoIcon_Bell — .Png
+- PictoIcon_Bell_Mute — .Png
+- PictoIcon_Book — .Png
+- PictoIcon_Boots — .Png
+- PictoIcon_Boss — .Png
+- PictoIcon_Bow — .Png
+- PictoIcon_Buff — .Png
+- PictoIcon_Card — .Png
+- PictoIcon_Chat — .Png
+- PictoIcon_Check — .Png
+- PictoIcon_Critical — .Png
+- PictoIcon_Crown — .Png
+- PictoIcon_Defense — .Png
+- PictoIcon_Delete — .Png
+- PictoIcon_Earth — .Png
+- PictoIcon_Feather — .Png
+- PictoIcon_Fire — .Png
+- PictoIcon_Hat — .Png
+- PictoIcon_Health — .Png
+- PictoIcon_Helmet_1 — .Png
+- PictoIcon_Helmet_2 — .Png
+- PictoIcon_Help — .Png
+- PictoIcon_Home — .Png
+- PictoIcon_Info — .Png
+- PictoIcon_Key — .Png
+- PictoIcon_Like — .Png
+- PictoIcon_Location — .Png
+- PictoIcon_Lock — .Png
+- PictoIcon_Menu — .Png
+- PictoIcon_Music — .Png
+- PictoIcon_Music_Mute — .Png
+- PictoIcon_Pick — .Png
+- PictoIcon_Power — .Png
+- PictoIcon_Ranking — .Png
+- PictoIcon_Ring — .Png
+- PictoIcon_Setting — .Png
+- PictoIcon_Shield — .Png
+- PictoIcon_Skin — .Png
+- PictoIcon_Skull — .Png
+- PictoIcon_Snowflake — .Png
+- PictoIcon_Sound — .Png
+- PictoIcon_Sound_Mute — .Png
+- PictoIcon_Star — .Png
+- PictoIcon_Support — .Png
+- PictoIcon_Temple — .Png
+- PictoIcon_Thunder — .Png
+- PictoIcon_Timer — .Png
+- PictoIcon_Trophy — .Png
+- PictoIcon_Upgrade — .Png
+- PictoIcon_Vibration — .Png
+- PictoIcon_Warning — .Png
+- PictoIcon_Waterdrop — .Png
+- Slider_Border_Tapered_02_Fill_Blue — .Png
+- Slider_Border_Tapered_02_Fill_Brown — .Png
+- Slider_Border_Tapered_02_Fill_Green — .Png
+- Slider_Border_Tapered_02_Fill_Mint — .Png
+- Slider_Border_Tapered_02_Fill_Orange — .Png
+- Slider_Border_Tapered_02_Fill_Plum — .Png
+- Slider_Border_Tapered_02_Fill_Purple — .Png
+- Slider_Border_Tapered_02_Fill_Red — .Png
+- Slider_Border_Tapered_02_Fill_Sky — .Png
+- Slider_Border_Tapered_02_Fill_Wine — .Png
+- Slider_Border_Tapered_02_Fill_Yellow — .Png
+- Slider_Border_Tapered_02_OffWhite 1 — .Png
+- Slider_Border_Tapered_02_OffWhite — .Png
+- Title_Flag_01_Blue — .Png
+- Title_Flag_01_Brown — .Png
+- Title_Flag_01_Green — .Png
+- Title_Flag_01_Orange — .Png
+- Title_Flag_01_Plum — .Png
+- Title_Flag_01_Purple — .Png
+- Title_Flag_01_Red — .Png
+- Title_Flag_01_Sky — .Png
+- Title_Flag_01_Wine — .Png
+- Title_Flag_01_Yellow — .Png
+- Title_Ribbon_01_Brown — .Png
+- Title_Ribbon_01_Green — .Png
+- Title_Ribbon_01_Mint — .Png
+- Title_Ribbon_01_Orange — .Png
+- Title_Ribbon_01_Plum — .Png
+- Title_Ribbon_01_Purple — .Png
+- Title_Ribbon_01_Red — .Png
+- Title_Ribbon_01_Sky — .Png
+- Title_Ribbon_01_Wine — .Png
+- Title_Ribbon_01_Yellow — .Png
+- Title_Ribbon_02_Blue — .Png
+- Title_Ribbon_02_Brown — .Png
+- Title_Ribbon_02_Green — .Png
+- Title_Ribbon_02_Mint — .Png
+- Title_Ribbon_02_Orange — .Png
+- Title_Ribbon_02_Plum — .Png
+- Title_Ribbon_02_Purple — .Png
+- Title_Ribbon_02_Red — .Png
+- Title_Ribbon_02_Sky — .Png
+- Title_Ribbon_02_Wine — .Png
+- Title_Ribbon_02_Yellow — .Png
+- ItemIcon_Energy_Blue — .Png
+- ItemIcon_Gem_Diamond_Purple — .Png
+
+### duplicate (6)
+- Tab_BottomFlush_02_White_Deco — same as Tab_Middle_01_White_Deco
+- Tab_BottomFlush_02_White_Glow — same as Tab_Middle_01_White_Glow
+- Tab_Middle_01_White_Deco — same as Tab_BottomFlush_02_White_Deco
+- Tab_Middle_01_White_Glow — same as Tab_BottomFlush_02_White_Glow
+- StageFrame_01_BorderGlow — same as StageFrame_01_Focus_Glow
+- StageFrame_01_Focus_Glow — same as StageFrame_01_BorderGlow
+
+### no-alpha (2)
+- Slider_Border_Tapered_02_OffWhite 1 — opaque / no alpha
+- Slider_Level_02_Fill_Yellow — opaque / no alpha
+

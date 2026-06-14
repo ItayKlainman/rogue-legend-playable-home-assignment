@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d3dc21f9cf4205b0e6273ce043e6c5, type: 3}
+  m_Name: Fester
+  m_EditorClassIdentifier: 
+  _name:
+    _sourceText: Fester
+    _customKey: 
+    _assignedKey: <AUTO>so_equipment_weapon_serrated_edge_EquipSkill_Mythic__name
+  <Description>k__BackingField:
+    _sourceText: When you use your 'Ultimate', trigger 'Fester', dealing 'bonus damage'
+      that scales with the amount of 'Poison' stacks the enemy has.
+    _customKey: 
+    _assignedKey: <AUTO>so_Fester__Description_k_BackingField
+  <ShortDescription>k__BackingField:
+    _sourceText: 
+    _customKey: 
+    _assignedKey: 
+  <Icon>k__BackingField: {fileID: 21300000, guid: f04a2c5d96fbb6642b7e291b17b2308c,
+    type: 3}
+  <Rarity>k__BackingField: 4
+  <Category>k__BackingField: 101
+  <WeaponVFXKey>k__BackingField: 
+  <Order>k__BackingField: 0
+  <CannotBeLearnedFromLevelUp>k__BackingField: 0
+  <RequiresSkillTreeUnlock>k__BackingField: 0
+  <IsHidden>k__BackingField: 0
+  <BypassesLearnChecks>k__BackingField: 0
+  <RequiresPets>k__BackingField: 0
+  <UpgradedVersion>k__BackingField: {fileID: 0}
+  <BaseVersion>k__BackingField: {fileID: 0}
+  <RequiredSkills>k__BackingField: []
+  <LockedBySkills>k__BackingField: []
+  <RequiredCategories>k__BackingField:
+    _serializedList:
+    - Key: 101
+      Value: 2
+  <StatChangesOnSkillLearned>k__BackingField:
+    SkillsToLearn: []
+    SkillEvolutions: []
+    MainStatChanges:
+      _serializedList: []
+    OffensiveMultiplierChanges:
+      _serializedList: []
+    DefensiveMultiplierChanges:
+      _serializedList: []
+    BattleActionBonusUsesChanges:
+      _serializedList: []
+    BattleActionBonusUseProbability:
+      _serializedList: []
+    StatusEffectBonusApplicationChanceMultChanges:
+      _serializedList: []
+    StatusEffectBonusMaxStacksChanges:
+      _serializedList: []
+    StatusEffectBonusStacksAppliedChanges:
+      _serializedList: []
+    BonusDamageMultipliersByStatusEffectChanges:
+      _serializedList: []
+    BonusCritChanceByStatusEffectChanges:
+      _serializedList: []
+    BonusDamageMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelAndDamageCategoryChanges:
+      _serializedList: []
+    ReplacementBattleActionChanges:
+      _serializedList: []
+    BattleActionCooldownReductionChanges:
+      _serializedList: []
+    StatusEffectImmunityChanges: []
+    PetDamageBonusChanges:
+      _serializedList: []
+    CategoryCritChanceBonusChanges:
+      _serializedList: []
+    PetAttackDelayReduction: 0
+    PvPBonusChanges:
+      ATKMult: 0
+      DEFMult: 0
+      HPMult: 0
+      DamageReduction: 0
+    MountDamageBonusChanges:
+      _serializedList: []
+    MountHPBonusChanges:
+      _serializedList: []
+    SentinelDamageBonusChanges:
+      _serializedList: []
+    PetDamageBonusByRarityChanges:
+      _serializedList: []
+  <GeneralPlayerModifierChangesOnSkillLearned>k__BackingField:
+    BonusEXPModifiersChangesByEnemyType:
+      _serializedList: []
+    BonusSilverModifiersChangesBySource:
+      _serializedList: []
+    AdditionalSkillRerolls: 0
+    AdditionalLegendarySkillRate: 0
+  <SkillEffects>k__BackingField:
+  - <TriggerConditions>k__BackingField:
+    - rid: 2696705430928228381
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: d59368b4019b94b41802b8e2865d6906,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 100
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  <CustomBehaviour>k__BackingField:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2696705430928228381
+      type: {class: SkillEffectBattleActionCategoryCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActionCategories: 0
+        <TriggeredByActionCategory>k__BackingField: 5
+        <TriggeredByActionCategories>k__BackingField: 
+        ActivateOnStep: 5
+        TriggerEvenWhenMiss: 0
+        <ExclusionSet>k__BackingField: []
+        <EveryXTimes>k__BackingField: 1

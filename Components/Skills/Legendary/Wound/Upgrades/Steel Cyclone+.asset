@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d3dc21f9cf4205b0e6273ce043e6c5, type: 3}
+  m_Name: Steel Cyclone+
+  m_EditorClassIdentifier: 
+  _name:
+    _sourceText: Steel Cyclone
+    _customKey: 
+    _assignedKey: <AUTO>so_Steel_Cyclone__name
+  <Description>k__BackingField:
+    _sourceText: After using 'Cleave' 3 | !2! times, use 'Steel Cyclone', dealing
+      damage to all enemies.
+    _customKey: 
+    _assignedKey: <AUTO>so_Steel_Cyclone__Description_k_BackingField
+  <ShortDescription>k__BackingField:
+    _sourceText: 
+    _customKey: 
+    _assignedKey: 
+  <Icon>k__BackingField: {fileID: 21300000, guid: 0c366acb2025d2f4d9f8464dd01f55bb,
+    type: 3}
+  <Rarity>k__BackingField: 4
+  <Category>k__BackingField: 100
+  <WeaponVFXKey>k__BackingField: 
+  <Order>k__BackingField: 0
+  <CannotBeLearnedFromLevelUp>k__BackingField: 0
+  <RequiresSkillTreeUnlock>k__BackingField: 0
+  <IsHidden>k__BackingField: 0
+  <BypassesLearnChecks>k__BackingField: 0
+  <RequiresPets>k__BackingField: 0
+  <UpgradedVersion>k__BackingField: {fileID: 0}
+  <BaseVersion>k__BackingField: {fileID: 11400000, guid: 90e3c939e6bd970429d070784ca36b13,
+    type: 2}
+  <RequiredSkills>k__BackingField: []
+  <LockedBySkills>k__BackingField: []
+  <RequiredCategories>k__BackingField:
+    _serializedList: []
+  <StatChangesOnSkillLearned>k__BackingField:
+    SkillsToLearn: []
+    SkillEvolutions: []
+    MainStatChanges:
+      _serializedList: []
+    OffensiveMultiplierChanges:
+      _serializedList: []
+    DefensiveMultiplierChanges:
+      _serializedList: []
+    BattleActionBonusUsesChanges:
+      _serializedList: []
+    BattleActionBonusUseProbability:
+      _serializedList: []
+    StatusEffectBonusApplicationChanceMultChanges:
+      _serializedList: []
+    StatusEffectBonusMaxStacksChanges:
+      _serializedList: []
+    StatusEffectBonusStacksAppliedChanges:
+      _serializedList: []
+    BonusDamageMultipliersByStatusEffectChanges:
+      _serializedList: []
+    BonusCritChanceByStatusEffectChanges:
+      _serializedList: []
+    BonusDamageMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelAndDamageCategoryChanges:
+      _serializedList: []
+    ReplacementBattleActionChanges:
+      _serializedList: []
+    BattleActionCooldownReductionChanges:
+      _serializedList: []
+    StatusEffectImmunityChanges: []
+    PetDamageBonusChanges:
+      _serializedList: []
+    CategoryCritChanceBonusChanges:
+      _serializedList: []
+    PetAttackDelayReduction: 0
+    PvPBonusChanges:
+      ATKMult: 0
+      DEFMult: 0
+      HPMult: 0
+      DamageReduction: 0
+    MountDamageBonusChanges:
+      _serializedList: []
+    MountHPBonusChanges:
+      _serializedList: []
+    SentinelDamageBonusChanges:
+      _serializedList: []
+    PetDamageBonusByRarityChanges:
+      _serializedList: []
+  <GeneralPlayerModifierChangesOnSkillLearned>k__BackingField:
+    BonusEXPModifiersChangesByEnemyType:
+      _serializedList: []
+    BonusSilverModifiersChangesBySource:
+      _serializedList: []
+    AdditionalSkillRerolls: 0
+    AdditionalLegendarySkillRate: 0
+  <SkillEffects>k__BackingField:
+  - <TriggerConditions>k__BackingField:
+    - rid: 2696705430928228385
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: f9749d5c8401d0641b9a49ab215c6371,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 100
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  - <TriggerConditions>k__BackingField:
+    - rid: 596533760825229497
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: f9749d5c8401d0641b9a49ab215c6371,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 100
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  <CustomBehaviour>k__BackingField:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 596533760825229497
+      type: {class: SkillEffectBattleActionCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActions: 0
+        <TriggeredByAction>k__BackingField: {fileID: 11400000, guid: 3cc4b1a3a1dbbc84da664e0626f43924,
+          type: 2}
+        <TriggeredByActions>k__BackingField: []
+        _specificStep: 0
+        _step: 0
+        <EveryXTimes>k__BackingField: 2
+    - rid: 2696705430928228385
+      type: {class: SkillEffectBattleActionCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActions: 0
+        <TriggeredByAction>k__BackingField: {fileID: 11400000, guid: 208ffd9926bef2d498b2f17f87996512,
+          type: 2}
+        <TriggeredByActions>k__BackingField: []
+        _specificStep: 0
+        _step: 0
+        <EveryXTimes>k__BackingField: 2

@@ -1,0 +1,167 @@
+// Rogue Defeat S6 — base hero, board stage 6, boss defeat ending.
+// Run: node src/playables/board-fight/scripts/codegen.js m6_board_defeat_rollsSurvived
+
+module.exports = {
+  logoOverlay: true,
+  initialState: {
+    hp: 182800, maxHp: 182800, atk: 51600,
+    hero: 'base',
+    weapon: 'warriorBlade',
+  },
+  allSkills: [
+    'chainLightning', 'thunderstorm', 'thunderGod',
+    'fireballBarrage', 'flameStrike', 'meteorStorm',
+    'shurikenFlurry', 'fumaShuriken', 'deadlyStars',
+    'berserk',
+  ],
+
+  fights: {
+    // Fight 1: Single ghost knight — easy intro, player dominates
+    ghostKnightIntro: {
+      background: 'stage6',
+      enemies: [
+        { enemy: 'ghostKnight', skin: 'default', maxHp: 100000, melee: true },
+      ],
+      steps: [
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 35000, melee: true, rageFill: 25, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 30000, melee: true, category: 'combo', rageFill: 25 },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 8000 },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 45000, melee: true, crit: true },
+        { type: 'die', actor: 0 },
+      ],
+      onVictory: { labelText: 'VICTORY!' },
+    },
+
+    // Fight 2: 3 banshees — mid difficulty, player drops to ~50% HP
+    // Player rage: 20+15+15+15+20+15 = 100
+    bansheeSwarm: {
+      background: 'stage6',
+      enemies: [
+        { enemy: 'banshee', skin: 'default', maxHp: 55000, melee: true, xFrac: 0.62, yFrac: 0.82 },
+        { enemy: 'banshee', skin: 'default', maxHp: 55000, melee: true, xFrac: 0.75, yFrac: 0.72 },
+        { enemy: 'banshee', skin: 'default', maxHp: 55000, melee: true, xFrac: 0.82, yFrac: 0.93 },
+      ],
+      steps: [
+        // Round 1: player opener -> skill -> enemies respond
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 28000, melee: true, rageFill: 20, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 25000, melee: true, category: 'combo', rageFill: 15 },
+        { type: 'skill', side: 'player', actor: 0, target: 0, useAllPlayerSkills: true, damage: 15000 },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 18000 },
+        { type: 'attack', side: 'enemy',  actor: 1, target: 0, damage: 20000 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, damage: 22000 },
+        // Round 2: clear banshee 0
+        { type: 'attack', side: 'player', actor: 0, target: 2, damage: 26000, melee: true, rageFill: 15, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 35000, melee: true, category: 'combo', crit: true, rageFill: 15 },
+        { type: 'die', actor: 0 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, dodge: true },
+        { type: 'attack', side: 'enemy',  actor: 1, target: 0, damage: 24000 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, damage: 22000 },
+        // Round 3: clear banshee 1
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 32000, melee: true, rageFill: 20, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 30000, melee: true, category: 'combo', rageFill: 15 },
+        { type: 'skill', side: 'player', actor: 0, target: 1, useAllPlayerSkills: true, damage: 20000 },
+        { type: 'die', actor: 1 },
+        // Rage finisher on banshee 2
+        { type: 'attack', side: 'player', actor: 0, target: 2, damage: 45000, melee: true, category: 'rage', dramatic: true },
+        { type: 'skill', side: 'player', actor: 0, target: 2, useAllPlayerSkills: true, damage: 18000 },
+        { type: 'die', actor: 2 },
+      ],
+      onVictory: { labelText: 'VICTORY!' },
+    },
+
+    // Fight 3: Elite — livingTree at middle, ghost knights at top/bottom
+    // Player rage: 20+15+15+15+20+15 = 100
+    livingTreeElite: {
+      background: 'stage6',
+      eliteFight: true,
+      enemies: [
+        { enemy: 'livingTree', skin: 'default', maxHp: 80000, melee: true, xFrac: 0.65, yFrac: 0.85 },
+        { enemy: 'ghostKnight', skin: 'default', maxHp: 50000, melee: true, xFrac: 0.78, yFrac: 0.75 },
+        { enemy: 'ghostKnight', skin: 'default', maxHp: 50000, melee: true, xFrac: 0.82, yFrac: 0.93 },
+      ],
+      steps: [
+        // Round 1: player opener -> skill -> enemies respond
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 32000, melee: true, rageFill: 20, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 30000, melee: true, category: 'combo', rageFill: 15 },
+        { type: 'skill', side: 'player', actor: 0, target: 0, useAllPlayerSkills: true, damage: 20000 },
+        { type: 'attack', side: 'enemy',  actor: 1, target: 0, damage: 20000 },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 28000 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, dodge: true },
+        // Round 2: clear ghostKnight 1
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 28000, melee: true, rageFill: 15 },
+        { type: 'die', actor: 1 },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 30000 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, damage: 25000 },
+        // Round 3: clear ghostKnight 2
+        { type: 'attack', side: 'player', actor: 0, target: 2, damage: 55000, melee: true, crit: true, rageFill: 15 },
+        { type: 'skill', side: 'player', actor: 0, target: 2, useAllPlayerSkills: true, damage: 22000 },
+        { type: 'die', actor: 2 },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 26000 },
+        // Round 4: finish livingTree with rage
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 35000, melee: true, rageFill: 20, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 32000, melee: true, category: 'combo', crit: true, rageFill: 15 },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 50000, melee: true, category: 'rage', dramatic: true, crit: true },
+        { type: 'die', actor: 0 },
+      ],
+      onVictory: { labelText: 'VICTORY!' },
+    },
+
+    // Boss fight: bossTree at middle, banshees at top/bottom
+    // BossTree rage: 50+50 = 100 (1 rage attack)
+    // Player rage: 15+15+15+15+20 = 80 (doesn't reach 100, player dies first)
+    bossDefeat: {
+      background: 'stage6',
+      bossFight: true,
+      enemies: [
+        { enemy: 'bossTree', skin: 'default', maxHp: 220000, melee: true, maxRage: 100, xFrac: 0.85, yFrac: 0.85 },
+        { enemy: 'banshee', skin: 'default', maxHp: 45000, melee: true, xFrac: 0.62, yFrac: 0.75 },
+        { enemy: 'banshee', skin: 'default', maxHp: 45000, melee: true, xFrac: 0.62, yFrac: 0.93 },
+      ],
+      steps: [
+        // Round 1: aggressive opener -> skill -> enemies respond -> clear banshee 1
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 35000, melee: true, rageFill: 15, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 40000, melee: true, category: 'combo', return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 2, damage: 38000, melee: true, category: 'combo', rageFill: 15 },
+        { type: 'skill', side: 'player', actor: 0, target: 0, useAllPlayerSkills: true, damage: 22000 },
+        { type: 'attack', side: 'enemy',  actor: 1, target: 0, damage: 18000 },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 30000, rageFill: 50 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, dodge: true },
+        { type: 'attack', side: 'player', actor: 0, target: 1, damage: 45000, melee: true, crit: true, rageFill: 15 },
+        { type: 'die', actor: 1 },
+        // Round 2: bossTree punishes, clear banshee 2
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 35000, rageFill: 50 },
+        { type: 'attack', side: 'enemy',  actor: 2, target: 0, damage: 22000 },
+        { type: 'attack', side: 'player', actor: 0, target: 2, damage: 42000, melee: true, rageFill: 15 },
+        { type: 'die', actor: 2 },
+        // Round 3: bossTree rages (50+50=100), player fights back
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 45000, category: 'rage', dramatic: true },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 38000, melee: true, rageFill: 20, return: false },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 35000, melee: true, category: 'combo', crit: true },
+        { type: 'skill', side: 'player', actor: 0, target: 0, useAllPlayerSkills: true, damage: 25000 },
+        // Round 4: bossTree finishes the player
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 25000 },
+        { type: 'attack', side: 'player', actor: 0, target: 0, damage: 30000, melee: true },
+        { type: 'attack', side: 'enemy',  actor: 0, target: 0, damage: 40000, dramatic: true },
+        { type: 'die', side: 'player', actor: 0 },
+      ],
+      onVictory: { labelText: '' },
+    },
+  },
+
+  board: 'board6',
+  rolls: [7, 11, 9, 11],
+  stats: { showXp: true, atkDisplay: 'bar' },
+  dynamicLevelUp: true,
+  events: [
+    { type: 'fight', fight: 'ghostKnightIntro' },
+    { type: 'levelup' },
+    { type: 'weaponReward', weapon: 'crystalHammer' },
+    { type: 'fight', fight: 'bansheeSwarm' },
+    { type: 'levelup' },
+    { type: 'heroReward', hero: 'fireWizard' },
+    { type: 'fight', fight: 'livingTreeElite' },
+    { type: 'levelup' },
+    { type: 'fight', fight: 'bossDefeat' },
+    { type: 'nextChapter', image: 'end_banner.webp', victoryText: 'DEFEAT', buttonText: 'Try Again!', buttonColor: 0xcc2222 },
+  ],
+};

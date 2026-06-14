@@ -1,0 +1,283 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d3dc21f9cf4205b0e6273ce043e6c5, type: 3}
+  m_Name: Elemental Stars
+  m_EditorClassIdentifier: 
+  _name:
+    _sourceText: Elemental Stars
+    _customKey: 
+    _assignedKey: <AUTO>so_Elemental_Stars__name
+  <Description>k__BackingField:
+    _sourceText: Your 'Shurikens' also apply any 'Elemental Weapon' effects you have
+      learned.
+    _customKey: 
+    _assignedKey: <AUTO>so_Elemental_Stars__Description_k_BackingField
+  <ShortDescription>k__BackingField:
+    _sourceText: 
+    _customKey: 
+    _assignedKey: 
+  <Icon>k__BackingField: {fileID: 21300000, guid: 3e77a0d0689182e479cf23a3b03aca1d,
+    type: 3}
+  <Rarity>k__BackingField: 4
+  <Category>k__BackingField: 103
+  <WeaponVFXKey>k__BackingField: 
+  <Order>k__BackingField: 0
+  <CannotBeLearnedFromLevelUp>k__BackingField: 0
+  <RequiresSkillTreeUnlock>k__BackingField: 0
+  <IsHidden>k__BackingField: 0
+  <BypassesLearnChecks>k__BackingField: 0
+  <RequiresPets>k__BackingField: 0
+  <UpgradedVersion>k__BackingField: {fileID: 0}
+  <BaseVersion>k__BackingField: {fileID: 0}
+  <RequiredSkills>k__BackingField: []
+  <LockedBySkills>k__BackingField: []
+  <RequiredCategories>k__BackingField:
+    _serializedList:
+    - Key: 103
+      Value: 1
+  <StatChangesOnSkillLearned>k__BackingField:
+    SkillsToLearn: []
+    SkillEvolutions: []
+    MainStatChanges:
+      _serializedList: []
+    OffensiveMultiplierChanges:
+      _serializedList: []
+    DefensiveMultiplierChanges:
+      _serializedList: []
+    BattleActionBonusUsesChanges:
+      _serializedList: []
+    BattleActionBonusUseProbability:
+      _serializedList: []
+    StatusEffectBonusApplicationChanceMultChanges:
+      _serializedList: []
+    StatusEffectBonusMaxStacksChanges:
+      _serializedList: []
+    StatusEffectBonusStacksAppliedChanges:
+      _serializedList: []
+    BonusDamageMultipliersByStatusEffectChanges:
+      _serializedList: []
+    BonusCritChanceByStatusEffectChanges:
+      _serializedList: []
+    BonusDamageMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelAndDamageCategoryChanges:
+      _serializedList: []
+    ReplacementBattleActionChanges:
+      _serializedList: []
+    BattleActionCooldownReductionChanges:
+      _serializedList: []
+    StatusEffectImmunityChanges: []
+    PetDamageBonusChanges:
+      _serializedList: []
+    CategoryCritChanceBonusChanges:
+      _serializedList: []
+    PetAttackDelayReduction: 0
+    PvPBonusChanges:
+      ATKMult: 0
+      DEFMult: 0
+      HPMult: 0
+      DamageReduction: 0
+    MountDamageBonusChanges:
+      _serializedList: []
+    MountHPBonusChanges:
+      _serializedList: []
+    SentinelDamageBonusChanges:
+      _serializedList: []
+    PetDamageBonusByRarityChanges:
+      _serializedList: []
+  <GeneralPlayerModifierChangesOnSkillLearned>k__BackingField:
+    BonusEXPModifiersChangesByEnemyType:
+      _serializedList: []
+    BonusSilverModifiersChangesBySource:
+      _serializedList: []
+    AdditionalSkillRerolls: 0
+    AdditionalLegendarySkillRate: 0
+  <SkillEffects>k__BackingField:
+  - <TriggerConditions>k__BackingField:
+    - rid: 6906058443396481202
+    - rid: 6906058443396481204
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: 5c14d198c45bf834ab8b34eb1de68e77,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 100
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  - <TriggerConditions>k__BackingField:
+    - rid: 6906058443396481209
+    - rid: 6906058443396481206
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: 6c4277ac2cc0a314189f23be08727412,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 10
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  - <TriggerConditions>k__BackingField:
+    - rid: 6906058443396481202
+    - rid: 6906058443396481207
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: 1a58596e496b344438d24115c64ee8e0,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 100
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  - <TriggerConditions>k__BackingField:
+    - rid: 6906058443396481208
+    - rid: 6906058443396481207
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: bd4e5dda36ac02c48bf8cff8f144954f,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 10
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  - <TriggerConditions>k__BackingField:
+    - rid: 6906058443396481211
+    - rid: 6906058443396481210
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: b647edd7189a2684aaa1695b2f4c3154,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 100
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  - <TriggerConditions>k__BackingField:
+    - rid: 6906058443396481208
+    - rid: 6906058443396481210
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField: []
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 11400000, guid: 44e4220504c9bd845912807fee9d2dbf,
+      type: 2}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 10
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 1
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  <CustomBehaviour>k__BackingField:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6906058443396481202
+      type: {class: SkillEffectBattleActionCategoryCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActionCategories: 0
+        <TriggeredByActionCategory>k__BackingField: 12
+        <TriggeredByActionCategories>k__BackingField: 
+        ActivateOnStep: 8
+        TriggerEvenWhenMiss: 0
+        <ExclusionSet>k__BackingField: []
+        <EveryXTimes>k__BackingField: 1
+    - rid: 6906058443396481204
+      type: {class: SkillEffectHasLearnedSkillCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _skillNeeded: {fileID: 11400000, guid: 7e27eaf1c4a60774ca267976c2dbda64, type: 2}
+    - rid: 6906058443396481206
+      type: {class: SkillEffectHasLearnedSkillCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _skillNeeded: {fileID: 11400000, guid: 7e27eaf1c4a60774ca267976c2dbda64, type: 2}
+    - rid: 6906058443396481207
+      type: {class: SkillEffectHasLearnedSkillCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _skillNeeded: {fileID: 11400000, guid: c3c01ccfaaf7aaa4b94904cf6b17737c, type: 2}
+    - rid: 6906058443396481208
+      type: {class: SkillEffectBattleActionCategoryCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActionCategories: 0
+        <TriggeredByActionCategory>k__BackingField: 12
+        <TriggeredByActionCategories>k__BackingField: 
+        ActivateOnStep: 5
+        TriggerEvenWhenMiss: 0
+        <ExclusionSet>k__BackingField: []
+        <EveryXTimes>k__BackingField: 1
+    - rid: 6906058443396481209
+      type: {class: SkillEffectBattleActionCategoryCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActionCategories: 0
+        <TriggeredByActionCategory>k__BackingField: 12
+        <TriggeredByActionCategories>k__BackingField: 
+        ActivateOnStep: 5
+        TriggerEvenWhenMiss: 0
+        <ExclusionSet>k__BackingField: []
+        <EveryXTimes>k__BackingField: 1
+    - rid: 6906058443396481210
+      type: {class: SkillEffectHasLearnedSkillCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _skillNeeded: {fileID: 11400000, guid: 0014a35315c6e80468a46237121b82f7, type: 2}
+    - rid: 6906058443396481211
+      type: {class: SkillEffectBattleActionCategoryCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _triggeredByMultipleActionCategories: 0
+        <TriggeredByActionCategory>k__BackingField: 12
+        <TriggeredByActionCategories>k__BackingField: 
+        ActivateOnStep: 8
+        TriggerEvenWhenMiss: 0
+        <ExclusionSet>k__BackingField: []
+        <EveryXTimes>k__BackingField: 1

@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Board Dot Placement Editor</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; height: 100vh; overflow: hidden; }
+
+/* ── Sidebar ── */
+#sidebar {
+  width: 320px; min-width: 320px; background: #16213e; padding: 16px;
+  display: flex; flex-direction: column; gap: 12px; overflow-y: auto;
+  border-right: 1px solid #0f3460;
+}
+#sidebar h1 { font-size: 16px; color: #2ecaac; margin-bottom: 4px; }
+#sidebar h2 { font-size: 13px; color: #999; font-weight: normal; margin-bottom: 8px; }
+
+.btn {
+  padding: 8px 14px; border: 1px solid #0f3460; border-radius: 6px;
+  background: #0f3460; color: #e0e0e0; cursor: pointer; font-size: 13px;
+  transition: background 0.15s;
+}
+.btn:hover { background: #1a4a8a; }
+.btn.active { background: #2ecaac; color: #1a1a2e; border-color: #2ecaac; font-weight: bold; }
+.btn.danger { background: #c0392b; border-color: #e74c3c; }
+.btn.danger:hover { background: #e74c3c; }
+
+.btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+label { font-size: 12px; color: #999; display: block; margin-bottom: 2px; }
+select, input[type="number"] {
+  width: 100%; padding: 6px 10px; background: #0a0a1a; border: 1px solid #0f3460;
+  border-radius: 4px; color: #e0e0e0; font-size: 13px;
+}
+
+.section { border-top: 1px solid #0f3460; padding-top: 12px; }
+
+#dotList {
+  flex: 1; overflow-y: auto; font-family: 'Consolas', monospace; font-size: 12px;
+  background: #0a0a1a; border-radius: 6px; padding: 8px; line-height: 1.6;
+  min-height: 120px; border: 1px solid #0f3460;
+}
+#dotList .dot-entry {
+  padding: 2px 4px; border-radius: 3px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+}
+#dotList .dot-entry:hover { background: rgba(46,202,172,0.15); }
+#dotList .dot-entry.selected { background: rgba(46,202,172,0.3); color: #2ecaac; }
+#dotList .dot-entry.selected-b { background: rgba(155,89,182,0.3); color: #bb8fce; }
+#dotList .dot-entry.in-range { background: rgba(46,202,172,0.12); }
+#dotList .dot-entry.corner { color: #f39c12; }
+
+#alignPanel {
+  display: none; background: rgba(46,202,172,0.08); border: 1px solid #2ecaac;
+  border-radius: 6px; padding: 10px;
+}
+#alignPanel.visible { display: block; }
+#alignPanel .align-header { font-size: 12px; color: #2ecaac; font-weight: bold; margin-bottom: 8px; }
+#alignPanel .align-info { font-size: 11px; color: #999; margin-bottom: 6px; font-family: monospace; }
+.radio-row { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; }
+.radio-row label { color: #e0e0e0; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; margin: 0; }
+.radio-row input[type="radio"] { accent-color: #2ecaac; }
+
+#output {
+  width: 100%; min-height: 80px; background: #0a0a1a; border: 1px solid #0f3460;
+  border-radius: 6px; padding: 8px; color: #2ecaac; font-family: 'Consolas', monospace;
+  font-size: 11px; resize: vertical;
+}
+
+.hint { font-size: 11px; color: #666; line-height: 1.4; }
+
+/* ── Canvas area ── */
+#canvasWrap {
+  flex: 1; position: relative; overflow: hidden; background: #111;
+}
+canvas { position: absolute; top: 0; left: 0; }
+
+#coords {
+  position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.7);
+  padding: 4px 10px; border-radius: 4px; font-size: 12px; font-family: monospace;
+  pointer-events: none;
+}
+
+#zoomInfo {
+  position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7);
+  padding: 4px 10px; border-radius: 4px; font-size: 12px; font-family: monospace;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div>
+    <h1>Board Dot Editor</h1>
+    <h2>Visual tile placement tool</h2>
+  </div>
+
+  <div>
+    <label>Board Image</label>
+    <select id="boardSelect">
+      <option value="">-- Load from file --</option>
+      <option value="board1">Board 1</option>
+      <option value="board2">Board 2</option>
+      <option value="board3">Board 3</option>
+      <option value="board4">Board 4</option>
+      <option value="board5">Board 5</option>
+      <option value="board6">Board 6</option>
+      <option value="board7">Board 7</option>
+    </select>
+    <input type="file" id="fileInput" accept="image/*" style="margin-top: 6px; font-size: 12px;">
+  </div>
+
+  <div class="section">
+    <label>Mode</label>
+    <div class="btn-row">
+      <button class="btn active" id="btnMove" onclick="setMode('move')">Move</button>
+      <button class="btn" id="btnAdd" onclick="setMode('add')">Add</button>
+      <button class="btn" id="btnDelete" onclick="setMode('delete')">Delete</button>
+      <button class="btn" id="btnTransform" onclick="setMode('transform')" style="background:#e09f3e;border-color:#e09f3e;color:#1a1a2e;">Transform</button>
+    </div>
+  </div>
+
+  <div>
+    <label>Corner Tiles (comma-separated indices)</label>
+    <input type="text" id="cornerInput" value="0, 10, 20, 30"
+      style="width:100%; padding:6px 10px; background:#0a0a1a; border:1px solid #0f3460; border-radius:4px; color:#f39c12; font-size:13px; font-family:monospace;"
+      oninput="updateCorners()">
+  </div>
+
+  <div class="section">
+    <label style="color:#e74c3c;">Board Center <span style="font-size:10px;color:#888;">(drag red diamond on canvas)</span></label>
+    <div style="display:flex; gap:6px;">
+      <input type="number" id="boardCenterX" value="775" style="width:50%;" oninput="onMarkerInput()">
+      <input type="number" id="boardCenterY" value="800" style="width:50%;" oninput="onMarkerInput()">
+    </div>
+    <label style="color:#e8d44d; margin-top:6px;">Focal Point <span style="font-size:10px;color:#888;">(drag yellow diamond on canvas)</span></label>
+    <div style="display:flex; gap:6px;">
+      <input type="number" id="focalPointX" value="775" style="width:50%;" oninput="onMarkerInput()">
+      <input type="number" id="focalPointY" value="800" style="width:50%;" oninput="onMarkerInput()">
+    </div>
+  </div>
+
+  <div class="section" id="alignPanel">
+    <div class="align-header">Align Dots</div>
+    <div class="align-info" id="alignInfo">Dot A → Dot B</div>
+    <div class="radio-row">
+      <label><input type="radio" name="alignSpacing" value="equal" checked> Equal spacing</label>
+      <label><input type="radio" name="alignSpacing" value="fixed"> Fixed px:</label>
+      <input type="number" id="alignFixedPx" value="40" min="1" max="500"
+        style="width:60px; padding:3px 6px; background:#0a0a1a; border:1px solid #0f3460; border-radius:4px; color:#e0e0e0; font-size:12px;">
+    </div>
+    <div class="btn-row" style="margin-top: 6px;">
+      <button class="btn active" onclick="applyAlign()">Apply Align</button>
+      <button class="btn" onclick="previewAlign()">Preview</button>
+      <button class="btn" onclick="clearSelection()">Clear Sel.</button>
+    </div>
+  </div>
+
+  <div class="section" id="transformPanel" style="display:none;">
+    <label style="color:#e09f3e; font-weight:bold;">Transform All Dots</label>
+    <div class="hint">
+      Drag <b>center handle</b> to move all dots.<br>
+      Drag <b>corner handles</b> to scale (anchored to opposite corner).<br>
+      Affects dots, board center &amp; focal point. Ctrl+Z to undo.
+    </div>
+  </div>
+
+  <div class="section">
+    <label>Dots (<span id="dotCount">0</span>)</label>
+    <div id="dotList"></div>
+  </div>
+
+  <div class="section">
+    <div class="btn-row">
+      <button class="btn" onclick="loadDefaultTiles()">Load Default (40)</button>
+      <button class="btn danger" onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <label>Export</label>
+    <div class="btn-row" style="margin-bottom: 6px;">
+      <button class="btn" onclick="exportTiles()">Copy TypeScript</button>
+      <button class="btn" onclick="exportJSON()">Copy JSON</button>
+    </div>
+    <textarea id="output" readonly></textarea>
+  </div>
+
+  <div class="hint">
+    <b>Controls:</b><br>
+    Move mode: drag dots | Add mode: click to place | Delete mode: click dot<br>
+    Transform mode: drag corner handles to scale, center handle to move all<br>
+    Scroll to zoom | Middle-click drag to pan<br>
+    Shift+click: toggle corner | Ctrl+click: select 2nd dot (align)<br>
+    Delete key: remove selected | Ctrl+Z: undo | Ctrl+Shift+Z: redo
+  </div>
+</div>
+
+<div id="canvasWrap">
+  <canvas id="canvas"></canvas>
+  <div id="coords">--</div>
+  <div id="zoomInfo">100%</div>
+</div>
+
+<script>
+// ── Per-board configs ──
+const DEFAULT_TILES = [
+  { x: 775, y: 1175 }, { x: 868, y: 1138 }, { x: 910, y: 1100 }, { x: 953, y: 1068 },
+  { x: 998, y: 1035 }, { x: 1043, y: 1003 }, { x: 1088, y: 970 }, { x: 1140, y: 938 },
+  { x: 1190, y: 903 }, { x: 1233, y: 868 }, { x: 1275, y: 800 }, { x: 1233, y: 725 },
+  { x: 1184, y: 698 }, { x: 1140, y: 670 }, { x: 1098, y: 640 }, { x: 1055, y: 600 },
+  { x: 1008, y: 565 }, { x: 965, y: 535 }, { x: 923, y: 500 }, { x: 880, y: 470 },
+  { x: 775, y: 425 }, { x: 685, y: 470 }, { x: 640, y: 495 }, { x: 590, y: 530 },
+  { x: 550, y: 570 }, { x: 505, y: 595 }, { x: 460, y: 625 }, { x: 415, y: 665 },
+  { x: 370, y: 695 }, { x: 325, y: 725 }, { x: 280, y: 800 }, { x: 325, y: 870 },
+  { x: 370, y: 910 }, { x: 415, y: 945 }, { x: 460, y: 980 }, { x: 505, y: 1010 },
+  { x: 545, y: 1045 }, { x: 590, y: 1080 }, { x: 635, y: 1110 }, { x: 680, y: 1150 },
+];
+const DEFAULT_CORNERS = [0, 10, 20, 30];
+const DEFAULT_FOCAL = { x: 775, y: 800 };
+const DEFAULT_CENTER = { x: 775, y: 800 };
+
+const BOARD_CONFIGS = {
+  board1: { tiles: DEFAULT_TILES, corners: DEFAULT_CORNERS, focalPoint: DEFAULT_FOCAL, boardCenter: DEFAULT_CENTER },
+  board2: { tiles: DEFAULT_TILES, corners: DEFAULT_CORNERS, focalPoint: DEFAULT_FOCAL, boardCenter: DEFAULT_CENTER },
+  board3: { tiles: DEFAULT_TILES, corners: DEFAULT_CORNERS, focalPoint: DEFAULT_FOCAL, boardCenter: DEFAULT_CENTER },
+  board4: {
+    tiles: [
+      { x: 1532, y: 2103 }, { x: 1452, y: 2057 }, { x: 1405, y: 2028 }, { x: 1363, y: 1998 },
+      { x: 1327, y: 1968 }, { x: 1287, y: 1935 }, { x: 1243, y: 1905 }, { x: 1287, y: 1870 },
+      { x: 1323, y: 1837 }, { x: 1370, y: 1807 }, { x: 1415, y: 1767 }, { x: 1360, y: 1690 },
+      { x: 1320, y: 1658 }, { x: 1280, y: 1628 }, { x: 1240, y: 1597 }, { x: 1200, y: 1627 },
+      { x: 1160, y: 1658 }, { x: 1120, y: 1688 }, { x: 1080, y: 1718 }, { x: 1028, y: 1683 },
+      { x: 937, y: 1652 }, { x: 868, y: 1627 }, { x: 827, y: 1595 }, { x: 785, y: 1565 },
+      { x: 742, y: 1533 }, { x: 700, y: 1502 }, { x: 658, y: 1470 }, { x: 617, y: 1440 },
+      { x: 573, y: 1408 }, { x: 532, y: 1377 }, { x: 492, y: 1337 }, { x: 408, y: 1288 },
+      { x: 368, y: 1255 }, { x: 325, y: 1223 }, { x: 408, y: 1160 }, { x: 492, y: 1098 },
+      { x: 575, y: 1035 }, { x: 658, y: 972 }, { x: 742, y: 910 }, { x: 825, y: 847 },
+      { x: 910, y: 897 }, { x: 953, y: 943 }, { x: 992, y: 972 }, { x: 1033, y: 1003 },
+      { x: 1078, y: 1038 }, { x: 1120, y: 1007 }, { x: 1160, y: 973 }, { x: 1203, y: 942 },
+      { x: 1243, y: 908 }, { x: 1283, y: 877 }, { x: 1368, y: 863 }, { x: 1412, y: 913 },
+      { x: 1447, y: 942 }, { x: 1493, y: 972 }, { x: 1535, y: 1002 }, { x: 1573, y: 1038 },
+      { x: 1620, y: 1067 }, { x: 1655, y: 1100 }, { x: 1698, y: 1128 }, { x: 1747, y: 1158 },
+      { x: 1832, y: 1143 }, { x: 1885, y: 1060 }, { x: 1915, y: 1038 }, { x: 1950, y: 1070 },
+      { x: 1990, y: 1098 }, { x: 2032, y: 1132 }, { x: 2073, y: 1160 }, { x: 2037, y: 1190 },
+      { x: 1995, y: 1223 }, { x: 1953, y: 1253 }, { x: 1862, y: 1307 }, { x: 1825, y: 1350 },
+      { x: 1790, y: 1380 }, { x: 1748, y: 1410 }, { x: 1705, y: 1440 }, { x: 1663, y: 1475 },
+      { x: 1620, y: 1505 }, { x: 1577, y: 1535 }, { x: 1538, y: 1568 }, { x: 1570, y: 1600 },
+      { x: 1620, y: 1678 }, { x: 1748, y: 1725 }, { x: 1827, y: 1785 }, { x: 1743, y: 1850 },
+      { x: 1828, y: 1913 }, { x: 1743, y: 1972 }, { x: 1662, y: 2037 }, { x: 1623, y: 2068 },
+    ],
+    corners: [0, 10, 20, 30, 40, 50, 60, 70, 80],
+    focalPoint: { x: 1267, y: 1333 },
+    boardCenter: { x: 1267, y: 1333 },
+  },
+  board5: { tiles: DEFAULT_TILES, corners: DEFAULT_CORNERS, focalPoint: DEFAULT_FOCAL, boardCenter: DEFAULT_CENTER },
+  board6: { tiles: DEFAULT_TILES, corners: DEFAULT_CORNERS, focalPoint: DEFAULT_FOCAL, boardCenter: DEFAULT_CENTER },
+  board7: { tiles: DEFAULT_TILES, corners: DEFAULT_CORNERS, focalPoint: DEFAULT_FOCAL, boardCenter: DEFAULT_CENTER },
+};
+
+// ── Board image paths (relative to tools/) ──
+const BOARD_PATHS = {
+  board1: '../assets/Backgrounds/Board1Asset.webp',
+  board2: '../assets/Backgrounds/Board2Asset.webp',
+  board3: '../assets/Backgrounds/Board3Asset.webp',
+  board4: '../assets/Backgrounds/Board4Asset.webp',
+  board5: '../assets/Backgrounds/Board5Asset.webp',
+  board6: '../assets/Backgrounds/Board6Asset.webp',
+  board7: '../assets/Backgrounds/Board7Asset.webp',
+};
+
+// ── State ──
+let dots = [];
+let cornerTiles = new Set([0, 10, 20, 30]);
+let selectedDot = -1;  // Primary selection (green)
+let selectedDotB = -1; // Secondary selection for align (purple)
+let alignPreviewDots = null; // Preview dots for align
+let mode = 'move';
+let boardImg = null;
+
+// Board markers
+let boardCenter = { x: 775, y: 800 };
+let focalPoint = { x: 775, y: 800 };
+let draggingMarker = null; // 'center' | 'focal' | null
+
+// Camera
+let camX = 0, camY = 0, zoom = 1;
+
+// Drag state
+let dragging = false;
+let dragDotIdx = -1;
+let dragStartX = 0, dragStartY = 0;
+let dragOrigX = 0, dragOrigY = 0;
+let panning = false;
+let panStartX = 0, panStartY = 0;
+let panOrigCamX = 0, panOrigCamY = 0;
+
+// Undo/redo
+let undoStack = [];
+let redoStack = [];
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const wrap = document.getElementById('canvasWrap');
+
+const DOT_RADIUS = 10;
+const DOT_HIT_RADIUS = 14;
+
+// ── Init ──
+function init() {
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  loadDefaultTiles();
+  render();
+}
+
+function resizeCanvas() {
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  render();
+}
+
+// ── Camera helpers ──
+function screenToImage(sx, sy) {
+  return {
+    x: (sx - camX) / zoom,
+    y: (sy - camY) / zoom,
+  };
+}
+
+function imageToScreen(ix, iy) {
+  return {
+    x: ix * zoom + camX,
+    y: iy * zoom + camY,
+  };
+}
+
+function fitImageToCanvas() {
+  if (!boardImg) return;
+  const pad = 40;
+  const scaleX = (canvas.width - pad * 2) / boardImg.width;
+  const scaleY = (canvas.height - pad * 2) / boardImg.height;
+  zoom = Math.min(scaleX, scaleY, 1);
+  camX = (canvas.width - boardImg.width * zoom) / 2;
+  camY = (canvas.height - boardImg.height * zoom) / 2;
+  updateZoomInfo();
+}
+
+function updateZoomInfo() {
+  document.getElementById('zoomInfo').textContent = Math.round(zoom * 100) + '%';
+}
+
+// ── Rendering ──
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw board image
+  if (boardImg) {
+    ctx.drawImage(boardImg, camX, camY, boardImg.width * zoom, boardImg.height * zoom);
+  }
+
+  // Draw path lines
+  if (dots.length > 1) {
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(46, 202, 172, 0.3)';
+    ctx.lineWidth = 2;
+    const first = imageToScreen(dots[0].x, dots[0].y);
+    ctx.moveTo(first.x, first.y);
+    for (let i = 1; i < dots.length; i++) {
+      const p = imageToScreen(dots[i].x, dots[i].y);
+      ctx.lineTo(p.x, p.y);
+    }
+    // Close loop
+    ctx.lineTo(first.x, first.y);
+    ctx.stroke();
+  }
+
+  // Compute range for highlighting
+  const rangeMin = (selectedDot >= 0 && selectedDotB >= 0) ? Math.min(selectedDot, selectedDotB) : -1;
+  const rangeMax = (selectedDot >= 0 && selectedDotB >= 0) ? Math.max(selectedDot, selectedDotB) : -1;
+
+  // Draw align preview line if we have a range
+  if (rangeMin >= 0 && rangeMax > rangeMin) {
+    const pA = imageToScreen(dots[rangeMin].x, dots[rangeMin].y);
+    const pB = imageToScreen(dots[rangeMax].x, dots[rangeMax].y);
+    ctx.beginPath();
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = 'rgba(155, 89, 182, 0.6)';
+    ctx.lineWidth = 2;
+    ctx.moveTo(pA.x, pA.y);
+    ctx.lineTo(pB.x, pB.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Draw align preview dots (ghost positions)
+  if (alignPreviewDots) {
+    for (let i = 0; i < alignPreviewDots.length; i++) {
+      const p = imageToScreen(alignPreviewDots[i].x, alignPreviewDots[i].y);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(155, 89, 182, 0.4)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(155, 89, 182, 0.8)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  // Draw dots
+  for (let i = 0; i < dots.length; i++) {
+    const p = imageToScreen(dots[i].x, dots[i].y);
+    const isCorner = cornerTiles.has(i);
+    const isSelectedA = i === selectedDot;
+    const isSelectedB = i === selectedDotB;
+    const isInRange = rangeMin >= 0 && i > rangeMin && i < rangeMax;
+    const r = isCorner ? DOT_RADIUS + 3 : DOT_RADIUS;
+
+    // Outer ring
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r + 2, 0, Math.PI * 2);
+    if (isSelectedA) {
+      ctx.fillStyle = 'rgba(46, 202, 172, 0.5)';
+    } else if (isSelectedB) {
+      ctx.fillStyle = 'rgba(155, 89, 182, 0.5)';
+    } else if (isInRange) {
+      ctx.fillStyle = 'rgba(155, 89, 182, 0.25)';
+    } else {
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    }
+    ctx.fill();
+
+    // Fill
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    if (isSelectedB) {
+      ctx.fillStyle = '#9b59b6';
+    } else if (isCorner) {
+      ctx.fillStyle = isSelectedA ? '#f1c40f' : '#f39c12';
+    } else if (isInRange) {
+      ctx.fillStyle = '#8e44ad';
+    } else {
+      ctx.fillStyle = isSelectedA ? '#2ecaac' : '#3498db';
+    }
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = (isSelectedA || isSelectedB) ? 2.5 : 1.5;
+    ctx.stroke();
+
+    // Index label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(String(i), p.x, p.y);
+  }
+
+  // Draw board center marker (red diamond)
+  drawDiamond(boardCenter.x, boardCenter.y, '#e74c3c', 'C');
+  // Draw focal point marker (yellow diamond)
+  drawDiamond(focalPoint.x, focalPoint.y, '#e8d44d', 'F');
+
+  // Transform handles
+  if (mode === 'transform' && dots.length > 0) {
+    renderTransformHandles();
+  }
+
+  // Mode cursor hint
+  if (mode === 'add') {
+    ctx.fillStyle = 'rgba(46,202,172,0.15)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  } else if (mode === 'delete') {
+    ctx.fillStyle = 'rgba(192,57,43,0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function drawDiamond(ix, iy, color, label) {
+  const p = imageToScreen(ix, iy);
+  const s = 12;
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(Math.PI / 4);
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.85;
+  ctx.fillRect(-s / 2, -s / 2, s, s);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-s / 2, -s / 2, s, s);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+  // Label
+  ctx.fillStyle = color;
+  ctx.font = 'bold 11px Consolas, monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(label, p.x, p.y - s);
+}
+
+const MARKER_HIT_RADIUS = 16;
+
+function hitTestMarker(sx, sy) {
+  const pc = imageToScreen(boardCenter.x, boardCenter.y);
+  if ((pc.x - sx) ** 2 + (pc.y - sy) ** 2 < MARKER_HIT_RADIUS ** 2) {
+    return 'center';
+  }
+  const pf = imageToScreen(focalPoint.x, focalPoint.y);
+  if ((pf.x - sx) ** 2 + (pf.y - sy) ** 2 < MARKER_HIT_RADIUS ** 2) {
+    return 'focal';
+  }
+  return null;
+}
+
+function syncMarkerInputs() {
+  document.getElementById('boardCenterX').value = boardCenter.x;
+  document.getElementById('boardCenterY').value = boardCenter.y;
+  document.getElementById('focalPointX').value = focalPoint.x;
+  document.getElementById('focalPointY').value = focalPoint.y;
+}
+
+function onMarkerInput() {
+  boardCenter.x = parseInt(document.getElementById('boardCenterX').value) || 0;
+  boardCenter.y = parseInt(document.getElementById('boardCenterY').value) || 0;
+  focalPoint.x = parseInt(document.getElementById('focalPointX').value) || 0;
+  focalPoint.y = parseInt(document.getElementById('focalPointY').value) || 0;
+  render();
+}
+
+// ── Dot list UI ──
+function updateDotList() {
+  const list = document.getElementById('dotList');
+  document.getElementById('dotCount').textContent = dots.length;
+
+  const rMin = (selectedDot >= 0 && selectedDotB >= 0) ? Math.min(selectedDot, selectedDotB) : -1;
+  const rMax = (selectedDot >= 0 && selectedDotB >= 0) ? Math.max(selectedDot, selectedDotB) : -1;
+
+  list.innerHTML = '';
+  for (let i = 0; i < dots.length; i++) {
+    const entry = document.createElement('div');
+    let cls = 'dot-entry';
+    if (i === selectedDot) cls += ' selected';
+    else if (i === selectedDotB) cls += ' selected-b';
+    else if (rMin >= 0 && i > rMin && i < rMax) cls += ' in-range';
+    if (cornerTiles.has(i)) cls += ' corner';
+    entry.className = cls;
+
+    const label = document.createElement('span');
+    label.textContent = `[${i}] x: ${dots[i].x}, y: ${dots[i].y}`;
+    entry.appendChild(label);
+
+    const removeBtn = document.createElement('span');
+    removeBtn.textContent = '\u00d7';
+    removeBtn.style.cssText = 'cursor:pointer; color:#e74c3c; font-size:14px; padding:0 4px;';
+    removeBtn.onclick = (e) => { e.stopPropagation(); pushUndo(); dots.splice(i, 1); refreshCorners(); selectedDotB = -1; updateDotList(); render(); };
+    entry.appendChild(removeBtn);
+
+    entry.onclick = () => { selectedDot = i; selectedDotB = -1; alignPreviewDots = null; updateAlignPanel(); updateDotList(); render(); };
+    list.appendChild(entry);
+  }
+
+  updateAlignPanel();
+}
+
+function refreshCorners() {
+  // Clamp corner indices to valid range
+  const valid = new Set();
+  for (const c of cornerTiles) {
+    if (c < dots.length) valid.add(c);
+  }
+  cornerTiles = valid;
+  document.getElementById('cornerInput').value = [...cornerTiles].sort((a, b) => a - b).join(', ');
+}
+
+function updateCorners() {
+  const raw = document.getElementById('cornerInput').value;
+  cornerTiles = new Set(
+    raw.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n >= 0 && n < dots.length)
+  );
+  updateDotList();
+  render();
+}
+
+// ── Undo/Redo ──
+function pushUndo() {
+  undoStack.push(JSON.stringify(dots));
+  if (undoStack.length > 100) undoStack.shift();
+  redoStack = [];
+}
+
+function undo() {
+  if (undoStack.length === 0) return;
+  redoStack.push(JSON.stringify(dots));
+  dots = JSON.parse(undoStack.pop());
+  selectedDot = -1;
+  selectedDotB = -1;
+  alignPreviewDots = null;
+  updateDotList();
+  render();
+}
+
+function redo() {
+  if (redoStack.length === 0) return;
+  undoStack.push(JSON.stringify(dots));
+  dots = JSON.parse(redoStack.pop());
+  selectedDot = -1;
+  selectedDotB = -1;
+  alignPreviewDots = null;
+  updateDotList();
+  render();
+}
+
+// ── Modes ──
+function setMode(m) {
+  mode = m;
+  document.getElementById('btnMove').classList.toggle('active', m === 'move');
+  document.getElementById('btnAdd').classList.toggle('active', m === 'add');
+  document.getElementById('btnDelete').classList.toggle('active', m === 'delete');
+  document.getElementById('btnTransform').classList.toggle('active', m === 'transform');
+  document.getElementById('transformPanel').style.display = m === 'transform' ? 'block' : 'none';
+  canvas.style.cursor = m === 'add' ? 'crosshair' : m === 'delete' ? 'not-allowed' : 'default';
+  render();
+}
+
+// ── Hit test ──
+function hitTestDot(sx, sy) {
+  for (let i = dots.length - 1; i >= 0; i--) {
+    const p = imageToScreen(dots[i].x, dots[i].y);
+    const dx = p.x - sx;
+    const dy = p.y - sy;
+    if (dx * dx + dy * dy < DOT_HIT_RADIUS * DOT_HIT_RADIUS) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+// ── Mouse events ──
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+
+  // Middle button pan
+  if (e.button === 1) {
+    e.preventDefault();
+    panning = true;
+    panStartX = e.clientX;
+    panStartY = e.clientY;
+    panOrigCamX = camX;
+    panOrigCamY = camY;
+    canvas.style.cursor = 'grabbing';
+    return;
+  }
+
+  if (e.button !== 0) return;
+
+  const hitIdx = hitTestDot(sx, sy);
+
+  // Ctrl+click selects second dot for align
+  if (e.ctrlKey && hitIdx >= 0 && selectedDot >= 0 && hitIdx !== selectedDot) {
+    selectedDotB = hitIdx;
+    alignPreviewDots = null;
+    updateAlignPanel();
+    updateDotList();
+    render();
+    return;
+  }
+
+  // Shift+click toggles corner
+  if (e.shiftKey && hitIdx >= 0) {
+    if (cornerTiles.has(hitIdx)) {
+      cornerTiles.delete(hitIdx);
+    } else {
+      cornerTiles.add(hitIdx);
+    }
+    document.getElementById('cornerInput').value = [...cornerTiles].sort((a, b) => a - b).join(', ');
+    updateDotList();
+    render();
+    return;
+  }
+
+  if (mode === 'transform') {
+    const handle = hitTestHandle(sx, sy);
+    if (handle) {
+      txBeginDrag(handle, sx, sy);
+      canvas.style.cursor = handle === 'move' ? 'grabbing' : 'nwse-resize';
+      return;
+    }
+    // Pan on empty space
+    panning = true;
+    panStartX = e.clientX;
+    panStartY = e.clientY;
+    panOrigCamX = camX;
+    panOrigCamY = camY;
+    canvas.style.cursor = 'grabbing';
+    return;
+  }
+
+  if (mode === 'move') {
+    // Check markers first
+    const markerHit = hitTestMarker(sx, sy);
+    if (markerHit) {
+      draggingMarker = markerHit;
+      dragStartX = sx;
+      dragStartY = sy;
+      const m = markerHit === 'center' ? boardCenter : focalPoint;
+      dragOrigX = m.x;
+      dragOrigY = m.y;
+      return;
+    }
+    if (hitIdx >= 0) {
+      dragging = true;
+      dragDotIdx = hitIdx;
+      selectedDot = hitIdx;
+      selectedDotB = -1;
+      alignPreviewDots = null;
+      dragStartX = sx;
+      dragStartY = sy;
+      dragOrigX = dots[hitIdx].x;
+      dragOrigY = dots[hitIdx].y;
+      pushUndo();
+      updateDotList();
+      render();
+    } else {
+      // Click empty space = deselect
+      selectedDot = -1;
+      selectedDotB = -1;
+      alignPreviewDots = null;
+      updateDotList();
+      render();
+      // Also allow panning with left click on empty space
+      panning = true;
+      panStartX = e.clientX;
+      panStartY = e.clientY;
+      panOrigCamX = camX;
+      panOrigCamY = camY;
+      canvas.style.cursor = 'grabbing';
+    }
+  } else if (mode === 'add') {
+    const img = screenToImage(sx, sy);
+    pushUndo();
+    const newDot = { x: Math.round(img.x), y: Math.round(img.y) };
+    // Insert after selected dot, or at end
+    if (selectedDot >= 0 && selectedDot < dots.length) {
+      dots.splice(selectedDot + 1, 0, newDot);
+      selectedDot = selectedDot + 1;
+    } else {
+      dots.push(newDot);
+      selectedDot = dots.length - 1;
+    }
+    refreshCorners();
+    updateDotList();
+    render();
+  } else if (mode === 'delete') {
+    if (hitIdx >= 0) {
+      pushUndo();
+      dots.splice(hitIdx, 1);
+      selectedDot = -1;
+      refreshCorners();
+      updateDotList();
+      render();
+    }
+  }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  const img = screenToImage(sx, sy);
+
+  document.getElementById('coords').textContent =
+    `x: ${Math.round(img.x)}, y: ${Math.round(img.y)}`;
+
+  if (txDragging) {
+    txUpdateDrag(sx, sy);
+    return;
+  }
+
+  // Update cursor in transform mode based on hover
+  if (mode === 'transform' && !panning && !dragging) {
+    const handle = hitTestHandle(sx, sy);
+    if (handle === 'move') {
+      canvas.style.cursor = 'grab';
+    } else if (handle) {
+      canvas.style.cursor = (handle === 'tl' || handle === 'br') ? 'nwse-resize' : 'nesw-resize';
+    } else {
+      canvas.style.cursor = 'default';
+    }
+  }
+
+  if (panning) {
+    camX = panOrigCamX + (e.clientX - panStartX);
+    camY = panOrigCamY + (e.clientY - panStartY);
+    render();
+    return;
+  }
+
+  if (draggingMarker) {
+    const dx = (sx - dragStartX) / zoom;
+    const dy = (sy - dragStartY) / zoom;
+    const m = draggingMarker === 'center' ? boardCenter : focalPoint;
+    m.x = Math.round(dragOrigX + dx);
+    m.y = Math.round(dragOrigY + dy);
+    syncMarkerInputs();
+    render();
+    return;
+  }
+
+  if (dragging && dragDotIdx >= 0) {
+    const dx = (sx - dragStartX) / zoom;
+    const dy = (sy - dragStartY) / zoom;
+    dots[dragDotIdx].x = Math.round(dragOrigX + dx);
+    dots[dragDotIdx].y = Math.round(dragOrigY + dy);
+    updateDotList();
+    render();
+  }
+});
+
+canvas.addEventListener('mouseup', (e) => {
+  if (txDragging) {
+    txEndDrag();
+    canvas.style.cursor = 'default';
+  }
+  if (panning) {
+    panning = false;
+    canvas.style.cursor = mode === 'add' ? 'crosshair' : mode === 'delete' ? 'not-allowed' : 'default';
+  }
+  dragging = false;
+  dragDotIdx = -1;
+  draggingMarker = null;
+});
+
+canvas.addEventListener('mouseleave', () => {
+  panning = false;
+  dragging = false;
+  dragDotIdx = -1;
+  draggingMarker = null;
+  txEndDrag();
+});
+
+// Zoom
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  const oldZoom = zoom;
+  const factor = e.deltaY < 0 ? 1.1 : 1 / 1.1;
+  zoom = Math.min(Math.max(zoom * factor, 0.1), 5);
+
+  // Zoom toward mouse position
+  camX = mx - (mx - camX) * (zoom / oldZoom);
+  camY = my - (my - camY) * (zoom / oldZoom);
+
+  updateZoomInfo();
+  render();
+}, { passive: false });
+
+// Prevent context menu on canvas
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Delete' && selectedDot >= 0) {
+    pushUndo();
+    dots.splice(selectedDot, 1);
+    selectedDot = -1;
+    refreshCorners();
+    updateDotList();
+    render();
+  }
+  if (e.ctrlKey && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo(); }
+  if (e.ctrlKey && e.key === 'Z' && e.shiftKey) { e.preventDefault(); redo(); }
+  if (e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); }
+});
+
+// ── Align functions ──
+function updateAlignPanel() {
+  const panel = document.getElementById('alignPanel');
+  const info = document.getElementById('alignInfo');
+  if (selectedDot >= 0 && selectedDotB >= 0) {
+    panel.classList.add('visible');
+    const lo = Math.min(selectedDot, selectedDotB);
+    const hi = Math.max(selectedDot, selectedDotB);
+    const between = hi - lo - 1;
+    const dA = dots[lo];
+    const dB = dots[hi];
+    const dist = Math.round(Math.sqrt((dB.x - dA.x) ** 2 + (dB.y - dA.y) ** 2));
+    info.textContent = `[${lo}] → [${hi}]  |  ${between} dots between  |  ${dist}px`;
+  } else {
+    panel.classList.remove('visible');
+  }
+}
+
+function computeAlignedDots() {
+  if (selectedDot < 0 || selectedDotB < 0) return null;
+  const lo = Math.min(selectedDot, selectedDotB);
+  const hi = Math.max(selectedDot, selectedDotB);
+  if (hi - lo < 2) return null; // No dots between endpoints
+
+  const ax = dots[lo].x, ay = dots[lo].y;
+  const bx = dots[hi].x, by = dots[hi].y;
+  const dx = bx - ax, dy = by - ay;
+  const totalDist = Math.sqrt(dx * dx + dy * dy);
+  const count = hi - lo - 1; // Dots between endpoints
+
+  const spacingMode = document.querySelector('input[name="alignSpacing"]:checked').value;
+  const result = [];
+
+  if (spacingMode === 'equal') {
+    for (let i = 1; i <= count; i++) {
+      const t = i / (count + 1);
+      result.push({ x: Math.round(ax + dx * t), y: Math.round(ay + dy * t) });
+    }
+  } else {
+    const fixedPx = parseInt(document.getElementById('alignFixedPx').value) || 40;
+    const dirX = dx / totalDist, dirY = dy / totalDist;
+    for (let i = 1; i <= count; i++) {
+      const d = fixedPx * i;
+      if (d >= totalDist) {
+        // If spacing exceeds distance, clamp to equal spacing for remaining
+        const t = i / (count + 1);
+        result.push({ x: Math.round(ax + dx * t), y: Math.round(ay + dy * t) });
+      } else {
+        result.push({ x: Math.round(ax + dirX * d), y: Math.round(ay + dirY * d) });
+      }
+    }
+  }
+  return { lo, hi, positions: result };
+}
+
+function previewAlign() {
+  const aligned = computeAlignedDots();
+  if (!aligned) return;
+  alignPreviewDots = aligned.positions;
+  render();
+}
+
+function applyAlign() {
+  const aligned = computeAlignedDots();
+  if (!aligned) return;
+  pushUndo();
+  for (let i = 0; i < aligned.positions.length; i++) {
+    dots[aligned.lo + 1 + i] = aligned.positions[i];
+  }
+  alignPreviewDots = null;
+  updateDotList();
+  render();
+}
+
+function clearSelection() {
+  selectedDot = -1;
+  selectedDotB = -1;
+  alignPreviewDots = null;
+  updateAlignPanel();
+  updateDotList();
+  render();
+}
+
+// ── Board loading ──
+document.getElementById('boardSelect').addEventListener('change', (e) => {
+  const val = e.target.value;
+  if (val && BOARD_PATHS[val]) {
+    loadImage(BOARD_PATHS[val]);
+    if (BOARD_CONFIGS[val]) {
+      loadBoardConfig(BOARD_CONFIGS[val]);
+    }
+  }
+});
+
+document.getElementById('fileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  loadImage(url);
+  document.getElementById('boardSelect').value = '';
+});
+
+function loadImage(src) {
+  const img = new Image();
+  img.onload = () => {
+    boardImg = img;
+    fitImageToCanvas();
+    render();
+  };
+  img.onerror = () => alert('Failed to load image: ' + src);
+  img.src = src;
+}
+
+// ── Actions ──
+function loadBoardConfig(cfg) {
+  pushUndo();
+  dots = cfg.tiles.map(d => ({ ...d }));
+  cornerTiles = new Set(cfg.corners);
+  document.getElementById('cornerInput').value = cfg.corners.join(', ');
+  focalPoint = { ...cfg.focalPoint };
+  boardCenter = { ...cfg.boardCenter };
+  syncMarkerInputs();
+  selectedDot = -1;
+  selectedDotB = -1;
+  alignPreviewDots = null;
+  updateDotList();
+  render();
+}
+
+function loadDefaultTiles() {
+  loadBoardConfig(BOARD_CONFIGS.board1);
+}
+
+function clearAll() {
+  if (dots.length > 0 && !confirm('Clear all dots?')) return;
+  pushUndo();
+  dots = [];
+  selectedDot = -1;
+  selectedDotB = -1;
+  alignPreviewDots = null;
+  updateDotList();
+  render();
+}
+
+function exportTiles() {
+  const corners = [...cornerTiles].sort((a, b) => a - b);
+  let ts = 'const tiles: TileCoord[] = [\n';
+  for (let i = 0; i < dots.length; i++) {
+    const comment = cornerTiles.has(i) ? ' // corner' : '';
+    ts += `  { x: ${dots[i].x}, y: ${dots[i].y} }, // ${i}${comment}\n`;
+  }
+  ts += '];\n\n';
+  ts += `const cornerTiles = [${corners.join(', ')}];\n\n`;
+  ts += `// Board layout\n`;
+  ts += `focalPoint: { x: ${focalPoint.x}, y: ${focalPoint.y} },\n`;
+  ts += `boardCenter: { x: ${boardCenter.x}, y: ${boardCenter.y} },\n`;
+
+  document.getElementById('output').value = ts;
+  navigator.clipboard.writeText(ts).then(
+    () => flashBtn('Copied!'),
+    () => {}
+  );
+}
+
+function exportJSON() {
+  const obj = {
+    tiles: dots.map(d => ({ x: d.x, y: d.y })),
+    cornerTiles: [...cornerTiles].sort((a, b) => a - b),
+    focalPoint: { x: focalPoint.x, y: focalPoint.y },
+    boardCenter: { x: boardCenter.x, y: boardCenter.y },
+  };
+  const json = JSON.stringify(obj, null, 2);
+  document.getElementById('output').value = json;
+  navigator.clipboard.writeText(json).then(
+    () => flashBtn('Copied!'),
+    () => {}
+  );
+}
+
+function flashBtn(msg) {
+  const output = document.getElementById('output');
+  const orig = output.placeholder;
+  output.placeholder = msg;
+  setTimeout(() => output.placeholder = orig, 1500);
+}
+
+// ── Transform all dots (bounding box handles) ──
+const HANDLE_SIZE = 10;
+const HANDLE_HIT = 16;
+
+// Transform drag state
+let txDragging = null; // 'move' | 'tl' | 'tr' | 'bl' | 'br' | null
+let txUndoPushed = false;
+let txStartMouse = { x: 0, y: 0 };
+let txOrigDots = [];
+let txOrigCenter = { x: 0, y: 0 };
+let txOrigFocal = { x: 0, y: 0 };
+let txOrigBBox = null;
+
+function getBBox() {
+  if (dots.length === 0) return null;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const d of dots) {
+    if (d.x < minX) minX = d.x;
+    if (d.y < minY) minY = d.y;
+    if (d.x > maxX) maxX = d.x;
+    if (d.y > maxY) maxY = d.y;
+  }
+  // Include markers
+  for (const m of [boardCenter, focalPoint]) {
+    if (m.x < minX) minX = m.x;
+    if (m.y < minY) minY = m.y;
+    if (m.x > maxX) maxX = m.x;
+    if (m.y > maxY) maxY = m.y;
+  }
+  const pad = 20;
+  return { x: minX - pad, y: minY - pad, w: maxX - minX + pad * 2, h: maxY - minY + pad * 2 };
+}
+
+function getHandlePositions(bbox) {
+  if (!bbox) return {};
+  const cx = bbox.x + bbox.w / 2;
+  const cy = bbox.y + bbox.h / 2;
+  return {
+    tl: { x: bbox.x, y: bbox.y },
+    tr: { x: bbox.x + bbox.w, y: bbox.y },
+    bl: { x: bbox.x, y: bbox.y + bbox.h },
+    br: { x: bbox.x + bbox.w, y: bbox.y + bbox.h },
+    move: { x: cx, y: cy },
+  };
+}
+
+function hitTestHandle(sx, sy) {
+  const bbox = getBBox();
+  if (!bbox) return null;
+  const handles = getHandlePositions(bbox);
+  // Check corners first (smaller targets), then center
+  for (const key of ['tl', 'tr', 'bl', 'br', 'move']) {
+    const h = handles[key];
+    const sp = imageToScreen(h.x, h.y);
+    if (Math.abs(sp.x - sx) < HANDLE_HIT && Math.abs(sp.y - sy) < HANDLE_HIT) {
+      return key;
+    }
+  }
+  return null;
+}
+
+function getAnchorForHandle(handle, bbox) {
+  // Opposite corner is the anchor
+  switch (handle) {
+    case 'tl': return { x: bbox.x + bbox.w, y: bbox.y + bbox.h };
+    case 'tr': return { x: bbox.x, y: bbox.y + bbox.h };
+    case 'bl': return { x: bbox.x + bbox.w, y: bbox.y };
+    case 'br': return { x: bbox.x, y: bbox.y };
+  }
+  return null;
+}
+
+function txBeginDrag(handle, sx, sy) {
+  txDragging = handle;
+  txUndoPushed = false;
+  txStartMouse = { x: sx, y: sy };
+  txOrigDots = dots.map(d => ({ ...d }));
+  txOrigCenter = { ...boardCenter };
+  txOrigFocal = { ...focalPoint };
+  txOrigBBox = getBBox();
+}
+
+function txUpdateDrag(sx, sy) {
+  if (!txDragging || !txOrigBBox) return;
+
+  if (!txUndoPushed) {
+    pushUndo();
+    txUndoPushed = true;
+  }
+
+  if (txDragging === 'move') {
+    // Translate all
+    const dx = (sx - txStartMouse.x) / zoom;
+    const dy = (sy - txStartMouse.y) / zoom;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].x = Math.round(txOrigDots[i].x + dx);
+      dots[i].y = Math.round(txOrigDots[i].y + dy);
+    }
+    boardCenter.x = Math.round(txOrigCenter.x + dx);
+    boardCenter.y = Math.round(txOrigCenter.y + dy);
+    focalPoint.x = Math.round(txOrigFocal.x + dx);
+    focalPoint.y = Math.round(txOrigFocal.y + dy);
+  } else {
+    // Scale from anchor (opposite corner)
+    const anchor = getAnchorForHandle(txDragging, txOrigBBox);
+    const anchorScreen = imageToScreen(anchor.x, anchor.y);
+
+    // Original distance from anchor to start mouse
+    const origDist = Math.sqrt(
+      (txStartMouse.x - anchorScreen.x) ** 2 +
+      (txStartMouse.y - anchorScreen.y) ** 2
+    );
+    // Current distance from anchor to current mouse
+    const curDist = Math.sqrt(
+      (sx - anchorScreen.x) ** 2 +
+      (sy - anchorScreen.y) ** 2
+    );
+
+    if (origDist < 1) return;
+    const scale = curDist / origDist;
+
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].x = Math.round(anchor.x + (txOrigDots[i].x - anchor.x) * scale);
+      dots[i].y = Math.round(anchor.y + (txOrigDots[i].y - anchor.y) * scale);
+    }
+    boardCenter.x = Math.round(anchor.x + (txOrigCenter.x - anchor.x) * scale);
+    boardCenter.y = Math.round(anchor.y + (txOrigCenter.y - anchor.y) * scale);
+    focalPoint.x = Math.round(anchor.x + (txOrigFocal.x - anchor.x) * scale);
+    focalPoint.y = Math.round(anchor.y + (txOrigFocal.y - anchor.y) * scale);
+  }
+
+  syncMarkerInputs();
+  updateDotList();
+  render();
+}
+
+function txEndDrag() {
+  txDragging = null;
+}
+
+function renderTransformHandles() {
+  const bbox = getBBox();
+  if (!bbox) return;
+  const handles = getHandlePositions(bbox);
+
+  // Draw bounding box
+  const tl = imageToScreen(bbox.x, bbox.y);
+  const w = bbox.w * zoom;
+  const h = bbox.h * zoom;
+  ctx.save();
+  ctx.setLineDash([8, 4]);
+  ctx.strokeStyle = 'rgba(224, 159, 62, 0.6)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(tl.x, tl.y, w, h);
+  ctx.setLineDash([]);
+
+  // Draw corner handles
+  for (const key of ['tl', 'tr', 'bl', 'br']) {
+    const p = imageToScreen(handles[key].x, handles[key].y);
+    ctx.fillStyle = '#e09f3e';
+    ctx.fillRect(p.x - HANDLE_SIZE / 2, p.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(p.x - HANDLE_SIZE / 2, p.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
+  }
+
+  // Draw center move handle (circle with cross)
+  const cp = imageToScreen(handles.move.x, handles.move.y);
+  ctx.beginPath();
+  ctx.arc(cp.x, cp.y, 14, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(224, 159, 62, 0.3)';
+  ctx.fill();
+  ctx.strokeStyle = '#e09f3e';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  // Cross arrows
+  const arm = 10;
+  ctx.beginPath();
+  ctx.moveTo(cp.x - arm, cp.y); ctx.lineTo(cp.x + arm, cp.y);
+  ctx.moveTo(cp.x, cp.y - arm); ctx.lineTo(cp.x, cp.y + arm);
+  ctx.strokeStyle = '#e09f3e';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  // Arrowheads
+  const ah = 4;
+  for (const [dx, dy] of [[arm, 0], [-arm, 0], [0, arm], [0, -arm]]) {
+    ctx.beginPath();
+    if (dx !== 0) {
+      const dir = Math.sign(dx);
+      ctx.moveTo(cp.x + dx, cp.y);
+      ctx.lineTo(cp.x + dx - ah * dir, cp.y - ah);
+      ctx.lineTo(cp.x + dx - ah * dir, cp.y + ah);
+    } else {
+      const dir = Math.sign(dy);
+      ctx.moveTo(cp.x, cp.y + dy);
+      ctx.lineTo(cp.x - ah, cp.y + dy - ah * dir);
+      ctx.lineTo(cp.x + ah, cp.y + dy - ah * dir);
+    }
+    ctx.fillStyle = '#e09f3e';
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+// ── Start ──
+init();
+</script>
+</body>
+</html>

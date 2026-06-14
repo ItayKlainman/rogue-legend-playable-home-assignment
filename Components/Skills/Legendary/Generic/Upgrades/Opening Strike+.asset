@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d3dc21f9cf4205b0e6273ce043e6c5, type: 3}
+  m_Name: Opening Strike+
+  m_EditorClassIdentifier: 
+  _name:
+    _sourceText: Opening Strike
+    _customKey: 
+    _assignedKey: <AUTO>so_Opening_Strike__name
+  <Description>k__BackingField:
+    _sourceText: '''ATK'' is doubled for the !first two rounds!.'
+    _customKey: 
+    _assignedKey: <AUTO>so_Opening_Strike__Description_k_BackingField
+  <ShortDescription>k__BackingField:
+    _sourceText: 
+    _customKey: 
+    _assignedKey: 
+  <Icon>k__BackingField: {fileID: 21300000, guid: 4f6588e25c9dadd448bc1d1c316c6601,
+    type: 3}
+  <Rarity>k__BackingField: 4
+  <Category>k__BackingField: 0
+  <WeaponVFXKey>k__BackingField: 
+  <Order>k__BackingField: 0
+  <CannotBeLearnedFromLevelUp>k__BackingField: 0
+  <RequiresSkillTreeUnlock>k__BackingField: 0
+  <IsHidden>k__BackingField: 0
+  <BypassesLearnChecks>k__BackingField: 0
+  <RequiresPets>k__BackingField: 0
+  <UpgradedVersion>k__BackingField: {fileID: 0}
+  <BaseVersion>k__BackingField: {fileID: 11400000, guid: 10a3346312223db44989abf50a07a07b,
+    type: 2}
+  <RequiredSkills>k__BackingField: []
+  <LockedBySkills>k__BackingField: []
+  <RequiredCategories>k__BackingField:
+    _serializedList: []
+  <StatChangesOnSkillLearned>k__BackingField:
+    SkillsToLearn: []
+    SkillEvolutions: []
+    MainStatChanges:
+      _serializedList: []
+    OffensiveMultiplierChanges:
+      _serializedList: []
+    DefensiveMultiplierChanges:
+      _serializedList: []
+    BattleActionBonusUsesChanges:
+      _serializedList: []
+    BattleActionBonusUseProbability:
+      _serializedList: []
+    StatusEffectBonusApplicationChanceMultChanges:
+      _serializedList: []
+    StatusEffectBonusMaxStacksChanges:
+      _serializedList: []
+    StatusEffectBonusStacksAppliedChanges:
+      _serializedList: []
+    BonusDamageMultipliersByStatusEffectChanges:
+      _serializedList: []
+    BonusCritChanceByStatusEffectChanges:
+      _serializedList: []
+    BonusDamageMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelChanges:
+      _serializedList: []
+    BonusDamageReductionMultipliersByEnemyTypeAndLevelAndDamageCategoryChanges:
+      _serializedList: []
+    ReplacementBattleActionChanges:
+      _serializedList: []
+    BattleActionCooldownReductionChanges:
+      _serializedList: []
+    StatusEffectImmunityChanges: []
+    PetDamageBonusChanges:
+      _serializedList: []
+    CategoryCritChanceBonusChanges:
+      _serializedList: []
+    PetAttackDelayReduction: 0
+    PvPBonusChanges:
+      ATKMult: 0
+      DEFMult: 0
+      HPMult: 0
+      DamageReduction: 0
+    MountDamageBonusChanges:
+      _serializedList: []
+    MountHPBonusChanges:
+      _serializedList: []
+    SentinelDamageBonusChanges:
+      _serializedList: []
+    PetDamageBonusByRarityChanges:
+      _serializedList: []
+  <GeneralPlayerModifierChangesOnSkillLearned>k__BackingField:
+    BonusEXPModifiersChangesByEnemyType:
+      _serializedList: []
+    BonusSilverModifiersChangesBySource:
+      _serializedList: []
+    AdditionalSkillRerolls: 0
+    AdditionalLegendarySkillRate: 0
+  <SkillEffects>k__BackingField:
+  - <TriggerConditions>k__BackingField:
+    - rid: 2696705430928228360
+    <IsOnCooldownFromTheStart>k__BackingField: 0
+    <SkillEffectCooldown>k__BackingField: 0
+    <StatusEffectsToApply>k__BackingField:
+    - RandomFromSelection: 0
+      Effect: {fileID: 11400000, guid: 83260539e28e968438af718a119659c2, type: 2}
+      EffectsPool: []
+      Stacks: 1
+      Probability: 100
+      Target: 4
+    <StatusEffectsToRemove>k__BackingField: []
+    <UseActionPool>k__BackingField: 0
+    <ActionToUse>k__BackingField: {fileID: 0}
+    <ActionToUsePool>k__BackingField: []
+    <ChanceToUse>k__BackingField: 0
+    <FailActionIfOriginalTargetIsDead>k__BackingField: 0
+    <RollChancePerActionUsage>k__BackingField: 0
+    <DynamicNumOfUses>k__BackingField: 0
+    <NumOfUses>k__BackingField: 0
+    <NumOfUsesBasedOnStatusEffectStacks>k__BackingField: {fileID: 0}
+    <NumOfUsesBasedOnRoundNumber>k__BackingField: 0
+    <NumOfUsesBasedOnEveryXRounds>k__BackingField: 1
+  <CustomBehaviour>k__BackingField:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2696705430928228360
+      type: {class: SkillEffectBattleStepCondition, ns: , asm: Assembly-CSharp}
+      data:
+        <AnyStep>k__BackingField: 0
+        <TriggeredByStep>k__BackingField: 0
+        <SpecificRoundNumber>k__BackingField: 0
+        <WhenRoundNumberIs>k__BackingField: 0
+        <RoundNumber>k__BackingField: 0

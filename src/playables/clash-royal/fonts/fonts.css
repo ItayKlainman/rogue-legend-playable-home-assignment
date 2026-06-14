@@ -1,0 +1,14 @@
+/*
+ * Bundled display font for the clash-royal playable. LuckiestGuy-latin.woff2 is
+ * the Latin subset from Google Fonts (Luckiest Guy) — the chunky impact face the
+ * combat damage numbers render in. Webpack inlines it as a base64 data URI via
+ * asset/inline, so the playable stays a single self-contained HTML file at build.
+ */
+
+@font-face {
+  font-family: 'Luckiest Guy';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./LuckiestGuy-latin.woff2') format('woff2');
+}

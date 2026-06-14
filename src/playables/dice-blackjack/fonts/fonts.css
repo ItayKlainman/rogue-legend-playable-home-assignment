@@ -1,0 +1,22 @@
+/*
+ * Bundled game fonts for the dice-blackjack playable. The two woff2 files in
+ * this directory are the Latin subsets from Google Fonts (Luckiest Guy +
+ * Bangers). Webpack inlines them as base64 data URIs via asset/inline, so
+ * the playable stays a single self-contained HTML file at production build.
+ */
+
+@font-face {
+  font-family: 'Luckiest Guy';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./LuckiestGuy-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bangers';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./Bangers-latin.woff2') format('woff2');
+}

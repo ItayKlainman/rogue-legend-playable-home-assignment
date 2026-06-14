@@ -1,0 +1,16 @@
+Slime.png
+size:1484,1279
+filter:Linear,Linear
+pma:true
+Slime_Angry
+bounds:859,89,407,190
+Slime_Body
+bounds:2,403,875,798
+rotate:90
+Slime_Dead
+bounds:801,281,997,681
+rotate:90
+Slime_Sad
+bounds:2,74,410,328
+Sliome_Mouth
+bounds:413,2,444,278

@@ -1,0 +1,50 @@
+Desert_Hornet.png
+size:2258,659
+filter:Linear,Linear
+pma:true
+scale:0.375
+Desert Hornet_Body_1
+bounds:1871,392,251,266
+offsets:0,0,290,266
+Desert Hornet_Body_2
+bounds:2123,270,155,106
+offsets:14,0,179,106
+rotate:90
+Desert Hornet_Eye
+bounds:1948,85,305,161
+offsets:41,60,347,221
+rotate:90
+Desert Hornet_Eye_Dead
+bounds:2123,427,230,108
+rotate:90
+Desert Hornet_Eye_Sad
+bounds:2111,6,263,146
+rotate:90
+Desert Hornet_Head
+bounds:1223,299,359,338
+offsets:35,49,393,387
+rotate:90
+Desert Hornet_L_Leg_1
+bounds:921,192,300,465
+offsets:0,45,300,510
+Desert Hornet_L_Leg_2
+bounds:493,19,164,446
+offsets:0,0,226,446
+rotate:90
+Desert Hornet_L_Wing
+bounds:493,184,427,473
+Desert Hornet_R_Leg_1
+bounds:1562,331,307,326
+offsets:0,6,307,332
+Desert Hornet_R_Leg_2
+bounds:1373,11,287,306
+offsets:18,32,305,338
+rotate:90
+Desert Hornet_R_Wing
+bounds:940,6,185,432
+rotate:90
+Desert Hornet_Sung
+bounds:1681,2,266,328
+Desert Hornet_Tail
+bounds:2,83,490,574
+offsets:0,0,516,574
