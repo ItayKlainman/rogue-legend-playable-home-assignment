@@ -60,6 +60,7 @@ export class SidescrollerDirector implements PlayableLifecycle {
           displayImage: this.script.endCard.splashImage ?? this.script.background,
           logoImage: this.script.endCard.logoImage,
         },
+        this.ticker,
         this.width,
         this.height,
       );

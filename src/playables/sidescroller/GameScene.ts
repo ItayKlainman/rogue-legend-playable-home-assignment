@@ -662,7 +662,8 @@ export class GameScene implements Scene {
     if (allSpawned && allDead) {
       if (__DEV__) { console.log('[ss] END: victory (all enemies cleared)'); }
       this.gameOver = true;
-      this.endDelay = 1000;
+      // Hold on the boss-death beat (explosion / shake / hit-stop) before cutting to the CTA.
+      this.endDelay = 2000;
     }
   }
 
