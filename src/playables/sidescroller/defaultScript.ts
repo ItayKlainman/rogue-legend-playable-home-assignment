@@ -103,12 +103,14 @@ export function getDefaultScript(): SidescrollerScript {
     },
     mode: 'waves',
     waves: [
-      // Wave 1 — calm open → ~LEVEL 1 (slimes, 1-shot, brisk trickle)
+      // Wave 1 — busy open → ~LEVEL 1 (slimes spawn in pairs and survive a beat so a visible
+      // cluster walks the hero down — kills/juice fire early without an empty screen)
       {
         enemies: [
-          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 12, speed: 90, damage: 1, count: 12 },
+          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 16, speed: 90, damage: 1, count: 12 },
         ],
-        spawnDelay: 650,
+        spawnDelay: 400,
+        burst: 2,
         waveDelay: 500,
       },
       // Wave 2 — pressure builds → ~LEVEL 2

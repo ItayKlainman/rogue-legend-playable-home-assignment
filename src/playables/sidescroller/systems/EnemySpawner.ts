@@ -23,6 +23,7 @@ export class EnemySpawner {
   private waveDelayTimer = 0;
   private inWaveDelay = false;
   private currentSpawnDelay = 300;
+  private currentBurst = 1;
   private finished = false;
 
   private continuousTimer = 0;
@@ -137,6 +138,7 @@ export class EnemySpawner {
 
     const wave = this.waves[index];
     this.currentSpawnDelay = wave.spawnDelay;
+    this.currentBurst = wave.burst ?? 1;
     this.spawnQueue = [];
 
     for (const def of wave.enemies) {
@@ -149,13 +151,15 @@ export class EnemySpawner {
   }
 
   private spawnNext(): void {
-    const def = this.spawnQueue.shift();
+    for (let i = 0; i < this.currentBurst; i++) {
+      const def = this.spawnQueue.shift();
 
-    if (!def) {
-      return;
+      if (!def) {
+        return;
+      }
+
+      this.spawnEnemy(def);
     }
-
-    this.spawnEnemy(def);
   }
 
   private spawnEnemy(def: EnemySpawnDef): void {

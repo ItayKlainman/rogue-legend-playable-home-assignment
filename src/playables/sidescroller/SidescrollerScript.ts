@@ -27,6 +27,7 @@ export interface EnemyWaveConfig {
   enemies: EnemySpawnDef[];
   spawnDelay: number;
   waveDelay: number;
+  burst?: number; // enemies spawned per spawn tick (default 1) — raise for a denser-looking horde
 }
 
 export interface ContinuousConfig {
