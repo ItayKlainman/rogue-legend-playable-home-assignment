@@ -14,17 +14,21 @@ import iconLightning from 'assets/Skills/skill_Lightning_Shot.webp';
 import iconShuriken from 'assets/Skills/skill_DeadlyShuriken.webp';
 import gameLogo from 'assets/UI/LOGO_rogue legend_.webp';
 
+// Idle Tower Defense pacing: the hero never moves and auto-casts. Enemy SPAWN RATE
+// (spawnDelay) is the pacing dial — enemies die ~1 shot early, so kills ≈ spawns.
+// xpToLevelUp = 8 → a level-up roughly every 8 kills; waves are sized so 4 level-ups
+// land across ~50s, then the boss wave closes the run. Numbers are faked to hit beats.
 export function getDefaultScript(): SidescrollerScript {
   return {
     hero: {
       spineBundle: heroBundle,
-      skin: 'Base',
+      skin: 'Fire_Wizard', // wand-wielding hero (assignment optional) → "spells" fantasy
       scale: 0.14,
-      hp: 200,
-      speed: 280,
-      attackRate: 5,
-      arrowDamage: 11,
-      arrowSpeed: 800,
+      hp: 2000, // tanky: power fantasy — hero reliably survives to KILL the boss
+      speed: 0, // idle: never moves
+      attackRate: 6, // fast clears → enemies rarely pile up on the idle hero
+      arrowDamage: 26,
+      arrowSpeed: 850,
     },
     background: battleBg,
     enemyBehavior: {
@@ -33,64 +37,64 @@ export function getDefaultScript(): SidescrollerScript {
     },
     xp: {
       xpPerKill: 1,
-      xpToLevelUp: 40,
+      xpToLevelUp: 6, // all 5 level-ups land before the boss → clean uninterrupted climax
       choicesPerLevel: 3,
       orbFlyDurationMs: 300,
       availablePowerups: [
         {
+          id: 'lightningArrows',
+          name: 'Chain Lightning',
+          description: 'Bolts arc to 2 nearby foes',
+          iconColor: 0xffee44,
+          icon: iconLightning,
+          params: { chainCount: 2, chainDamageRatio: 0.6, chainRange: 320 },
+        },
+        {
+          id: 'fireArrows',
+          name: 'Fire Bolts',
+          description: 'Burn enemies on hit',
+          iconColor: 0xff6600,
+          icon: iconFireball,
+          params: { burnDps: 12, burnDurationMs: 2500 },
+        },
+        {
+          id: 'splitArrows',
+          name: 'Triple Shuriken',
+          description: 'Bolts split into 2 mid-flight',
+          iconColor: 0x66ccff,
+          icon: iconShuriken,
+          params: { splitDelayMs: 120, splitAngle: 16 },
+        },
+        {
           id: 'fasterRate',
-          name: 'Rapid Fire',
-          description: 'Double fire rate',
+          name: 'Rapid Cast',
+          description: 'Double cast speed',
           iconColor: 0xff6600,
           icon: iconBerserk,
           params: { rateMultiplier: 2.0 },
         },
         {
-          id: 'spectralArrows',
-          name: 'Spectral Arrows',
-          description: 'Arrows pierce enemies',
-          iconColor: 0xaa44ff,
-          icon: iconBolt,
+          id: 'magneticArrows',
+          name: 'Seeking Bolts',
+          description: 'Bolts home in on enemies',
+          iconColor: 0xff4444,
+          icon: iconMeteor,
+          params: { homingStrength: 3.0 },
         },
         {
           id: 'iceArrows',
-          name: 'Ice Arrows',
+          name: 'Frost Bolts',
           description: 'Slow enemies on hit',
           iconColor: 0x44ccff,
           icon: iconThunderstorm,
           params: { slowFactor: 0.3, slowDurationMs: 3000 },
         },
         {
-          id: 'magneticArrows',
-          name: 'Magnetic Arrows',
-          description: 'Arrows home in on enemies',
-          iconColor: 0xff4444,
-          icon: iconMeteor,
-          params: { homingStrength: 3.0 },
-        },
-        {
-          id: 'fireArrows',
-          name: 'Fire Arrows',
-          description: 'Burn enemies on hit',
-          iconColor: 0xff6600,
-          icon: iconFireball,
-          params: { burnDps: 8, burnDurationMs: 2000 },
-        },
-        {
-          id: 'lightningArrows',
-          name: 'Lightning Arrows',
-          description: 'Chain to 2 nearby enemies',
-          iconColor: 0xffee44,
-          icon: iconLightning,
-          params: { chainCount: 2, chainDamageRatio: 0.5, chainRange: 300 },
-        },
-        {
-          id: 'splitArrows',
-          name: 'Split Shot',
-          description: 'Arrows split into 2 after short flight',
-          iconColor: 0x66ccff,
-          icon: iconShuriken,
-          params: { splitDelayMs: 150, splitAngle: 15 },
+          id: 'spectralArrows',
+          name: 'Piercing Bolts',
+          description: 'Bolts pierce through enemies',
+          iconColor: 0xaa44ff,
+          icon: iconBolt,
         },
       ],
     },
@@ -99,101 +103,40 @@ export function getDefaultScript(): SidescrollerScript {
     },
     mode: 'waves',
     waves: [
+      // Wave 1 — calm open → ~LEVEL 1 (slimes, 1-shot, brisk trickle)
       {
         enemies: [
-          {
-            id: 'slime',
-            spineBundle: slimeBundle,
-            scale: 0.09,
-            hp: 10,
-            speed: 95,
-            damage: 8,
-            count: 44,
-          },
+          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 12, speed: 90, damage: 1, count: 12 },
         ],
-        spawnDelay: 60,
-        waveDelay: 1200,
+        spawnDelay: 650,
+        waveDelay: 500,
       },
+      // Wave 2 — pressure builds → ~LEVEL 2
       {
         enemies: [
-          {
-            id: 'goblin',
-            spineBundle: goblinGruntBundle,
-            scale: 0.11,
-            hp: 15,
-            speed: 115,
-            damage: 12,
-            count: 33,
-          },
-          {
-            id: 'slime',
-            spineBundle: slimeBundle,
-            scale: 0.09,
-            hp: 10,
-            speed: 100,
-            damage: 8,
-            count: 26,
-          },
+          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 12, speed: 100, damage: 1, count: 7 },
+          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 18, speed: 120, damage: 1, count: 7 },
         ],
-        spawnDelay: 50,
-        waveDelay: 1200,
+        spawnDelay: 650,
+        waveDelay: 500,
       },
+      // Wave 3 — swarm → ~LEVEL 3 (screen gets busy)
       {
         enemies: [
-          {
-            id: 'skeleton',
-            spineBundle: skeletonArcherBundle,
-            scale: 0.11,
-            hp: 20,
-            speed: 125,
-            damage: 15,
-            count: 29,
-          },
-          {
-            id: 'goblin',
-            spineBundle: goblinGruntBundle,
-            scale: 0.11,
-            hp: 15,
-            speed: 120,
-            damage: 12,
-            count: 29,
-          },
+          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 18, speed: 125, damage: 1, count: 6 },
+          { id: 'skeleton', spineBundle: skeletonArcherBundle, scale: 0.11, hp: 28, speed: 130, damage: 2, count: 6 },
         ],
-        spawnDelay: 40,
-        waveDelay: 1200,
+        spawnDelay: 520,
+        waveDelay: 500,
       },
+      // Wave 4 — final swarm → ~LEVEL 4, then BOSS climax (fast approach, quick kill)
       {
         enemies: [
-          {
-            id: 'skeleton_king',
-            spineBundle: skeletonKingBundle,
-            scale: 0.22,
-            hp: 300,
-            speed: 60,
-            damage: 40,
-            count: 1,
-            isBoss: true,
-          },
-          {
-            id: 'skeleton',
-            spineBundle: skeletonArcherBundle,
-            scale: 0.11,
-            hp: 15,
-            speed: 130,
-            damage: 12,
-            count: 18,
-          },
-          {
-            id: 'goblin',
-            spineBundle: goblinGruntBundle,
-            scale: 0.11,
-            hp: 12,
-            speed: 135,
-            damage: 10,
-            count: 18,
-          },
+          { id: 'skeleton', spineBundle: skeletonArcherBundle, scale: 0.11, hp: 28, speed: 135, damage: 2, count: 3 },
+          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 18, speed: 140, damage: 1, count: 3 },
+          { id: 'skeleton_king', spineBundle: skeletonKingBundle, scale: 0.24, hp: 280, speed: 90, damage: 10, count: 1, isBoss: true },
         ],
-        spawnDelay: 60,
+        spawnDelay: 440,
         waveDelay: 0,
       },
     ],

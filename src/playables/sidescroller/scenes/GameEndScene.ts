@@ -3,6 +3,7 @@ import type { Scene } from '@shared/Scene';
 import { safeInstall } from '@shared/mraidInstall';
 import { alTrack } from '@shared/alAnalytics';
 import { easeOutQuad } from '@shared/utils';
+import { sfx } from '../sfx';
 
 const FADE_IN_MS = 300;
 const BUTTON_APPEAR_DELAY = 400;
@@ -102,6 +103,7 @@ export class GameEndScene implements Scene {
     this.layoutScene();
     this.animElapsed = 0;
     this.ready = true;
+    sfx.win(); // victory payoff sting on the end card
     alTrack('ENDCARD_SHOWN');
   }
 
@@ -129,6 +131,8 @@ export class GameEndScene implements Scene {
       this.button.y = this.buttonY + 20 * (1 - e);
     } else if (btnT > 1) {
       this.button.alpha = 1;
+      // gentle breathing pulse to draw the eye to the CTA
+      this.button.scale.set(1 + 0.05 * Math.sin(this.animElapsed * 0.006));
     }
 
     const SHINE_PERIOD = 2000;

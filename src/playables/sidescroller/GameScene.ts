@@ -1,4 +1,4 @@
-import { Assets, Container, Sprite, Ticker } from 'pixi.js';
+import { Assets, Container, Graphics, Sprite, Ticker } from 'pixi.js';
 import type { Scene } from '@shared/Scene';
 import type { SidescrollerScript } from './SidescrollerScript';
 import { HeroEntity } from './entities/HeroEntity';
@@ -10,7 +10,6 @@ import type { SpawnerCallbacks } from './systems/EnemySpawner';
 import { checkCollisions } from './systems/CollisionSystem';
 import { XpSystem } from './systems/XpSystem';
 import { PowerupEffects } from './systems/PowerupEffects';
-import { VirtualJoystick } from './ui/VirtualJoystick';
 import { HpBar } from './ui/HpBar';
 import { WaveIndicator } from './ui/WaveIndicator';
 import { XpBar } from './ui/XpBar';
@@ -18,9 +17,18 @@ import { LevelUpScene } from './scenes/LevelUpScene';
 import type { LevelUpPlayerState } from './scenes/LevelUpScene';
 import type { SkillConfig } from './scenes/skillTypes';
 import { SpriteEffect } from '@shared/SpriteEffect';
-import { sfx } from './sfx';
+import { sfx, music } from './sfx';
 import flameSheetData from 'assets/VFX/Flame_3_loop_SpriteSheet.webp';
 import electricitySheetData from 'assets/VFX/Electricity_Splash_2_SpriteSheet.webp';
+import explosionSheetData from 'assets/VFX/explosion_5_SpriteSheet.webp';
+
+// Cap roguelike level-ups (assignment: "repeat ~3–5 times"). All 7 powerups stay in the
+// pool so every level still offers 3 distinct cards (7,6,5,4,3 remaining across 5 levels).
+const MAX_LEVELUPS = 5;
+
+// Level-up slow-mo: ramp the world down to SLOWMO_MIN over SLOWMO_MS, then show the cards.
+const SLOWMO_MS = 280;
+const SLOWMO_MIN = 0.12;
 
 export class GameScene implements Scene {
   readonly container = new Container();
@@ -37,7 +45,6 @@ export class GameScene implements Scene {
   private gameLayer!: Container;
   private uiLayer!: Container;
   private hero!: HeroEntity;
-  private joystick!: VirtualJoystick;
   private projectileManager!: ProjectileManager;
   private spawner!: EnemySpawner;
   private hpBar!: HpBar;
@@ -55,6 +62,17 @@ export class GameScene implements Scene {
   private levelUpScene: LevelUpScene | null = null;
   private flameEffect: SpriteEffect | null = null;
   private electricityEffect: SpriteEffect | null = null;
+  private explosionEffect: SpriteEffect | null = null;
+
+  // Juice: camera shake + hit-stop
+  private shakeTimer = 0;
+  private shakeDuration = 0;
+  private shakeMag = 0;
+  private hitStopTimer = 0;
+
+  // Juice: level-up slow-mo ramp (plays before the cards appear)
+  private inSlowmo = false;
+  private slowmoTimer = 0;
 
   constructor(script: SidescrollerScript, ticker: Ticker, width: number, height: number) {
     this.script = script;
@@ -91,10 +109,14 @@ export class GameScene implements Scene {
     this.gameLayer.addChild(this.hero.container);
 
     this.hero.onFire = (x, y, damage, speed) => {
-      this.projectileManager.fire(x, y, speed, damage);
+      const target = this.projectileManager.findTarget?.(x, y) ?? null;
+      const angle = target ? Math.atan2(target.y - y, target.x - x) : 0;
+      this.projectileManager.fire(x, y, speed, damage, angle);
+      this.spawnMuzzleFlash(x, y);
     };
 
     this.hero.onDeath = () => {
+      if (__DEV__) { console.log('[ss] END: hero died'); }
       this.gameOver = true;
       this.endDelay = 1500;
     };
@@ -102,24 +124,29 @@ export class GameScene implements Scene {
     this.projectileManager = new ProjectileManager(this.width, this.height);
     this.container.addChild(this.projectileManager.container);
 
+    // Auto-aim target: prioritise the LOWEST-HP enemy (finish wounded foes first),
+    // tie-broken by nearest. Used for both the initial aim and homing steering.
     this.projectileManager.findTarget = (x, y) => {
-      let closest: EnemyEntity | null = null;
-      let minDist = Infinity;
+      let best: EnemyEntity | null = null;
+      let bestHp = Infinity;
+      let bestDist = Infinity;
 
       for (const e of this.enemies) {
         if (!e.isAlive) {
           continue;
         }
 
+        const hp = e.currentHp;
         const d = Math.hypot(e.x - x, e.centerY - y);
 
-        if (d < minDist) {
-          minDist = d;
-          closest = e;
+        if (hp < bestHp || (hp === bestHp && d < bestDist)) {
+          bestHp = hp;
+          bestDist = d;
+          best = e;
         }
       }
 
-      return closest ? { x: closest.x, y: closest.centerY } : null;
+      return best ? { x: best.x, y: best.centerY } : null;
     };
 
     const spawnerCallbacks: SpawnerCallbacks = {
@@ -127,6 +154,12 @@ export class GameScene implements Scene {
         this.enemies.push(enemy);
         this.gameLayer.addChild(enemy.container);
         enemy.onDeath = (e) => this.removeEnemy(e);
+        enemy.onKilled = (e) => this.onEnemyKilled(e);
+
+        if (enemy.isBoss) {
+          music.boss();     // swap gameplay → boss theme on the boss entrance
+          this.shake(10, 400);
+        }
       },
       onWaveComplete: (_waveIndex) => {},
       onAllComplete: () => {
@@ -146,10 +179,6 @@ export class GameScene implements Scene {
 
     this.uiLayer = new Container();
     this.container.addChild(this.uiLayer);
-
-    this.joystick = new VirtualJoystick();
-    this.joystick.layout(this.width, this.height);
-    this.uiLayer.addChild(this.joystick.container);
 
     this.hpBar = new HpBar(this.hero.maximumHp);
     this.hpBar.layout(this.width);
@@ -193,6 +222,16 @@ export class GameScene implements Scene {
       fps: 10,
     });
 
+    this.explosionEffect = await SpriteEffect.load({
+      spriteData: explosionSheetData,
+      columns: 4,
+      rows: 2,
+      totalFrames: 8,
+      fps: 30,
+    });
+
+    music.gameplay(); // starts on first user gesture (autoplay policy)
+
     this.ready = true;
   }
 
@@ -231,13 +270,37 @@ export class GameScene implements Scene {
       return;
     }
 
-    this.hero.update(deltaMS, this.joystick.direction);
-    this.spawner.update(deltaMS);
-    this.projectileManager.update(deltaMS);
+    // Hit-stop: briefly freeze the world for impact (e.g. boss death). Shake still settles.
+    if (this.hitStopTimer > 0) {
+      this.hitStopTimer -= deltaMS;
+      this.updateShake(deltaMS);
+      return;
+    }
+
+    // Level-up slow-mo intro: ramp the world down, then hand off to the card overlay.
+    let simDelta = deltaMS;
+    if (this.inSlowmo) {
+      this.slowmoTimer -= deltaMS;
+
+      if (this.slowmoTimer <= 0) {
+        this.inSlowmo = false;
+        this.enterLevelUpPause();
+        return;
+      }
+
+      const t = 1 - this.slowmoTimer / SLOWMO_MS; // 0 → 1 across the ramp
+      const factor = 1 - (1 - SLOWMO_MIN) * (t * t);
+      simDelta = deltaMS * factor;
+      this.setWorldTimeScale(factor);
+    }
+
+    this.hero.update(simDelta, { x: 0, y: 0 }); // idle: hero never moves
+    this.spawner.update(simDelta);
+    this.projectileManager.update(simDelta);
 
     for (const enemy of this.enemies) {
       if (enemy.isAlive || enemy.isDying) {
-        enemy.update(deltaMS, this.hero.x, this.hero.y);
+        enemy.update(simDelta, this.hero.x, this.hero.y);
       }
     }
 
@@ -262,7 +325,9 @@ export class GameScene implements Scene {
         }
       }
 
-      hit.enemy.takeDamage(hit.projectile.hitDamage);
+      const isCrit = Math.random() < 0.25;
+      const dmg = isCrit ? Math.round(hit.projectile.hitDamage * 2) : hit.projectile.hitDamage;
+      hit.enemy.takeDamage(dmg, isCrit);
 
       if (!hit.projectile.piercing) {
         hit.projectile.deactivate();
@@ -314,6 +379,113 @@ export class GameScene implements Scene {
     if (this.script.mode === 'waves') {
       this.waveIndicator.update(this.spawner.currentWave + 1);
     }
+
+    this.updateShake(deltaMS);
+  }
+
+  // ── Juice helpers ───────────────────────────────────────────────────────────
+  private startLevelUp(): void {
+    sfx.powerUp();
+    this.spawnLevelUpFlash();
+    this.inSlowmo = true;
+    this.slowmoTimer = SLOWMO_MS;
+  }
+
+  private spawnLevelUpFlash(): void {
+    const flash = new Graphics();
+    flash.rect(0, 0, this.width, this.height).fill({ color: 0xffffff });
+    flash.alpha = 0.85;
+    flash.eventMode = 'none';
+    this.container.addChild(flash);
+
+    let elapsed = 0;
+    const duration = 320;
+    const onTick = (ticker: Ticker) => {
+      elapsed += ticker.deltaMS;
+      const t = Math.min(1, elapsed / duration);
+      flash.alpha = 0.85 * (1 - t);
+
+      if (t >= 1) {
+        flash.destroy();
+        ticker.remove(onTick);
+      }
+    };
+    Ticker.shared.add(onTick);
+  }
+
+  private setWorldTimeScale(scale: number): void {
+    this.hero.setSpineTimeScale(scale);
+
+    for (const e of this.enemies) {
+      e.setSpineTimeScale(scale);
+    }
+  }
+
+  private onEnemyKilled(enemy: EnemyEntity): void {
+    if (this.explosionEffect) {
+      const scale = (Math.max(60, enemy.displayHeight) * 1.6) / 512;
+      this.explosionEffect.play(this.gameLayer, enemy.x, enemy.centerY, { scale });
+    }
+
+    if (enemy.isBoss) {
+      this.shake(16, 600);
+      this.hitStop(140);
+    } else {
+      this.shake(2.5, 70);
+    }
+  }
+
+  private spawnMuzzleFlash(x: number, y: number): void {
+    if (!this.gameLayer) {
+      return;
+    }
+
+    const g = new Graphics();
+    g.circle(0, 0, 16).fill({ color: 0xfff0a0 });
+    g.circle(0, 0, 8).fill({ color: 0xffffff });
+    g.position.set(x, y);
+    g.blendMode = 'add';
+    this.gameLayer.addChild(g);
+
+    let elapsed = 0;
+    const duration = 130;
+    const onTick = (ticker: Ticker) => {
+      elapsed += ticker.deltaMS;
+      const t = Math.min(1, elapsed / duration);
+      g.scale.set(0.6 + t * 0.9);
+      g.alpha = 1 - t;
+
+      if (t >= 1) {
+        g.destroy();
+        ticker.remove(onTick);
+      }
+    };
+    Ticker.shared.add(onTick);
+  }
+
+  private shake(mag: number, durationMs: number): void {
+    this.shakeMag = mag;
+    this.shakeDuration = durationMs;
+    this.shakeTimer = durationMs;
+  }
+
+  private hitStop(durationMs: number): void {
+    this.hitStopTimer = Math.max(this.hitStopTimer, durationMs);
+  }
+
+  private updateShake(deltaMS: number): void {
+    if (this.shakeTimer <= 0) {
+      return;
+    }
+
+    this.shakeTimer -= deltaMS;
+    const t = Math.max(0, this.shakeTimer / this.shakeDuration);
+    const m = this.shakeMag * t;
+    this.gameLayer.position.set((Math.random() * 2 - 1) * m, (Math.random() * 2 - 1) * m);
+
+    if (this.shakeTimer <= 0) {
+      this.gameLayer.position.set(0, 0);
+    }
   }
 
   pause(): void {}
@@ -330,7 +502,6 @@ export class GameScene implements Scene {
     this.bg.width = width;
     this.bg.height = height;
     this.hero.layout(width, height);
-    this.joystick.layout(width, height);
     this.projectileManager.layout(width, height);
     this.spawner.layout(width, height);
     this.hpBar.layout(width);
@@ -374,8 +545,12 @@ export class GameScene implements Scene {
 
       const leveledUp = this.xpSystem.addXp(this.script.xp.xpPerKill);
 
-      if (leveledUp && !this.paused && this.xpSystem.hasAvailablePowerups()) {
-        this.enterLevelUpPause();
+      if (
+        leveledUp && !this.paused && !this.inSlowmo
+        && this.xpSystem.level < MAX_LEVELUPS
+        && this.xpSystem.hasAvailablePowerups()
+      ) {
+        this.startLevelUp();
       }
     };
 
@@ -383,6 +558,7 @@ export class GameScene implements Scene {
   }
 
   private async enterLevelUpPause(): Promise<void> {
+    if (__DEV__) { console.log('[ss] LEVEL UP →', (this.xpSystem?.level ?? 0) + 1); (window as any).__ssPaused = true; }
     this.paused = true;
 
     for (const orb of this.xpOrbs) {
@@ -430,6 +606,7 @@ export class GameScene implements Scene {
     const scene = new LevelUpScene(
       {
         skills: [skills],
+        showCoach: this.xpSystem.level === 0, // teach the tap on the first level-up only
         onSkillPicked: () => {
           const pickedId = playerState.skills[playerState.skills.length - 1];
 
@@ -460,6 +637,7 @@ export class GameScene implements Scene {
   }
 
   private exitLevelUpPause(): void {
+    if (__DEV__) { (window as any).__ssPaused = false; }
     this.paused = false;
 
     this.hero.setSpinePaused(false);
@@ -482,6 +660,7 @@ export class GameScene implements Scene {
     const allDead = this.enemies.every(e => !e.isAlive);
 
     if (allSpawned && allDead) {
+      if (__DEV__) { console.log('[ss] END: victory (all enemies cleared)'); }
       this.gameOver = true;
       this.endDelay = 1000;
     }

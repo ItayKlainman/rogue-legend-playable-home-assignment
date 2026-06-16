@@ -186,6 +186,12 @@ export class HeroEntity {
     }
   }
 
+  setSpineTimeScale(scale: number): void {
+    if (this.character) {
+      this.character.spine.state.timeScale = scale;
+    }
+  }
+
   setAttackRateMultiplier(mult: number): void {
     this.attackRateMultiplier = mult;
     this.attackRate = this.baseAttackRate * this.attackRateMultiplier;

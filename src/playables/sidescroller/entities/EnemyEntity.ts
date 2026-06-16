@@ -62,6 +62,8 @@ export class EnemyEntity {
   private burnFlame: AnimatedSprite | null = null;
 
   onDeath: ((enemy: EnemyEntity) => void) | null = null;
+  /** Fired the instant HP hits 0 (any damage source) — for death VFX/shake. */
+  onKilled: ((enemy: EnemyEntity) => void) | null = null;
 
   private lockMiddle = false;
   private screenWidth = 0;
@@ -81,6 +83,8 @@ export class EnemyEntity {
 
   get isAlive(): boolean { return this.alive; }
   get isDying(): boolean { return this.dying; }
+  get isBoss(): boolean { return this.lockMiddle; }
+  get currentHp(): number { return this.hp; }
   get contactDamage(): number { return this.damage; }
   get canDealDamage(): boolean { return this.alive && this.contactCooldown <= 0; }
 
@@ -98,6 +102,8 @@ export class EnemyEntity {
     return this.container.y - this.charHeight * 0.5;
   }
 
+  get displayHeight(): number { return this.charHeight; }
+
   async init(
     spineBundle: SpineAssets,
     skin: string | undefined,
@@ -109,6 +115,9 @@ export class EnemyEntity {
   ): Promise<void> {
     this.screenWidth = screenW;
     this.screenHeight = screenH;
+    // Position immediately (before the async spine load) so the enemy isn't briefly at
+    // (0,0) where it could be targeted/hit while still initialising.
+    this.container.position.set(startX, startY);
     this.character = await SpineCharacter.create(
       `enemy_${this.id}`,
       spineBundle,
@@ -119,7 +128,6 @@ export class EnemyEntity {
     this.character.spine.scale.set(this.scale);
     this.character.facingLeft = false;
     this.container.addChild(this.character.spine);
-    this.container.position.set(startX, startY);
 
     this.walkAnim = findAnim(this.character.spine, ANIM_WALK);
     this.hitAnim = findAnim(this.character.spine, ANIM_HIT);
@@ -238,21 +246,22 @@ export class EnemyEntity {
     }
   }
 
-  takeDamage(amount: number): void {
-    if (!this.alive) {
-      return;
+  takeDamage(amount: number, isCrit = false): void {
+    if (!this.alive || !this.ready) {
+      return; // ignore hits during the async spine-load window (no hp bar / character yet)
     }
 
     this.hp -= amount;
     this.updateHpBar();
     this.triggerHitFlash();
-    this.spawnDamageNumber(amount);
+    this.spawnDamageNumber(amount, isCrit);
 
     if (this.hp <= 0) {
       this.hp = 0;
       this.alive = false;
       this.dying = true;
       sfx.enemyDeath();
+      this.onKilled?.(this);
 
       if (this.deathAnim) {
         this.character.play(this.deathAnim, false);
@@ -285,8 +294,14 @@ export class EnemyEntity {
     }
   }
 
+  setSpineTimeScale(scale: number): void {
+    if (this.character) {
+      this.character.spine.state.timeScale = scale;
+    }
+  }
+
   applySlow(factor: number, durationMs: number): void {
-    if (!this.alive) {
+    if (!this.alive || !this.ready) {
       return;
     }
 
@@ -304,7 +319,7 @@ export class EnemyEntity {
   }
 
   applyBurn(dps: number, durationMs: number, flameEffect?: SpriteEffect): void {
-    if (!this.alive) {
+    if (!this.alive || !this.ready) {
       return;
     }
 
@@ -373,16 +388,16 @@ export class EnemyEntity {
     }
   }
 
-  private spawnDamageNumber(amount: number): void {
-    const fontSize = Math.max(14, this.charHeight * 0.2);
+  private spawnDamageNumber(amount: number, isCrit = false): void {
+    const fontSize = Math.max(isCrit ? 22 : 14, this.charHeight * (isCrit ? 0.34 : 0.2));
     const text = new Text({
-      text: `-${amount}`,
+      text: isCrit ? `${amount}!` : `-${amount}`,
       style: new TextStyle({
         fontFamily: 'Arial, sans-serif',
         fontWeight: 'bold',
         fontSize,
-        fill: 0xff4444,
-        stroke: { color: 0x000000, width: 3, join: 'round' },
+        fill: isCrit ? 0xffd23f : 0xff4444,
+        stroke: { color: isCrit ? 0x7a3b00 : 0x000000, width: isCrit ? 4 : 3, join: 'round' },
       }),
     });
     text.anchor.set(0.5);
@@ -390,8 +405,8 @@ export class EnemyEntity {
     this.container.addChild(text);
 
     const startY = text.y;
-    const floatDist = 40;
-    const duration = 600;
+    const floatDist = isCrit ? 58 : 40;
+    const duration = isCrit ? 750 : 600;
     let elapsed = 0;
 
     const onTick = (ticker: Ticker) => {

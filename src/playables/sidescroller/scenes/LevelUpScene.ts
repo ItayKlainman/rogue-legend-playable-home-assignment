@@ -4,9 +4,17 @@ import type { SkillConfig } from './skillTypes';
 import { RARITY_COLORS } from './skillTypes';
 import { SpineCharacter } from '@shared/SpineCharacter';
 import { sfx } from '../sfx';
+import { CoachHand } from '../ui/CoachHand';
 
 import { heroBundle } from '../catalog/hero';
 import glowRaysData from 'assets/UI/GlowRays.webp';
+
+// Back-out overshoot easing for the banner pop.
+function easeOutBack(t: number): number {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
 
 export interface LevelUpPlayerState {
   heroSkin: string;
@@ -29,6 +37,7 @@ const CARD_EXIT_MS = 150;
 export interface LevelUpSceneConfig {
   skills: SkillConfig[][];
   layout?: 'vertical' | 'horizontal';
+  showCoach?: boolean;
   onSkillPicked?: () => void;
 }
 
@@ -85,6 +94,7 @@ export class LevelUpScene implements Scene {
   private circleTexts: Text[] = [];
   private swapPhase: 'idle' | 'exiting' | 'entering' = 'idle';
   private swapElapsed = 0;
+  private coach: CoachHand | null = null;
 
   private get cards(): CardElements[] {
     return this.roundCards[this.currentRound] ?? [];
@@ -213,6 +223,15 @@ export class LevelUpScene implements Scene {
       c.card.visible = false;
     }
 
+    this.bannerContainer.scale.set(0); // punch-in (driven in update)
+
+    if (this.config.showCoach) {
+      await CoachHand.preload();
+      this.coach = new CoachHand();
+      this.container.addChild(this.coach);
+      this.pointCoachAtFirstCard();
+    }
+
     this.animElapsed = 0;
     this.ready = true;
   }
@@ -223,6 +242,11 @@ export class LevelUpScene implements Scene {
     if (!this.ready) {
       return;
     }
+
+    // Banner punch-in (overshoot) + coach-hand tap pulse.
+    const bannerT = Math.min(1, this.animElapsed / 240);
+    this.bannerContainer.scale.set(easeOutBack(bannerT));
+    this.coach?.update(deltaMS);
 
     if (this.swapPhase === 'exiting') {
       this.swapElapsed += deltaMS;
@@ -332,6 +356,16 @@ export class LevelUpScene implements Scene {
 
     this.drawDimOverlay();
     this.layoutAll();
+    this.pointCoachAtFirstCard();
+  }
+
+  private pointCoachAtFirstCard(): void {
+    if (!this.coach || this.cards.length === 0) {
+      return;
+    }
+
+    const c = this.cards[0].card;
+    this.coach.pointAt(this.cardsContainer.x + c.x, this.cardsContainer.y + c.y);
   }
 
   private drawDimOverlay(): void {
@@ -493,6 +527,7 @@ export class LevelUpScene implements Scene {
         return;
       }
 
+      this.coach?.hide();
       sfx.buttonClick();
       this.state.skills.push(skill.id);
       this.config.onSkillPicked?.();

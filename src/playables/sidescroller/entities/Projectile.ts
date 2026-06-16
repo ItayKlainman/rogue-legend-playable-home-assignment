@@ -33,6 +33,7 @@ export class Projectile {
 
   fire(x: number, y: number, speed: number, damage: number, angle = 0): void {
     this.graphics.position.set(x, y);
+    this.graphics.rotation = angle;
     this.vx = speed * Math.cos(angle);
     this.vy = speed * Math.sin(angle);
     this.damage = damage;
@@ -68,6 +69,7 @@ export class Projectile {
 
         this.vx = totalSpeed * Math.cos(newAngle);
         this.vy = totalSpeed * Math.sin(newAngle);
+        this.graphics.rotation = newAngle;
       }
     }
 
