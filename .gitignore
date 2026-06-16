@@ -74,6 +74,9 @@ Components/_index/proposed-counts.json
 Components/_index/rename-journal.jsonl
 Components/_index/*.done
 
+# Game-feel film captures (video + extracted frames; regenerate with npm run film:sidescroller)
+tests/pw/film/
+
 # Playwright
 /test-results/
 /playwright-report/

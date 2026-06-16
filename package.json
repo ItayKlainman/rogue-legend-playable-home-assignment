@@ -22,7 +22,8 @@
     "check:textures": "node scripts/check-texture-loading.js",
     "build:dice-blackjack:all": "for v in winRigged loseRigged fair; do for n in applovin unity google; do node scripts/variant-build.js --type dice-blackjack $v build $n; done; done && node scripts/verify-builds.js",
     "rename:components": "node scripts/rename-components.js",
-    "test:components": "node --test scripts/components/*.test.js"
+    "test:components": "node --test scripts/components/*.test.js",
+    "film:sidescroller": "node tests/pw/sidescroller-film.mjs"
   },
   "dependencies": {
     "@esotericsoftware/spine-pixi-v8": "~4.2",
