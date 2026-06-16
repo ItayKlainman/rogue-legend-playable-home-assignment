@@ -37,7 +37,7 @@ export function getDefaultScript(): SidescrollerScript {
     },
     xp: {
       xpPerKill: 1,
-      xpToLevelUp: 6, // all 5 level-ups land before the boss → clean uninterrupted climax
+      xpToLevelUp: 16, // denser horde = many more kills; spread the 5 level-ups across the run (not all in the first seconds)
       choicesPerLevel: 3,
       orbFlyDurationMs: 300,
       availablePowerups: [
@@ -103,42 +103,44 @@ export function getDefaultScript(): SidescrollerScript {
     },
     mode: 'waves',
     waves: [
-      // Wave 1 — busy open → ~LEVEL 1 (slimes spawn in pairs and survive a beat so a visible
-      // cluster walks the hero down — kills/juice fire early without an empty screen)
+      // Wave 1 — slime swarm intro → ~LEVEL 1 (slow 1-shot slimes in triples form a starter cluster)
       {
         enemies: [
-          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 16, speed: 90, damage: 1, count: 12 },
+          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 22, speed: 60, damage: 1, count: 24 },
         ],
-        spawnDelay: 400,
-        burst: 2,
-        waveDelay: 500,
+        spawnDelay: 420,
+        burst: 3,
+        waveDelay: 250,
       },
-      // Wave 2 — pressure builds → ~LEVEL 2
+      // Wave 2 — wall thickens → ~LEVEL 2 (2-hit goblins linger; spawn sustained so the crowd holds)
       {
         enemies: [
-          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 12, speed: 100, damage: 1, count: 7 },
-          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 18, speed: 120, damage: 1, count: 7 },
-        ],
-        spawnDelay: 650,
-        waveDelay: 500,
-      },
-      // Wave 3 — swarm → ~LEVEL 3 (screen gets busy)
-      {
-        enemies: [
-          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 18, speed: 125, damage: 1, count: 6 },
-          { id: 'skeleton', spineBundle: skeletonArcherBundle, scale: 0.11, hp: 28, speed: 130, damage: 2, count: 6 },
-        ],
-        spawnDelay: 520,
-        waveDelay: 500,
-      },
-      // Wave 4 — final swarm → ~LEVEL 4, then BOSS climax (fast approach, quick kill)
-      {
-        enemies: [
-          { id: 'skeleton', spineBundle: skeletonArcherBundle, scale: 0.11, hp: 28, speed: 135, damage: 2, count: 3 },
-          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 18, speed: 140, damage: 1, count: 3 },
-          { id: 'skeleton_king', spineBundle: skeletonKingBundle, scale: 0.24, hp: 280, speed: 90, damage: 10, count: 1, isBoss: true },
+          { id: 'slime', spineBundle: slimeBundle, scale: 0.09, hp: 22, speed: 60, damage: 1, count: 16 },
+          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 40, speed: 65, damage: 1, count: 24 },
         ],
         spawnDelay: 440,
+        burst: 3,
+        waveDelay: 250,
+      },
+      // Wave 3 — peak wall → ~LEVEL 3 (all 2-hit; a standing wall of goblins + skeletons holds for the mid-run)
+      {
+        enemies: [
+          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 40, speed: 65, damage: 1, count: 26 },
+          { id: 'skeleton', spineBundle: skeletonArcherBundle, scale: 0.11, hp: 52, speed: 70, damage: 2, count: 26 },
+        ],
+        spawnDelay: 460,
+        burst: 3,
+        waveDelay: 250,
+      },
+      // Wave 4 — wall ground down → ~LEVEL 4-5, then BOSS climax (the king spawns alone after the swarm clears)
+      {
+        enemies: [
+          { id: 'skeleton', spineBundle: skeletonArcherBundle, scale: 0.11, hp: 52, speed: 72, damage: 2, count: 22 },
+          { id: 'goblin', spineBundle: goblinGruntBundle, scale: 0.11, hp: 40, speed: 75, damage: 1, count: 20 },
+          { id: 'skeleton_king', spineBundle: skeletonKingBundle, scale: 0.24, hp: 320, speed: 60, damage: 10, count: 1, isBoss: true },
+        ],
+        spawnDelay: 440,
+        burst: 3,
         waveDelay: 0,
       },
     ],
