@@ -124,8 +124,8 @@ export class GameScene implements Scene {
     this.projectileManager = new ProjectileManager(this.width, this.height);
     this.container.addChild(this.projectileManager.container);
 
-    // Auto-aim target: prioritise the LOWEST-HP enemy (finish wounded foes first),
-    // tie-broken by nearest. Used for both the initial aim and homing steering.
+    // Auto-aim target: prioritise the NEAREST enemy (per the brief's "auto-casts at the
+    // nearest enemies"), tie-broken by lowest-HP. Used for both the initial aim and homing steering.
     this.projectileManager.findTarget = (x, y) => {
       let best: EnemyEntity | null = null;
       let bestHp = Infinity;
@@ -139,7 +139,7 @@ export class GameScene implements Scene {
         const hp = e.currentHp;
         const d = Math.hypot(e.x - x, e.centerY - y);
 
-        if (hp < bestHp || (hp === bestHp && d < bestDist)) {
+        if (d < bestDist || (d === bestDist && hp < bestHp)) {
           bestHp = hp;
           bestDist = d;
           best = e;
