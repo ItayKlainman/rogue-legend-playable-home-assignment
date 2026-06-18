@@ -1,4 +1,4 @@
-export type Rarity = 'common' | 'legendary' | 'mythic';
+export type Rarity = 'common' | 'epic' | 'legendary' | 'mythic';
 
 export interface SkillConfig {
   id: string;
@@ -26,20 +26,28 @@ export const RARITY_COLORS: Record<Rarity, {
     skillBg: 0x8786AA,
     skillBorder: 0xCCCAE9,
   },
+  epic: {
+    badge: 0x8E44AD,
+    accent: 0xB35EE8,
+    cardBg: 0xFFF1D7,
+    cardBorder: 0xB35EE8,
+    skillBg: 0x6E4AA0,
+    skillBorder: 0xD671FD,
+  },
   legendary: {
     badge: 0xE67E22,
-    accent: 0xF5A623,
+    accent: 0xFFB020,
     cardBg: 0xFFF1D7,
-    cardBorder: 0xF5A623,
-    skillBg: 0xD7704A,
-    skillBorder: 0xFFC600,
+    cardBorder: 0xFFB020,
+    skillBg: 0xC9711F,
+    skillBorder: 0xFFD23F,
   },
   mythic: {
-    badge: 0xC0392B,
-    accent: 0xE74C6F,
+    badge: 0x8E1B1B,
+    accent: 0xE03131,
     cardBg: 0xFFF1D7,
-    cardBorder: 0xE74C6F,
-    skillBg: 0xD7704A,
-    skillBorder: 0xFFC600,
+    cardBorder: 0xE03131,
+    skillBg: 0xA12020,
+    skillBorder: 0xFF5A4A,
   },
 };

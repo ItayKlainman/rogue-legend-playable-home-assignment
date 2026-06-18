@@ -1,5 +1,9 @@
-import { Container } from 'pixi.js';
+import { Container, Texture } from 'pixi.js';
 import { Projectile } from '../entities/Projectile';
+import type { ProjectileLook } from '../entities/Projectile';
+
+/** Loaded card-icon textures for sprite-mode projectiles, keyed by powerup id. */
+export type ProjectileTextures = Partial<Record<string, Texture>>;
 
 const POOL_SIZE = 80;
 
@@ -16,7 +20,10 @@ export class ProjectileManager {
   splitActive = false;
   splitDelayMs = 150;
   splitAngle = 15;
-  fireVisual = false;
+  /** Current projectile look; most-recent upgrade wins. Applied to every (re)fired projectile. */
+  projectileLook: ProjectileLook = { mode: 'default' };
+  /** Card-icon textures for sprite-mode upgrades; populated by GameScene after lazy load. */
+  projectileTextures: ProjectileTextures = {};
   findTarget: ((x: number, y: number) => { x: number; y: number } | null) | null = null;
 
   constructor(screenWidth: number, screenHeight: number) {
@@ -38,7 +45,7 @@ export class ProjectileManager {
     }
 
     projectile.piercing = this.piercing;
-    this.applyTint(projectile);
+    projectile.setLook(this.projectileLook);
 
     if (this.homing) {
       projectile.homing = true;
@@ -92,7 +99,7 @@ export class ProjectileManager {
     }
 
     projectile.piercing = this.piercing;
-    this.applyTint(projectile);
+    projectile.setLook(this.projectileLook);
 
     if (this.homing) {
       projectile.homing = true;
@@ -101,18 +108,5 @@ export class ProjectileManager {
     }
 
     projectile.fire(x, y, speed, damage, angle);
-  }
-
-  private applyTint(projectile: Projectile): void {
-    if (this.fireVisual) {
-      projectile.graphics.alpha = 1;
-      projectile.graphics.tint = 0xff6600;
-    } else if (this.piercing) {
-      projectile.graphics.alpha = 0.6;
-      projectile.graphics.tint = 0xaa44ff;
-    } else {
-      projectile.graphics.alpha = 1;
-      projectile.graphics.tint = 0xffffff;
-    }
   }
 }

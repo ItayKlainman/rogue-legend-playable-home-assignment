@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics, Sprite, Ticker } from 'pixi.js';
+import { Assets, Container, Graphics, Sprite, Text, TextStyle, Ticker } from 'pixi.js';
 import type { Scene } from '@shared/Scene';
 import type { SidescrollerScript } from './SidescrollerScript';
 import { HeroEntity } from './entities/HeroEntity';
@@ -21,14 +21,22 @@ import { sfx, music } from './sfx';
 import flameSheetData from 'assets/VFX/Flame_3_loop_SpriteSheet.webp';
 import electricitySheetData from 'assets/VFX/Electricity_Splash_2_SpriteSheet.webp';
 import explosionSheetData from 'assets/VFX/explosion_5_SpriteSheet.webp';
+// Card-icon sprites used as projectile visuals when the matching upgrade is picked.
+import projShuriken from 'assets/Skills/skill_DeadlyShuriken.webp';
+import projFireball from 'assets/Skills/skill_Deadly_Fireball.webp';
+import projBolt from 'assets/Skills/skill_Bolt.webp';
 
 // Cap roguelike level-ups (assignment: "repeat ~3–5 times"). All 7 powerups stay in the
 // pool so every level still offers 3 distinct cards (7,6,5,4,3 remaining across 5 levels).
 const MAX_LEVELUPS = 5;
 
 // Level-up slow-mo: ramp the world down to SLOWMO_MIN over SLOWMO_MS, then show the cards.
-const SLOWMO_MS = 280;
+const SLOWMO_MS = 360;
 const SLOWMO_MIN = 0.12;
+
+// Trauma-based shake: peak magnitude (px) at trauma=1, with a squared response curve.
+const MAX_SHAKE = 8;
+const TRAUMA_DECAY = 2.2; // trauma units per second
 
 export class GameScene implements Scene {
   readonly container = new Container();
@@ -64,15 +72,24 @@ export class GameScene implements Scene {
   private electricityEffect: SpriteEffect | null = null;
   private explosionEffect: SpriteEffect | null = null;
 
-  // Juice: camera shake + hit-stop
-  private shakeTimer = 0;
-  private shakeDuration = 0;
-  private shakeMag = 0;
+  // Juice: trauma-based camera shake + hit-stop. Trauma builds per kill and decays;
+  // magnitude = MAX_SHAKE * trauma² so skirmishes stay calm and big clusters punch.
+  private trauma = 0;
   private hitStopTimer = 0;
+  private lastHitStop = 0; // perf.now() of the last cluster hit-stop (throttle)
+  private clusterKills: number[] = []; // recent kill timestamps for cluster detection
 
   // Juice: level-up slow-mo ramp (plays before the cards appear)
   private inSlowmo = false;
   private slowmoTimer = 0;
+
+  // Run/wave pacing is driven off real wall-clock time, NOT the PIXI ticker delta.
+  // PIXI clamps deltaMS to maxElapsedMS (~33ms / a 30fps floor), so under low render
+  // FPS the delta-driven sim runs in slow-motion and the wall-clock run length inflates
+  // (~64s vs the 40-60s target). We accumulate true elapsed ms via performance.now() and
+  // feed THAT (capped per-frame) to the spawner + end countdown so the script timeline
+  // lands the same regardless of FPS. Physics/animation stay delta-timed.
+  private lastPaceNow = 0;
 
   constructor(script: SidescrollerScript, ticker: Ticker, width: number, height: number) {
     this.script = script;
@@ -112,11 +129,10 @@ export class GameScene implements Scene {
       const target = this.projectileManager.findTarget?.(x, y) ?? null;
       const angle = target ? Math.atan2(target.y - y, target.x - x) : 0;
       this.projectileManager.fire(x, y, speed, damage, angle);
-      this.spawnMuzzleFlash(x, y);
+      this.spawnMuzzleFlash(x, y, angle);
     };
 
     this.hero.onDeath = () => {
-      if (__DEV__) { console.log('[ss] END: hero died'); }
       this.gameOver = true;
       this.endDelay = 1500;
     };
@@ -157,8 +173,11 @@ export class GameScene implements Scene {
         enemy.onKilled = (e) => this.onEnemyKilled(e);
 
         if (enemy.isBoss) {
+          enemy.spawnInvulnMs = 3000; // immune while the BOSS title + entrance read
           music.boss();     // swap gameplay → boss theme on the boss entrance
-          this.shake(10, 400);
+          this.addTrauma(0.7);
+          this.hitStop(120);
+          this.spawnBossFlash();
         }
       },
       onWaveComplete: (_waveIndex) => {},
@@ -206,33 +225,37 @@ export class GameScene implements Scene {
       }
     }
 
-    this.flameEffect = await SpriteEffect.load({
-      spriteData: flameSheetData,
-      columns: 4,
-      rows: 2,
-      totalFrames: 8,
-      fps: 20,
-    });
-
-    this.electricityEffect = await SpriteEffect.load({
-      spriteData: electricitySheetData,
-      columns: 4,
-      rows: 2,
-      totalFrames: 5,
-      fps: 10,
-    });
-
-    this.explosionEffect = await SpriteEffect.load({
-      spriteData: explosionSheetData,
-      columns: 4,
-      rows: 2,
-      totalFrames: 8,
-      fps: 30,
-    });
-
     music.gameplay(); // starts on first user gesture (autoplay policy)
 
+    // Paint + start the run as soon as hero/bg/wave-1 are up. Load the 3 effect
+    // spritesheets in parallel AFTER first paint (every use site is null-guarded, so
+    // the first kill that lands before the sheet resolves simply skips its VFX once).
+    this.lastPaceNow = performance.now();
     this.ready = true;
+
+    Promise.all([
+      SpriteEffect.load({ spriteData: flameSheetData, columns: 4, rows: 2, totalFrames: 8, fps: 20 }),
+      SpriteEffect.load({ spriteData: electricitySheetData, columns: 4, rows: 2, totalFrames: 5, fps: 10 }),
+      SpriteEffect.load({ spriteData: explosionSheetData, columns: 4, rows: 2, totalFrames: 8, fps: 30 }),
+    ]).then(([flame, electricity, explosion]) => {
+      this.flameEffect = flame;
+      this.electricityEffect = electricity;
+      this.explosionEffect = explosion;
+    });
+
+    // Projectile card-icon textures (PIXI v8: imported .webp URLs are UNLOADED — must
+    // Assets.load them or they render blank). Loaded ONCE; pooled projectiles reuse them.
+    Promise.all([
+      Assets.load(projShuriken),
+      Assets.load(projFireball),
+      Assets.load(projBolt),
+    ]).then(([shuriken, fireball, bolt]) => {
+      this.projectileManager.projectileTextures = {
+        splitArrows: shuriken,
+        fireArrows: fireball,
+        spectralArrows: bolt,
+      };
+    });
   }
 
   async exit(): Promise<void> {
@@ -244,12 +267,18 @@ export class GameScene implements Scene {
       return;
     }
 
+    // Wall-clock pacing delta (capped at 50ms so a tab-blur stall can't fast-forward
+    // the script in one giant step). Drives the run/wave timeline; physics use deltaMS.
+    const now = performance.now();
+    const paceDeltaMS = Math.min(50, now - this.lastPaceNow);
+    this.lastPaceNow = now;
+
     if (this.gameOver) {
       if (this.ended) {
         return;
       }
 
-      this.endDelay -= deltaMS;
+      this.endDelay -= paceDeltaMS;
 
       if (this.endDelay <= 0) {
         this.ended = true;
@@ -279,6 +308,7 @@ export class GameScene implements Scene {
 
     // Level-up slow-mo intro: ramp the world down, then hand off to the card overlay.
     let simDelta = deltaMS;
+    let slowmoFactor = 1;
     if (this.inSlowmo) {
       this.slowmoTimer -= deltaMS;
 
@@ -289,13 +319,15 @@ export class GameScene implements Scene {
       }
 
       const t = 1 - this.slowmoTimer / SLOWMO_MS; // 0 → 1 across the ramp
-      const factor = 1 - (1 - SLOWMO_MIN) * (t * t);
-      simDelta = deltaMS * factor;
-      this.setWorldTimeScale(factor);
+      slowmoFactor = 1 - (1 - SLOWMO_MIN) * (t * t);
+      simDelta = deltaMS * slowmoFactor;
+      this.setWorldTimeScale(slowmoFactor);
     }
 
     this.hero.update(simDelta, { x: 0, y: 0 }); // idle: hero never moves
-    this.spawner.update(simDelta);
+    // Spawner pacing is wall-clock driven (FPS-independent), but still slows with the
+    // brief level-up slow-mo so spawns stay in sync with the visibly-decelerated world.
+    this.spawner.update(paceDeltaMS * slowmoFactor);
     this.projectileManager.update(simDelta);
 
     for (const enemy of this.enemies) {
@@ -313,6 +345,9 @@ export class GameScene implements Scene {
 
     for (const hit of result.projectileHits) {
       if (this.powerupEffects?.lightningActive && hit.enemy.isAlive) {
+        // On-hit zap on the struck enemy (chained foes get their own below).
+        this.electricityEffect?.play(this.gameLayer, hit.enemy.x, hit.enemy.centerY, { scale: 1.3 });
+
         const targets = this.findChainTargets(
           hit.enemy,
           this.powerupEffects.chainCount,
@@ -385,16 +420,18 @@ export class GameScene implements Scene {
 
   // ── Juice helpers ───────────────────────────────────────────────────────────
   private startLevelUp(): void {
-    sfx.powerUp();
-    this.spawnLevelUpFlash();
+    const level = this.xpSystem?.level ?? 0; // 0-based level of the level-up about to happen
+    sfx.powerUp(0.8, 1 + level * 0.08); // escalate pitch per level
+    this.spawnLevelUpFlash(level);
     this.inSlowmo = true;
     this.slowmoTimer = SLOWMO_MS;
   }
 
-  private spawnLevelUpFlash(): void {
+  private spawnLevelUpFlash(level: number): void {
+    const peak = Math.min(0.95, 0.65 + level * 0.05); // brighter flash each level-up
     const flash = new Graphics();
     flash.rect(0, 0, this.width, this.height).fill({ color: 0xffffff });
-    flash.alpha = 0.85;
+    flash.alpha = peak;
     flash.eventMode = 'none';
     this.container.addChild(flash);
 
@@ -403,7 +440,7 @@ export class GameScene implements Scene {
     const onTick = (ticker: Ticker) => {
       elapsed += ticker.deltaMS;
       const t = Math.min(1, elapsed / duration);
-      flash.alpha = 0.85 * (1 - t);
+      flash.alpha = peak * (1 - t);
 
       if (t >= 1) {
         flash.destroy();
@@ -428,14 +465,82 @@ export class GameScene implements Scene {
     }
 
     if (enemy.isBoss) {
-      this.shake(16, 600);
+      this.addTrauma(0.6);
       this.hitStop(140);
+      this.bossDeathPunchZoom();
     } else {
-      this.shake(2.5, 70);
+      this.addTrauma(0.06);
+      this.maybeClusterHitStop();
     }
   }
 
-  private spawnMuzzleFlash(x: number, y: number): void {
+  // Selective cluster freeze: if ≥3 enemies die within a 120ms window, fire ONE small
+  // hit-stop, throttled to at most once per 250ms. (hitStop uses Math.max, so never per-kill.)
+  private maybeClusterHitStop(): void {
+    const now = performance.now();
+    this.clusterKills.push(now);
+    this.clusterKills = this.clusterKills.filter(t => now - t <= 120);
+
+    if (this.clusterKills.length >= 3 && now - this.lastHitStop >= 250) {
+      this.lastHitStop = now;
+      this.hitStop(60);
+    }
+  }
+
+  // Boss entrance: a brief big "BOSS" word that punches in and fades out.
+  private spawnBossFlash(): void {
+    const text = new Text({
+      text: 'BOSS',
+      style: new TextStyle({
+        fontFamily: 'Arial, sans-serif',
+        fontWeight: '900',
+        fontSize: Math.max(48, this.width * 0.18),
+        fill: 0xff3322,
+        stroke: { color: 0x000000, width: 6, join: 'round' },
+        letterSpacing: 4,
+      }),
+    });
+    text.anchor.set(0.5);
+    text.position.set(this.width / 2, this.height * 0.4);
+    text.eventMode = 'none';
+    this.uiLayer.addChild(text);
+
+    let elapsed = 0;
+    const duration = 900;
+    const onTick = (ticker: Ticker) => {
+      elapsed += ticker.deltaMS;
+      const t = Math.min(1, elapsed / duration);
+      const pop = t < 0.25 ? t / 0.25 : 1; // punch in over the first 25%
+      text.scale.set(0.7 + pop * 0.5);
+      text.alpha = t < 0.6 ? 1 : 1 - (t - 0.6) / 0.4;
+
+      if (t >= 1) {
+        text.destroy();
+        ticker.remove(onTick);
+      }
+    };
+    Ticker.shared.add(onTick);
+  }
+
+  // Boss-death punch-zoom: briefly scale the game layer up, then settle back.
+  private bossDeathPunchZoom(): void {
+    let elapsed = 0;
+    const duration = 180;
+    const onTick = (ticker: Ticker) => {
+      elapsed += ticker.deltaMS;
+      const t = Math.min(1, elapsed / duration);
+      const s = 1 + 0.04 * Math.sin(t * Math.PI); // 1 → 1.04 → 1
+      this.gameLayer.scale.set(s);
+
+      if (t >= 1) {
+        this.gameLayer.scale.set(1);
+        ticker.remove(onTick);
+      }
+    };
+    Ticker.shared.add(onTick);
+  }
+
+  private spawnMuzzleFlash(x: number, y: number, angle = 0): void {
     if (!this.gameLayer) {
       return;
     }
@@ -443,8 +548,12 @@ export class GameScene implements Scene {
     const g = new Graphics();
     g.circle(0, 0, 16).fill({ color: 0xfff0a0 });
     g.circle(0, 0, 8).fill({ color: 0xffffff });
+    // A short directional spark streaking toward the cast angle.
+    g.rotation = angle;
+    g.poly([0, -3, 26, 0, 0, 3]).fill({ color: 0xfff0a0 });
     g.position.set(x, y);
     g.blendMode = 'add';
+    const baseScale = 0.85 + (Math.random() * 2 - 1) * 0.15; // ±15% size jitter
     this.gameLayer.addChild(g);
 
     let elapsed = 0;
@@ -452,7 +561,7 @@ export class GameScene implements Scene {
     const onTick = (ticker: Ticker) => {
       elapsed += ticker.deltaMS;
       const t = Math.min(1, elapsed / duration);
-      g.scale.set(0.6 + t * 0.9);
+      g.scale.set(baseScale * (0.6 + t * 0.9));
       g.alpha = 1 - t;
 
       if (t >= 1) {
@@ -463,10 +572,8 @@ export class GameScene implements Scene {
     Ticker.shared.add(onTick);
   }
 
-  private shake(mag: number, durationMs: number): void {
-    this.shakeMag = mag;
-    this.shakeDuration = durationMs;
-    this.shakeTimer = durationMs;
+  private addTrauma(amount: number): void {
+    this.trauma = Math.min(1, this.trauma + amount);
   }
 
   private hitStop(durationMs: number): void {
@@ -474,16 +581,17 @@ export class GameScene implements Scene {
   }
 
   private updateShake(deltaMS: number): void {
-    if (this.shakeTimer <= 0) {
+    if (this.trauma <= 0) {
+      this.gameLayer.position.set(0, 0);
       return;
     }
 
-    this.shakeTimer -= deltaMS;
-    const t = Math.max(0, this.shakeTimer / this.shakeDuration);
-    const m = this.shakeMag * t;
-    this.gameLayer.position.set((Math.random() * 2 - 1) * m, (Math.random() * 2 - 1) * m);
+    const mag = MAX_SHAKE * this.trauma * this.trauma; // squared response
+    this.gameLayer.position.set((Math.random() * 2 - 1) * mag, (Math.random() * 2 - 1) * mag);
 
-    if (this.shakeTimer <= 0) {
+    this.trauma = Math.max(0, this.trauma - (deltaMS / 1000) * TRAUMA_DECAY);
+
+    if (this.trauma <= 0) {
       this.gameLayer.position.set(0, 0);
     }
   }
@@ -558,7 +666,6 @@ export class GameScene implements Scene {
   }
 
   private async enterLevelUpPause(): Promise<void> {
-    if (__DEV__) { console.log('[ss] LEVEL UP →', (this.xpSystem?.level ?? 0) + 1); (window as any).__ssPaused = true; }
     this.paused = true;
 
     for (const orb of this.xpOrbs) {
@@ -589,11 +696,17 @@ export class GameScene implements Scene {
       return;
     }
 
+    // Escalate rarity with level so each level-up reads as a clean climb:
+    // L0 common → L1 epic → L2-L3 legendary → L4 mythic (across the 5 capped level-ups).
+    const level = this.xpSystem.level; // 0-based: this is the level-up about to happen
+    const rarity: SkillConfig['rarity'] =
+      level >= 4 ? 'mythic' : level >= 2 ? 'legendary' : level >= 1 ? 'epic' : 'common';
+
     const skills: SkillConfig[] = choices.map(p => ({
       id: p.id,
       name: p.name,
       description: p.description,
-      rarity: 'legendary' as const,
+      rarity,
       icon: p.icon,
     }));
 
@@ -637,7 +750,6 @@ export class GameScene implements Scene {
   }
 
   private exitLevelUpPause(): void {
-    if (__DEV__) { (window as any).__ssPaused = false; }
     this.paused = false;
 
     this.hero.setSpinePaused(false);
@@ -660,7 +772,6 @@ export class GameScene implements Scene {
     const allDead = this.enemies.every(e => !e.isAlive);
 
     if (allSpawned && allDead) {
-      if (__DEV__) { console.log('[ss] END: victory (all enemies cleared)'); }
       this.gameOver = true;
       // Hold on the boss-death beat (explosion / shake / hit-stop) before cutting to the CTA.
       this.endDelay = 2000;

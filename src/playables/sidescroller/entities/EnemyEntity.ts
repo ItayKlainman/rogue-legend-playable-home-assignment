@@ -49,6 +49,10 @@ export class EnemyEntity {
   private flashTimer = 0;
   private flashing = false;
 
+  /** Damage-immune window after spawn (ms). 0 for normal enemies; set for the boss entrance. */
+  spawnInvulnMs = 0;
+  private invulnAura: Graphics | null = null;
+
   private slowed = false;
   private slowFactor = 1;
   private slowTimer = 0;
@@ -157,6 +161,12 @@ export class EnemyEntity {
     if (!this.ready) {
       return;
     }
+
+    if (this.spawnInvulnMs > 0) {
+      this.spawnInvulnMs -= deltaMS;
+      this.updateInvulnAura();
+    }
+
     if (this.flashing) {
       this.flashTimer -= deltaMS;
 
@@ -249,6 +259,9 @@ export class EnemyEntity {
   takeDamage(amount: number, isCrit = false): void {
     if (!this.alive || !this.ready) {
       return; // ignore hits during the async spine-load window (no hp bar / character yet)
+    }
+    if (this.spawnInvulnMs > 0) {
+      return; // boss entrance: immune (and damage popups suppressed) until the window ends
     }
 
     this.hp -= amount;
@@ -353,6 +366,28 @@ export class EnemyEntity {
     this.character.spine.filters = [this.filter];
   }
 
+  private updateInvulnAura(): void {
+    if (this.spawnInvulnMs <= 0) {
+      if (this.invulnAura) {
+        this.invulnAura.destroy();
+        this.invulnAura = null;
+      }
+      return;
+    }
+
+    if (!this.invulnAura) {
+      this.invulnAura = new Graphics();
+      this.invulnAura.position.set(0, -this.charHeight * 0.5);
+      this.container.addChildAt(this.invulnAura, 0);
+    }
+
+    const r = this.charHeight * 0.55;
+    const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 120);
+    this.invulnAura.clear();
+    this.invulnAura.circle(0, 0, r).stroke({ color: 0x6fd6ff, width: 4, alpha: 0.4 + 0.4 * pulse });
+    this.invulnAura.circle(0, 0, r * 0.92).fill({ color: 0x6fd6ff, alpha: 0.06 + 0.06 * pulse });
+  }
+
   private triggerHitFlash(): void {
     if (!this.character) {
       return;
@@ -401,12 +436,25 @@ export class EnemyEntity {
       }),
     });
     text.anchor.set(0.5);
-    text.position.set(0, this.hpBarY - 10);
+    const driftX = (Math.random() * 2 - 1) * 12; // small random horizontal drift
+    text.position.set(driftX, this.hpBarY - 10);
     this.container.addChild(text);
+
+    // Crit: a brief white flash behind the number for extra punch.
+    let critFlash: Graphics | null = null;
+    if (isCrit) {
+      critFlash = new Graphics();
+      critFlash.circle(0, 0, fontSize * 0.9).fill({ color: 0xffffff });
+      critFlash.position.set(driftX, this.hpBarY - 10);
+      critFlash.blendMode = 'add';
+      this.container.addChildAt(critFlash, this.container.children.indexOf(text));
+    }
 
     const startY = text.y;
     const floatDist = isCrit ? 58 : 40;
     const duration = isCrit ? 750 : 600;
+    const punchMs = 120;
+    const peakScale = isCrit ? 1.5 : 1.15;
     let elapsed = 0;
 
     const onTick = (ticker: Ticker) => {
@@ -415,8 +463,27 @@ export class EnemyEntity {
       text.y = startY - floatDist * t;
       text.alpha = 1 - t;
 
+      // Overshoot scale punch: 0.4 → peak (at ~half the punch) → settle to 1.
+      let scale: number;
+      if (elapsed < punchMs) {
+        const pt = elapsed / punchMs;
+        scale = pt < 0.5
+          ? 0.4 + (peakScale - 0.4) * (pt / 0.5)
+          : peakScale - (peakScale - 1) * ((pt - 0.5) / 0.5);
+      } else {
+        scale = 1;
+      }
+      text.scale.set(scale);
+
+      if (critFlash) {
+        critFlash.y = text.y;
+        critFlash.scale.set(scale);
+        critFlash.alpha = Math.max(0, 0.7 * (1 - elapsed / 180)); // quick fade
+      }
+
       if (t >= 1) {
         text.destroy();
+        critFlash?.destroy();
         ticker.remove(onTick);
       }
     };

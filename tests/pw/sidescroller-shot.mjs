@@ -58,9 +58,10 @@ try {
   let grabbedOverlay = false;
   while (mi < marks.length) {
     await sleep(500);
-    // if a level-up overlay is up, capture it ONCE before tapping it away
-    const paused = await page.evaluate(() => !!window.__ssPaused).catch(() => false);
-    if (paused && !grabbedOverlay) {
+    // capture the level-up overlay ONCE before tapping it away. The first level-up
+    // fires ~9s and is input-gated (the overlay stays up until we tap), so a timed
+    // grab is reliable without a runtime hook.
+    if (!grabbedOverlay && Date.now() - start >= 8500) {
       await sleep(700); // let banner punch + cards + coach hand settle in
       await page.screenshot({ path: path.join(SHOTS, 'ss-levelup.png') });
       log('[shot] ss-levelup captured');

@@ -48,7 +48,7 @@ function getPool(dataUrl: string, size: number): HTMLAudioElement[] {
   return pool;
 }
 
-function playFromPool(pool: HTMLAudioElement[], volume: number): void {
+function playFromPool(pool: HTMLAudioElement[], volume: number, rate?: number): void {
   let audio = pool.find(a => a.paused || a.ended);
 
   if (!audio) {
@@ -57,27 +57,30 @@ function playFromPool(pool: HTMLAudioElement[], volume: number): void {
 
   audio.currentTime = 0;
   audio.volume = volume;
-  audio.play().catch((e) => { if (__DEV__) console.warn('[sfx] play failed', e); });
+  // Pitch-jitter every play so the repeated hit sound stops being ear-fatiguing
+  // (it fires several times/sec). A fixed `rate` overrides the jitter when supplied.
+  audio.playbackRate = rate ?? (0.92 + Math.random() * 0.16);
+  audio.play().catch(() => {});
 }
 
-function play(dataUrl: string, poolSize: number, volume: number): void {
+function play(dataUrl: string, poolSize: number, volume: number, rate?: number): void {
   if (!userHasInteracted) {
     return;
   }
 
-  const base = sdk.volume > 0 ? sdk.volume : (__DEV__ ? 1 : 0);
+  const base = sdk.volume > 0 ? sdk.volume : 0;
 
   if (base <= 0) {
     return;
   }
 
   const pool = getPool(dataUrl, poolSize);
-  playFromPool(pool, base * volume);
+  playFromPool(pool, base * volume, rate);
 }
 
 // ── Looping background music (one persistent track, crossfaded on switch) ──────
 function musicBase(): number {
-  return sdk.volume > 0 ? sdk.volume : (__DEV__ ? 0.6 : 0);
+  return sdk.volume > 0 ? sdk.volume : 0;
 }
 
 function fadeOutAndStop(audio: HTMLAudioElement, durationMs: number): void {
@@ -119,7 +122,7 @@ export const sfx = {
   enemyDeath: (vol = 1) => play(deathData, 4, vol),
   heroDamage: (vol = 1) => play(damageData, 4, vol),
   levelUp: (vol = 1) => play(levelUpData, 2, vol),
-  powerUp: (vol = 0.8) => play(powerUpData, 2, vol),
+  powerUp: (vol = 0.8, rate = 1) => play(powerUpData, 2, vol, rate),
   win: (vol = 1) => play(winData, 2, vol),
   buttonClick: (vol = 0.6) => play(buttonClickData, 4, vol),
   chainLightning: (vol = 0.5) => play(chargeData, 6, vol),

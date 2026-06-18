@@ -2,6 +2,7 @@ import { ColorMatrixFilter, Container, Ticker } from 'pixi.js';
 import { SpineCharacter } from '@shared/SpineCharacter';
 import type { SpineAssets } from '@shared/SpineCharacter';
 import type { JoystickDirection } from '../ui/VirtualJoystick';
+import emberStaff from 'assets/Weapons/EmberStaff.webp';
 
 const ANIM_IDLE = ['Idle', 'Idle_Full', 'Idle_Loop'];
 const ANIM_WALK = ['Walk', 'Run', 'Idle', 'Idle_Full', 'Idle_Loop'];
@@ -103,6 +104,24 @@ export class HeroEntity {
 
     this.fireOffsetY = this.character.spine.skeleton.data.height * Math.abs(this.character.spine.scale.x) * 0.5;
     this.container.position.set(width * 0.15, height * 0.5);
+
+    // Pin an EmberStaff to the hero's back-hand weapon slot (Sword_Hilt2, bone `Weapon`) so the
+    // "wizard" reads as casting a spell-staff. This slot draws BEHIND the front hand, so the hand
+    // visibly grips over the staff. (The front-hand slot Sword_Hilt3 draws on top of the hand —
+    // staff floats un-gripped — and the spine API can't tuck a slot object behind the hand
+    // attachment, so the back hand is the gripped-look option.)
+    // NOTE: no GlowFilter — a per-sprite GlowFilter tanks FPS under software-GL, and PIXI's
+    // clamped deltaMS then drags the whole (delta-timed) sim into slow-motion. The staff art
+    // already glows; the additive projectiles carry the "spell" read.
+    await this.character.equipWeapon(
+      {
+        spriteData: emberStaff,
+        position: { x: 0.45, y: 0.9 }, // Unity units (auto → spine px)
+        rotation: -22,
+        scale: 1.3,
+      },
+      'Sword_Hilt2',
+    );
   }
 
   update(deltaMS: number, direction: JoystickDirection): void {
