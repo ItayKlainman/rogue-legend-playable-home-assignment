@@ -7,6 +7,7 @@ const PULSE_PERIOD = 650;   // ms per tap cycle
 const SCALE_MIN = 0.9;      // base scale at the "released" point
 const SCALE_AMP = 0.16;     // how much it grows at the "tap" point
 const BOB_AMP = 6;          // px downward bob at the tap point
+const CYCLE_MS = 1000;      // dwell time on each card before hopping to the next
 
 // PIXI v8: build the sprite from a LOADED texture, never `Texture.from(importedUrl)`.
 let HAND_TEX: Texture | undefined;
@@ -20,6 +21,9 @@ export class CoachHand extends Container {
   private hand: Sprite;
   private elapsed = 0;
   private baseScale: number;
+  private targets: { x: number; y: number }[] = [];
+  private targetIndex = 0;
+  private cycleElapsed = 0;
 
   constructor() {
     super();
@@ -35,9 +39,22 @@ export class CoachHand extends Container {
     this.visible = false;
   }
 
-  /** Move the hand over a target point (local coords) and show it. */
+  /** Move the hand over a single target point (local coords) and show it. */
   pointAt(x: number, y: number): void {
-    this.position.set(x, y);
+    this.pointAtMany([{ x, y }]);
+  }
+
+  /** Show the hand and hop it between several targets (1s each) to say "pick one of these". */
+  pointAtMany(points: { x: number; y: number }[]): void {
+    if (points.length === 0) {
+      return;
+    }
+
+    this.targets = points;
+    this.targetIndex = 0;
+    this.cycleElapsed = 0;
+    this.elapsed = 0;
+    this.position.set(points[0].x, points[0].y);
     this.visible = true;
   }
 
@@ -48,6 +65,20 @@ export class CoachHand extends Container {
   /** Looping tap pulse: a sine-driven scale + small downward bob on the hand sprite. */
   update(dtMs: number): void {
     if (!this.visible) return;
+
+    // Hop to the next card every CYCLE_MS so the player reads "choose one of these".
+    if (this.targets.length > 1) {
+      this.cycleElapsed += dtMs;
+
+      if (this.cycleElapsed >= CYCLE_MS) {
+        this.cycleElapsed -= CYCLE_MS;
+        this.targetIndex = (this.targetIndex + 1) % this.targets.length;
+        const t = this.targets[this.targetIndex];
+        this.position.set(t.x, t.y);
+        this.elapsed = 0; // restart the pulse so it taps fresh on arrival
+      }
+    }
+
     this.elapsed += dtMs;
     const phase = (this.elapsed % PULSE_PERIOD) / PULSE_PERIOD;
     const tap = Math.sin(phase * Math.PI * 2) * 0.5 + 0.5; // [0,1]

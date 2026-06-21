@@ -95,6 +95,9 @@ export class LevelUpScene implements Scene {
   private swapPhase: 'idle' | 'exiting' | 'entering' = 'idle';
   private swapElapsed = 0;
   private coach: CoachHand | null = null;
+  private promptText!: Text;
+  private coachTargets: { x: number; y: number }[] = [];
+  private cardsBottomY = 0;
 
   private get cards(): CardElements[] {
     return this.roundCards[this.currentRound] ?? [];
@@ -179,6 +182,20 @@ export class LevelUpScene implements Scene {
     this.subtitleText.anchor.set(0.5);
     this.container.addChild(this.subtitleText);
 
+    // Gentle "Choose an upgrade!" nudge below the cards (kept subtle, not eye-catching).
+    this.promptText = new Text({
+      text: 'Choose an upgrade!',
+      style: new TextStyle({
+        fontFamily: 'Arial, sans-serif',
+        fontWeight: 'bold',
+        fill: 0xffffff,
+        dropShadow: { color: 0x000000, blur: 4, distance: 2, angle: Math.PI / 4 },
+      }),
+    });
+    this.promptText.anchor.set(0.5);
+    this.promptText.alpha = 0.7;
+    this.container.addChild(this.promptText);
+
     this.circleContainer = new Container();
 
     if (this.totalRounds > 1) {
@@ -247,6 +264,9 @@ export class LevelUpScene implements Scene {
     const bannerT = Math.min(1, this.animElapsed / 240);
     this.bannerContainer.scale.set(easeOutBack(bannerT));
     this.coach?.update(deltaMS);
+
+    // Subtle breathe on the "Choose an upgrade!" prompt — present, not loud.
+    this.promptText.alpha = 0.62 + 0.12 * Math.sin(this.animElapsed * 0.004);
 
     if (this.swapPhase === 'exiting') {
       this.swapElapsed += deltaMS;
@@ -360,12 +380,11 @@ export class LevelUpScene implements Scene {
   }
 
   private pointCoachAtFirstCard(): void {
-    if (!this.coach || this.cards.length === 0) {
+    if (!this.coach || this.coachTargets.length === 0) {
       return;
     }
 
-    const c = this.cards[0].card;
-    this.coach.pointAt(this.cardsContainer.x + c.x, this.cardsContainer.y + c.y);
+    this.coach.pointAtMany(this.coachTargets);
   }
 
   private drawDimOverlay(): void {
@@ -619,6 +638,10 @@ export class LevelUpScene implements Scene {
     } else {
       this.layoutCardsVertical(currentCards, cardsStartY);
     }
+
+    const promptFont = Math.max(13, ref * 0.032);
+    this.promptText.style.fontSize = promptFont;
+    this.promptText.position.set(cx, Math.min(this.cardsBottomY + ref * 0.05, this.height - ref * 0.04));
   }
 
   private layoutCardsVertical(currentCards: CardElements[], cardsStartY: number): void {
@@ -755,6 +778,14 @@ export class LevelUpScene implements Scene {
     }
 
     this.cardsContainer.position.set(0, cardsStartY);
+
+    const lastCard = currentCards[currentCards.length - 1];
+    this.cardsBottomY = cardsStartY + (lastCard?.card.position.y ?? 0) + cardH / 2;
+    // Coach points at the LOWER part of each card so the fingertip never covers the icon.
+    this.coachTargets = currentCards.map(c => ({
+      x: c.card.position.x,
+      y: cardsStartY + c.card.position.y + cardH * 0.28,
+    }));
   }
 
   private layoutCardsHorizontal(currentCards: CardElements[], cardsStartY: number): void {
@@ -895,7 +926,15 @@ export class LevelUpScene implements Scene {
       c.card.position.set(xPos, cardH / 2);
     }
 
-    this.cardsContainer.position.set(0, cardsStartY + (this.width > this.height ? 0 : ref * 0.06));
+    const containerY = cardsStartY + (this.width > this.height ? 0 : ref * 0.06);
+    this.cardsContainer.position.set(0, containerY);
+
+    this.cardsBottomY = containerY + cardH;
+    // Coach points at the LOWER part of each card so the fingertip never covers the icon.
+    this.coachTargets = currentCards.map(c => ({
+      x: c.card.position.x,
+      y: containerY + c.card.position.y + cardH * 0.28,
+    }));
   }
 
   private relayoutCircles(): void {

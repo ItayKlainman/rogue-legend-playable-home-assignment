@@ -118,9 +118,11 @@ export class HeroEntity {
         spriteData: emberStaff,
         position: { x: 0.45, y: 0.9 }, // Unity units (auto → spine px)
         rotation: -22,
-        scale: 1.3,
+        scale: 1.65, // bigger so the staff reads clearly behind the hand
+        // Pulsing ember on the staff's gem (texture fraction) so it pops as a magic staff.
+        ember: { color: 0xff8a2a, at: { x: 0.55, y: 0.38 }, radiusFrac: 0.18 },
       },
-      'Sword_Hilt2',
+      'Sword_Hilt3',
     );
   }
 
@@ -128,6 +130,8 @@ export class HeroEntity {
     if (!this.alive) {
       return;
     }
+
+    this.character.updateWeaponGlow(deltaMS); // pulses the staff ember
 
     if (this.flashing) {
       this.flashTimer -= deltaMS;

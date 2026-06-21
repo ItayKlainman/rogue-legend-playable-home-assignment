@@ -1,4 +1,5 @@
-import { Graphics, Sprite, Texture } from 'pixi.js';
+import { AnimatedSprite, Graphics, Sprite, Texture } from 'pixi.js';
+import type { SpriteEffect } from '@shared/SpriteEffect';
 
 /** How a projectile should render. `default`/`tint` keep the Graphics bolt; `sprite` shows a card icon. */
 export interface ProjectileLook {
@@ -8,6 +9,14 @@ export interface ProjectileLook {
   spin?: boolean;
   /** Local sprite rotation (radians) so an upright icon can be laid along travel. */
   baseRotation?: number;
+  /** Attach a looping element aura that travels with the projectile (lightning / fire). */
+  aura?: 'electric' | 'fire';
+  /** Scale of the aura sprite (defaults to 0.5). Larger when the aura IS the projectile. */
+  auraScale?: number;
+  /** Hide the bolt + glow so the aura alone is the projectile (e.g. lightning = pure electricity). */
+  hideBody?: boolean;
+  /** Colour of the spark trail dropped behind the projectile (defaults to warm gold). */
+  trailColor?: number;
 }
 
 // Target on-screen size for sprite-mode projectiles (px), kept ~ the Graphics bolt so hit
@@ -17,6 +26,7 @@ const SPRITE_SIZE = 34;
 export class Projectile {
   readonly graphics: Graphics;
   private sprite: Sprite | null = null;
+  private aura: AnimatedSprite | null = null;
   private spinning = false;
 
   piercing = false;
@@ -36,10 +46,19 @@ export class Projectile {
   private damage = 0;
 
   private readonly bolt: Graphics;
+  private readonly glow: Graphics;
 
   constructor() {
     this.graphics = new Graphics();
     this.graphics.visible = false;
+
+    // Pulsing energy glow behind the bolt (white so the container tint can recolour it per element):
+    // a soft outer halo + a bright core so even the plain bolt reads as a charged energy shot.
+    this.glow = new Graphics();
+    this.glow.circle(0, 0, 18).fill({ color: 0xffffff, alpha: 0.28 });
+    this.glow.circle(0, 0, 9).fill({ color: 0xffffff, alpha: 0.4 });
+    this.glow.blendMode = 'add';
+    this.graphics.addChild(this.glow);
 
     // The bolt lives in a child so sprite-mode upgrades can hide it without a redraw.
     this.bolt = new Graphics();
@@ -67,6 +86,7 @@ export class Projectile {
       this.sprite.rotation = look.baseRotation ?? 0;
       this.spinning = !!look.spin;
       this.bolt.visible = false;
+      this.glow.visible = false;
       this.graphics.tint = 0xffffff;
       this.graphics.alpha = 1;
     } else {
@@ -74,9 +94,27 @@ export class Projectile {
         this.sprite.visible = false;
       }
       this.spinning = false;
-      this.bolt.visible = true;
+      this.bolt.visible = !look.hideBody;
+      this.glow.visible = !look.hideBody;
       this.graphics.tint = look.tint ?? 0xffffff;
       this.graphics.alpha = 1;
+    }
+  }
+
+  /** Attach (or clear) a looping electric aura that travels with the bolt. */
+  setAura(effect: SpriteEffect | null, scale = 0.5): void {
+    this.clearAura();
+
+    if (effect) {
+      this.aura = effect.play(this.graphics, 0, 0, { loop: true, scale });
+      this.aura.blendMode = 'add';
+    }
+  }
+
+  private clearAura(): void {
+    if (this.aura) {
+      this.aura.destroy();
+      this.aura = null;
     }
   }
 
@@ -102,6 +140,13 @@ export class Projectile {
     }
 
     const dt = deltaMS / 1000;
+
+    // Breathing energy glow on bolt/tint looks so even the plain bolt feels alive in flight.
+    if (this.glow.visible) {
+      const t = 0.5 + 0.5 * Math.sin(performance.now() / 55);
+      this.glow.scale.set(0.85 + 0.5 * t);
+      this.glow.alpha = 0.22 + 0.28 * t;
+    }
 
     if (this.homing && this.findTarget) {
       const target = this.findTarget(this.graphics.x, this.graphics.y);
@@ -149,6 +194,7 @@ export class Projectile {
   deactivate(): void {
     this.active = false;
     this.graphics.visible = false;
+    this.clearAura();
     this.hitEnemyIds.clear();
     this.homing = false;
     this.canSplit = false;

@@ -8,6 +8,17 @@ const ANIM_IDLE = ['Idle', 'Idle_Full', 'Idle_Loop'];
 const ANIM_WALK = ['Walk', 'Run', 'Idle', 'Idle_Full', 'Idle_Loop'];
 const ANIM_HIT = ['TakeHit', 'Take_Hit', 'Hit', 'Hurt', 'Damaged'];
 const ANIM_DEATH = ['Dead', 'Death', 'Die', 'Dying'];
+const ANIM_ATTACK = ['Attack', 'Attack_1', 'Melee'];
+const ANIM_ATTACK_BOSS = ['Rage_Attack', 'Attack'];
+
+// ── Procedural fake-walk ──────────────────────────────────────────────────────
+// The enemy skeletons have no Walk clip (they loop Idle while sliding), so this fakes
+// a stride with a vertical hop + slight sway on the SPRITE while the enemy is moving.
+// To remove entirely: set FAKE_WALK = false (or delete this block, applyFakeWalk, and its call).
+const FAKE_WALK = true;
+const WALK_BOB_FRAC = 0.05;   // hop height as a fraction of the enemy's height
+const WALK_SWAY_RAD = 0.05;   // side-to-side lean (radians)
+const WALK_SPEED = 0.012;     // phase advance per ms (~higher = faster steps)
 
 function findAnim(spine: any, candidates: string[]): string | null {
   for (const name of candidates) {
@@ -38,6 +49,7 @@ export class EnemyEntity {
   private walkAnim: string | null = null;
   private hitAnim: string | null = null;
   private deathAnim: string | null = null;
+  private attackAnim: string | null = null;
 
   private hpBarBg!: Graphics;
   private hpBarFill!: Graphics;
@@ -73,6 +85,10 @@ export class EnemyEntity {
   private screenWidth = 0;
   private screenHeight = 0;
   private engaged = false;
+
+  // Fake-walk state (see FAKE_WALK block at top). Random phase so enemies don't bob in unison.
+  private walkTime = 0;
+  private readonly walkPhase = Math.random() * Math.PI * 2;
 
   constructor(hp: number, speed: number, damage: number, scale: number, isBoss = false) {
     this.id = enemyIdCounter++;
@@ -136,6 +152,7 @@ export class EnemyEntity {
     this.walkAnim = findAnim(this.character.spine, ANIM_WALK);
     this.hitAnim = findAnim(this.character.spine, ANIM_HIT);
     this.deathAnim = findAnim(this.character.spine, ANIM_DEATH);
+    this.attackAnim = findAnim(this.character.spine, this.lockMiddle ? ANIM_ATTACK_BOSS : ANIM_ATTACK);
 
     if (this.walkAnim) {
       this.character.play(this.walkAnim, true);
@@ -231,6 +248,8 @@ export class EnemyEntity {
       this.engaged = true;
     }
 
+    let moving = false;
+
     if (this.engaged) {
       const dx = heroX - this.container.x;
       const dy = heroY - this.container.y;
@@ -239,9 +258,11 @@ export class EnemyEntity {
       if (dist > 1) {
         this.container.x += (dx / dist) * this.speed * dt;
         this.container.y += (dy / dist) * this.speed * dt;
+        moving = true;
       }
     } else {
       this.container.x -= this.speed * dt;
+      moving = true;
 
       if (this.lockMiddle) {
         const centerY = this.screenHeight * 0.5;
@@ -254,6 +275,29 @@ export class EnemyEntity {
         }
       }
     }
+
+    this.applyFakeWalk(deltaMS, moving);
+  }
+
+  // Procedural stride: hop + sway the sprite while moving so it reads as walking (no Walk clip
+  // exists in the art). Bobs only the spine — hitbox (container) and HP bar stay steady.
+  private applyFakeWalk(deltaMS: number, moving: boolean): void {
+    if (!FAKE_WALK) {
+      return;
+    }
+
+    const spine = this.character.spine;
+
+    if (!moving) {
+      spine.y = 0;
+      spine.rotation = 0;
+      return;
+    }
+
+    this.walkTime += deltaMS;
+    const phase = this.walkPhase + this.walkTime * WALK_SPEED;
+    spine.y = -Math.abs(Math.sin(phase)) * this.charHeight * WALK_BOB_FRAC; // hop up on each step
+    spine.rotation = Math.sin(phase) * WALK_SWAY_RAD; // gentle lean
   }
 
   takeDamage(amount: number, isCrit = false): void {
@@ -299,6 +343,19 @@ export class EnemyEntity {
 
   resetContactCooldown(): void {
     this.contactCooldown = 500;
+  }
+
+  /** Play the melee attack swing (boss: Rage_Attack), then settle back to the walk loop. */
+  playAttack(): void {
+    if (!this.alive || !this.ready || this.dying || !this.attackAnim) {
+      return;
+    }
+
+    this.character.play(this.attackAnim, false);
+
+    if (this.walkAnim) {
+      this.character.queue(this.walkAnim, true, 0);
+    }
   }
 
   setSpinePaused(frozen: boolean): void {

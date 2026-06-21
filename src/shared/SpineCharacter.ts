@@ -1,4 +1,4 @@
-import { Assets, Container, Sprite, Ticker } from 'pixi.js';
+import { Assets, Container, Graphics, Sprite, Ticker } from 'pixi.js';
 import { GlowFilter } from 'pixi-filters';
 import { Spine, SpineTexture } from '@esotericsoftware/spine-pixi-v8';
 import { TextureAtlas } from '@esotericsoftware/spine-core';
@@ -19,6 +19,10 @@ export interface WeaponConfig {
   rotation: number;
   scale: number;
   glow?: WeaponGlowConfig;
+  /** Procedural additive glow pinned to a point on the weapon art (e.g. a staff's ember gem).
+   *  Cheap alternative to GlowFilter. `at` is the gem centre as a fraction of the texture
+   *  (0..1, origin top-left); `radiusFrac` is the glow radius as a fraction of texture width. */
+  ember?: { color: number; at: { x: number; y: number }; radiusFrac: number };
 }
 
 // Unity skeleton import scale is 0.01 → 1 Unity unit = 100 Spine pixels
@@ -59,6 +63,8 @@ export class SpineCharacter {
   private weaponGlowFilter: GlowFilter | null = null;
   private weaponGlowCfg: WeaponGlowConfig | null = null;
   private weaponGlowFilterElapsed = 0;
+  private weaponEmber: Graphics | null = null;
+  private weaponEmberElapsed = 0;
 
   private constructor(spine: Spine) {
     this.spine = spine;
@@ -185,6 +191,21 @@ export class SpineCharacter {
       this.weaponGlowFilterElapsed = 0;
     }
 
+    if (config.ember) {
+      const r = texture.width * config.ember.radiusFrac;
+      const ex = (config.ember.at.x - 0.5) * texture.width;
+      const ey = (config.ember.at.y - 0.5) * texture.height;
+      const ember = new Graphics();
+      ember.circle(0, 0, r * 1.7).fill({ color: config.ember.color, alpha: 0.22 }); // soft outer bloom
+      ember.circle(0, 0, r).fill({ color: config.ember.color, alpha: 0.55 });
+      ember.circle(0, 0, r * 0.5).fill({ color: 0xffffff, alpha: 0.9 });
+      ember.blendMode = 'add';
+      ember.position.set(ex, ey);
+      sprite.addChild(ember); // child of the weapon art → tracks its rotation/scale
+      this.weaponEmber = ember;
+      this.weaponEmberElapsed = 0;
+    }
+
     this.spine.addSlotObject(slot, this.weaponContainer, {
       followAttachmentTimeline: false,
     });
@@ -195,6 +216,7 @@ export class SpineCharacter {
       this.setWeaponGlow(false);
       this.weaponGlowFilter = null;
       this.weaponGlowCfg = null;
+      this.weaponEmber = null; // destroyed with the weaponContainer tree below
       this.spine.removeSlotObject(this.weaponSlot);
       this.weaponContainer.destroy({ children: true });
       this.weaponContainer = null;
@@ -256,6 +278,12 @@ export class SpineCharacter {
       const t = (Math.sin((this.weaponGlowFilterElapsed / speed) * Math.PI * 2) + 1) / 2;
       const base = this.weaponGlowCfg.outerStrength ?? 4;
       this.weaponGlowFilter.outerStrength = base * (0.5 + 0.5 * t);
+    }
+    if (this.weaponEmber) {
+      this.weaponEmberElapsed += deltaMS;
+      const t = (Math.sin(this.weaponEmberElapsed * 0.005) + 1) / 2;
+      this.weaponEmber.scale.set(0.85 + 0.3 * t);
+      this.weaponEmber.alpha = 0.7 + 0.3 * t;
     }
   }
 }

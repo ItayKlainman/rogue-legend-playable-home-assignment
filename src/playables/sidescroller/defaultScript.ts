@@ -4,7 +4,7 @@ import { slimeBundle } from './catalog/enemies/slime';
 import { goblinGruntBundle } from './catalog/enemies/goblinGrunt';
 import { skeletonArcherBundle } from './catalog/enemies/skeletonArcher';
 import { skeletonKingBundle } from './catalog/enemies/skeletonKing';
-import battleBg from './catalog/battleBgs/stage1';
+import battleBg from './catalog/battleBgs/stage3';
 import iconBerserk from 'assets/Skills/skill_Berserk.webp';
 import iconBolt from 'assets/Skills/skill_Bolt.webp';
 import iconThunderstorm from 'assets/Skills/skill_Thunderstorm.webp';

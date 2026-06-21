@@ -67,28 +67,37 @@ export class PowerupEffects {
 
   private applySpectral(_def: PowerupDef): void {
     this.spectralActive = true;
-    this.setSpriteLook('spectralArrows', false, -Math.PI / 2); // lay the upright bolt along travel
+    // Phantom bolts read as a flying electric arc (no glyph) — same look as Chain Lightning,
+    // with a violet spark trail to keep a hint of their own identity. (Mechanically: piercing.)
+    this.projectileManager.projectileLook = {
+      mode: 'default',
+      aura: 'electric',
+      auraScale: 0.62,
+      hideBody: true,
+      trailColor: 0xc9a8ff,
+    };
   }
 
   private applyIce(def: PowerupDef): void {
     this.iceActive = true;
     this.iceSlowFactor = def.params?.slowFactor ?? 0.5;
     this.iceSlowDurationMs = def.params?.slowDurationMs ?? 2000;
-    this.projectileManager.projectileLook = { mode: 'tint', tint: 0x9fe8ff }; // icy-blue
+    this.projectileManager.projectileLook = { mode: 'tint', tint: 0x9fe8ff, trailColor: 0x9fe8ff }; // icy-blue
   }
 
   private applyMagnetic(def: PowerupDef): void {
     this.homingActive = true;
     this.projectileManager.homing = true;
     this.projectileManager.homingStrength = def.params?.homingStrength ?? 3.0;
-    this.projectileManager.projectileLook = { mode: 'tint', tint: 0xff4444 }; // seeking red
+    this.projectileManager.projectileLook = { mode: 'tint', tint: 0xff4444, trailColor: 0xff6a6a }; // seeking red
   }
 
   private applyFire(def: PowerupDef): void {
     this.fireActive = true;
     this.burnDps = def.params?.burnDps ?? 8;
     this.burnDurationMs = def.params?.burnDurationMs ?? 2000;
-    this.setSpriteLook('fireArrows');
+    // Fireball sprite wrapped in a travelling flame aura + ember trail.
+    this.setSpriteLook('fireArrows', false, 0, { aura: 'fire', trailColor: 0xff8a3c });
   }
 
   private applyLightning(def: PowerupDef): void {
@@ -96,8 +105,15 @@ export class PowerupEffects {
     this.chainCount = def.params?.chainCount ?? 2;
     this.chainDamageRatio = def.params?.chainDamageRatio ?? 0.5;
     this.chainRange = def.params?.chainRange ?? 150;
-    // No sprite for lightning — keep the default bolt; the on-hit electric zap reads it.
-    this.projectileManager.projectileLook = { mode: 'default' };
+    // The projectile IS the electricity: hide the bolt graphic and let a larger electric arc fly
+    // (with a blue spark trail). The on-hit zap stays for the chain.
+    this.projectileManager.projectileLook = {
+      mode: 'default',
+      aura: 'electric',
+      auraScale: 0.62,
+      hideBody: true,
+      trailColor: 0xaad4ff,
+    };
   }
 
   private applySplit(def: PowerupDef): void {
@@ -105,14 +121,19 @@ export class PowerupEffects {
     this.projectileManager.splitActive = true;
     this.projectileManager.splitDelayMs = def.params?.splitDelayMs ?? 150;
     this.projectileManager.splitAngle = def.params?.splitAngle ?? 15;
-    this.setSpriteLook('splitArrows', true); // spinning shuriken
+    this.setSpriteLook('splitArrows', true, 0, { trailColor: 0xffffff }); // spinning shuriken + white sparks
   }
 
   /** Switch projectiles to a card-icon sprite (if its texture is loaded), else leave as-is. */
-  private setSpriteLook(id: string, spin = false, baseRotation = 0): void {
+  private setSpriteLook(
+    id: string,
+    spin = false,
+    baseRotation = 0,
+    extra?: { aura?: 'electric' | 'fire'; trailColor?: number },
+  ): void {
     const texture = this.projectileManager.projectileTextures[id];
     if (texture) {
-      this.projectileManager.projectileLook = { mode: 'sprite', texture, spin, baseRotation };
+      this.projectileManager.projectileLook = { mode: 'sprite', texture, spin, baseRotation, ...extra };
     }
   }
 }

@@ -7,6 +7,7 @@ import { XpOrb } from './entities/XpOrb';
 import { ProjectileManager } from './systems/ProjectileManager';
 import { EnemySpawner } from './systems/EnemySpawner';
 import type { SpawnerCallbacks } from './systems/EnemySpawner';
+import { AmbientParticles } from './systems/AmbientParticles';
 import { checkCollisions } from './systems/CollisionSystem';
 import { XpSystem } from './systems/XpSystem';
 import { PowerupEffects } from './systems/PowerupEffects';
@@ -24,7 +25,6 @@ import explosionSheetData from 'assets/VFX/explosion_5_SpriteSheet.webp';
 // Card-icon sprites used as projectile visuals when the matching upgrade is picked.
 import projShuriken from 'assets/Skills/skill_DeadlyShuriken.webp';
 import projFireball from 'assets/Skills/skill_Deadly_Fireball.webp';
-import projBolt from 'assets/Skills/skill_Bolt.webp';
 
 // Cap roguelike level-ups (assignment: "repeat ~3–5 times"). All 7 powerups stay in the
 // pool so every level still offers 3 distinct cards (7,6,5,4,3 remaining across 5 levels).
@@ -50,6 +50,9 @@ export class GameScene implements Scene {
   private ready = false;
 
   private bg!: Sprite;
+  private bgBaseScale = 1;
+  private bgAnimT = 0;
+  private ambient!: AmbientParticles;
   private gameLayer!: Container;
   private uiLayer!: Container;
   private hero!: HeroEntity;
@@ -104,9 +107,12 @@ export class GameScene implements Scene {
   async enter(): Promise<void> {
     const bgTexture = await Assets.load(this.script.background);
     this.bg = new Sprite(bgTexture);
-    this.bg.width = this.width;
-    this.bg.height = this.height;
+    this.bg.anchor.set(0.5);
     this.container.addChild(this.bg);
+    this.fitBackground();
+
+    this.ambient = new AmbientParticles(this.width, this.height);
+    this.container.addChild(this.ambient.container);
 
     this.gameLayer = new Container();
     this.container.addChild(this.gameLayer);
@@ -237,10 +243,16 @@ export class GameScene implements Scene {
       SpriteEffect.load({ spriteData: flameSheetData, columns: 4, rows: 2, totalFrames: 8, fps: 20 }),
       SpriteEffect.load({ spriteData: electricitySheetData, columns: 4, rows: 2, totalFrames: 5, fps: 10 }),
       SpriteEffect.load({ spriteData: explosionSheetData, columns: 4, rows: 2, totalFrames: 8, fps: 30 }),
-    ]).then(([flame, electricity, explosion]) => {
+      // Dedicated travelling-bolt aura: same sheet, but skip the near-empty 5th frame and run
+      // faster so the crackle reads as a continuous energy field, not a blink.
+      SpriteEffect.load({ spriteData: electricitySheetData, columns: 4, rows: 2, totalFrames: 4, fps: 16 }),
+    ]).then(([flame, electricity, explosion, boltAura]) => {
       this.flameEffect = flame;
       this.electricityEffect = electricity;
       this.explosionEffect = explosion;
+      // Travelling element auras: electric for Chain Lightning, flame loop for Fire Bolts.
+      this.projectileManager.electricAura = boltAura;
+      this.projectileManager.fireAura = flame;
     });
 
     // Projectile card-icon textures (PIXI v8: imported .webp URLs are UNLOADED — must
@@ -248,12 +260,10 @@ export class GameScene implements Scene {
     Promise.all([
       Assets.load(projShuriken),
       Assets.load(projFireball),
-      Assets.load(projBolt),
-    ]).then(([shuriken, fireball, bolt]) => {
+    ]).then(([shuriken, fireball]) => {
       this.projectileManager.projectileTextures = {
         splitArrows: shuriken,
         fireArrows: fireball,
-        spectralArrows: bolt,
       };
     });
   }
@@ -272,6 +282,16 @@ export class GameScene implements Scene {
     const now = performance.now();
     const paceDeltaMS = Math.min(50, now - this.lastPaceNow);
     this.lastPaceNow = now;
+
+    // Living background: a slow breathe + drift within the cover overscan, plus rising motes.
+    this.bgAnimT += deltaMS;
+    const bgBreathe = 1 + 0.012 * Math.sin(this.bgAnimT * 0.0004);
+    this.bg.scale.set(this.bgBaseScale * bgBreathe);
+    this.bg.position.set(
+      this.width / 2 + Math.sin(this.bgAnimT * 0.00018) * this.width * 0.02,
+      this.height / 2 + Math.cos(this.bgAnimT * 0.00013) * this.height * 0.015,
+    );
+    this.ambient.update(deltaMS);
 
     if (this.gameOver) {
       if (this.ended) {
@@ -385,6 +405,7 @@ export class GameScene implements Scene {
 
     if (pendingChainHits.length > 0) {
       sfx.chainLightning();
+      this.spawnChainFlash();
     }
 
     for (const ch of pendingChainHits) {
@@ -400,6 +421,7 @@ export class GameScene implements Scene {
     }
 
     for (const enemy of result.heroContacts) {
+      enemy.playAttack();
       this.hero.takeDamage(enemy.contactDamage);
       enemy.resetContactCooldown();
       sfx.heroDamage();
@@ -441,6 +463,30 @@ export class GameScene implements Scene {
       elapsed += ticker.deltaMS;
       const t = Math.min(1, elapsed / duration);
       flash.alpha = peak * (1 - t);
+
+      if (t >= 1) {
+        flash.destroy();
+        ticker.remove(onTick);
+      }
+    };
+    Ticker.shared.add(onTick);
+  }
+
+  // Chain-zap pop: a brief additive blue-white screen flash when lightning arcs to nearby foes.
+  private spawnChainFlash(): void {
+    const flash = new Graphics();
+    flash.rect(0, 0, this.width, this.height).fill({ color: 0xbfe3ff });
+    flash.alpha = 0.16;
+    flash.eventMode = 'none';
+    flash.blendMode = 'add';
+    this.container.addChild(flash);
+
+    let elapsed = 0;
+    const duration = 130;
+    const onTick = (ticker: Ticker) => {
+      elapsed += ticker.deltaMS;
+      const t = Math.min(1, elapsed / duration);
+      flash.alpha = 0.16 * (1 - t);
 
       if (t >= 1) {
         flash.destroy();
@@ -607,8 +653,8 @@ export class GameScene implements Scene {
       return;
     }
 
-    this.bg.width = width;
-    this.bg.height = height;
+    this.fitBackground();
+    this.ambient?.layout(width, height);
     this.hero.layout(width, height);
     this.projectileManager.layout(width, height);
     this.spawner.layout(width, height);
@@ -616,6 +662,16 @@ export class GameScene implements Scene {
     this.waveIndicator.layout(width);
     this.xpBar?.layout(width);
     this.levelUpScene?.layout(width, height);
+  }
+
+  // Cover-fit the background: fill the screen preserving aspect (no stretch), with a little
+  // overscan so the slow drift/breathe never reveals an edge.
+  private fitBackground(): void {
+    const tex = this.bg.texture;
+    const cover = Math.max(this.width / tex.width, this.height / tex.height);
+    this.bgBaseScale = cover * 1.06;
+    this.bg.scale.set(this.bgBaseScale);
+    this.bg.position.set(this.width / 2, this.height / 2);
   }
 
   private removeEnemy(enemy: EnemyEntity): void {
